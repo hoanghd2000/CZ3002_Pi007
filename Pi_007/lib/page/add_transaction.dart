@@ -41,10 +41,19 @@ class _addTransactionPage extends State<addTransactionPage>{
   static const navigation_bar =  Color(0xFFFFEAD1);  //beige
   static const list_color =  Color(0xFFECECEC);  //grey
 
-  static const List<String> list1 = <String>['Spendings', 'Earnings'];
-  static const List<String> list2 = <String>['Food', 'Transport','Shopping'];
-  String spendingslist = list1.first;
-  String categorylist = list2.first;
+  static const List<String> list_type = <String>['Spendings', 'Earnings'];
+  static const List<String> list_spend = <String>['Food', 'Transport','Shopping'];
+  static const List<String> list_earn = <String>['Allowance', 'Stock','Work'];
+  String type_list = list_type.first;
+  String spend_list = list_spend.first;
+  String earn_list = list_earn.first;
+  
+  String _type,_model;
+  List<String> _selectType(String typeName){
+    return typeName == list_type[0]
+        ? list_spend
+        : list_earn;
+  }
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -60,7 +69,7 @@ class _addTransactionPage extends State<addTransactionPage>{
               child: Column(
                 children: <Widget>[
                   DropdownButton<String>(
-                    value: spendingslist,
+                    value: _type,
                     dropdownColor: list_color,
                     icon: const Icon(Icons.expand_more),
                     elevation: 16,
@@ -71,10 +80,12 @@ class _addTransactionPage extends State<addTransactionPage>{
                     onChanged: (String value) {
                       // This is called when the user selects an item.
                       setState(() {
-                        spendingslist = value;
+                        _type = value;
+                        _model=null;
+                        print(value);
                       });
                     },
-                    items: list1.map<DropdownMenuItem<String>>((String value) {
+                    items: list_type.map<DropdownMenuItem<String>>((String value) {
                       return DropdownMenuItem<String>(
                         value: value,
                         child: Text(value),
@@ -102,7 +113,7 @@ class _addTransactionPage extends State<addTransactionPage>{
                         child: Text('Category',style: TextStyle(fontSize: 15,color: Colors.grey[700]),),
                         padding: EdgeInsets.only(right:15.0)),
                       DropdownButton<String>(
-                        value: categorylist,
+                        value: _model,
                         dropdownColor: list_color,
                         icon: const Icon(Icons.expand_more),
                         elevation: 16,
@@ -112,10 +123,11 @@ class _addTransactionPage extends State<addTransactionPage>{
                         ),
                         onChanged: (String value) {
                           setState(() {
-                            categorylist = value;
+                            _model = value;
+                            print(value);
                           });
                         },
-                        items: list2.map<DropdownMenuItem<String>>((String value) {
+                        items: _selectType(_type).map<DropdownMenuItem<String>>((String value) {
                           return DropdownMenuItem<String>(
                             value: value,
                             child: Text(value),
@@ -155,7 +167,7 @@ class _addTransactionPage extends State<addTransactionPage>{
     if(_formKey.currentState.validate()){
       if(transaction==null){
         bool spendings;
-        if(spendingslist=="spendings"){
+        if(_type=="spendings"){
           spendings=true;
         }
         else{
@@ -166,7 +178,7 @@ class _addTransactionPage extends State<addTransactionPage>{
           timestamp:_timeController.text,
           name: _nameController.text,
           amount: double.parse(_amountController.text),
-          category:categorylist,
+          category:_model,
           note:_noteController.text,
         );
         //after transaction is added, clear the textfields
