@@ -22,6 +22,13 @@ class addTransaction extends StatelessWidget{
 
   static const confirm_button =  Color(0xFFB4ECB4); //green
   static const navigation_bar =  Color(0xFFFFEAD1);  //beige
+  static const list_color =  Color(0xFFECECEC);  //grey
+
+  static const List<String> list1 = <String>['Spendings', 'Earnings'];
+  static const List<String> list2 = <String>['Food', 'Transport','Shopping'];
+  String spendingslist = list1.first;
+  String categorylist = list2.first;
+
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -36,10 +43,24 @@ class addTransaction extends StatelessWidget{
               padding: const EdgeInsets.all(8.0),
               child: Column(
                 children: <Widget>[
-                  TextFormField(
-                    decoration: new InputDecoration(labelText: 'Spendings'),
-                    controller: _spendingsController,
-                    validator: (val) => val.isNotEmpty? null:'Spendings should not be empty',
+                  DropdownButton<String>(
+                    value: spendingslist,
+                    dropdownColor: list_color,
+                    icon: const Icon(Icons.expand_more),
+                    elevation: 16,
+                    underline: Container(
+                      height: 2,
+                      color: Colors.deepPurpleAccent,
+                    ),
+                    onChanged: (String value) {
+                      spendingslist = value;
+                    },
+                    items: list1.map<DropdownMenuItem<String>>((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(value),
+                      );
+                    }).toList(),
                   ),
                   TextFormField(
                     decoration: new InputDecoration(labelText: 'Date'),
@@ -56,10 +77,31 @@ class addTransaction extends StatelessWidget{
                     controller: _amountController,
                     validator: (val) => val.isNotEmpty? null:'Amount should not be empty',
                   ),
-                  TextFormField(
-                    decoration: new InputDecoration(labelText: 'Category'),
-                    controller: _categoryController,
-                    validator: (val) => val.isNotEmpty? null:'Name should not be empty',
+                  Row(
+                    children: [
+                      Container(
+                        child: Text('Category',style: TextStyle(fontSize: 15,color: Colors.grey[700]),),
+                        padding: EdgeInsets.only(right:15.0)),
+                      DropdownButton<String>(
+                        value: categorylist,
+                        dropdownColor: list_color,
+                        icon: const Icon(Icons.expand_more),
+                        elevation: 16,
+                        underline: Container(
+                          height: 2,
+                          color: Colors.deepPurpleAccent,
+                        ),
+                        onChanged: (String value) {
+                          categorylist = value;
+                        },
+                        items: list2.map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                      ),
+                    ],
                   ),
                   TextFormField(
                     decoration: new InputDecoration(labelText: 'Note'),
@@ -92,7 +134,7 @@ class addTransaction extends StatelessWidget{
     if(_formKey.currentState.validate()){
       if(transaction==null){
         bool spendings;
-        if(_spendingsController.text=="true"){
+        if(spendingslist=="spendings"){
           spendings=true;
         }
         else{
@@ -103,16 +145,14 @@ class addTransaction extends StatelessWidget{
           timestamp:_timeController.text,
           name: _nameController.text,
           amount: double.parse(_amountController.text),
-          category:_categoryController.text,
+          category:categorylist,
           note:_noteController.text,
         );
         //after transaction is added, clear the textfields
         dbTrans_manager.insertTransaction(tr).then((id)=>{
-          _spendingsController.clear(),
           _timeController.clear(),
           _nameController.clear(),
           _amountController.clear(),
-          _categoryController.clear(),
           _noteController.clear(),
           print('Transaction added to Trans_database ${id}')
         });
