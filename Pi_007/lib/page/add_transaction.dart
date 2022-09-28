@@ -3,12 +3,29 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pi_007/databases/db_transactions.dart';
 
+class addTransaction extends StatelessWidget {
+  const addTransaction({Key key}) : super(key: key);
 
-class addTransaction extends StatelessWidget{
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      theme: ThemeData(
+        primaryColor: Colors.blue,
+      ),
+      home: addTransactionPage(),
+    );
+  }
+
+}
+
+class addTransactionPage extends StatefulWidget {
+  @override
+  State<addTransactionPage> createState() => _addTransactionPage();
+}
+
+class _addTransactionPage extends State<addTransactionPage>{
   final DbTrans_Manager dbTrans_manager = new DbTrans_Manager();
 
-  final _spendingsController = TextEditingController();
-  final _categoryController = TextEditingController();
   final _nameController = TextEditingController();
   final _amountController = TextEditingController();
   final _noteController = TextEditingController();
@@ -28,7 +45,6 @@ class addTransaction extends StatelessWidget{
   static const List<String> list2 = <String>['Food', 'Transport','Shopping'];
   String spendingslist = list1.first;
   String categorylist = list2.first;
-
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -53,7 +69,10 @@ class addTransaction extends StatelessWidget{
                       color: Colors.deepPurpleAccent,
                     ),
                     onChanged: (String value) {
-                      spendingslist = value;
+                      // This is called when the user selects an item.
+                      setState(() {
+                        spendingslist = value;
+                      });
                     },
                     items: list1.map<DropdownMenuItem<String>>((String value) {
                       return DropdownMenuItem<String>(
@@ -92,7 +111,9 @@ class addTransaction extends StatelessWidget{
                           color: Colors.deepPurpleAccent,
                         ),
                         onChanged: (String value) {
-                          categorylist = value;
+                          setState(() {
+                            categorylist = value;
+                          });
                         },
                         items: list2.map<DropdownMenuItem<String>>((String value) {
                           return DropdownMenuItem<String>(
