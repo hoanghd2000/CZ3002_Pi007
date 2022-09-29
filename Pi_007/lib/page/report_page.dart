@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 class ReportPage extends StatelessWidget{
 
   static const action_button =  Color(0xFFF8C8DC);  //pink
+  static const confirm_button =  Color(0xFFB4ECB4); //green
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -64,7 +65,7 @@ class ReportPage extends StatelessWidget{
 
         ],
       ),
-      SizedBox(height:230),
+      SizedBox(height:200),
 
       Text('   Budget for the month:',style: TextStyle(fontSize:20, fontWeight: FontWeight.bold)),
       SizedBox(height:10),
@@ -95,13 +96,31 @@ class ReportPage extends StatelessWidget{
         backgroundColor: Colors.deepOrange[50],
         valueColor: AlwaysStoppedAnimation<Color>(Colors.deepOrange[200],),
       ),
+      SizedBox(height:15),
 
-
-
+      Row(
+          children: <Widget>[
+            SizedBox(width:140),
+            ElevatedButton(
+        onPressed: (){
+          //save report
+        },
+        child: Text('Save Report'),
+        style: ElevatedButton.styleFrom(
+          side: BorderSide(color: Colors.black,),
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12)
+        ),
+          primary: confirm_button,  //background
+          onPrimary: Colors.black, //foreground
+        ),
+      ),
 
 
     ]
   )
+  ]
+    )
   );
 
   }
