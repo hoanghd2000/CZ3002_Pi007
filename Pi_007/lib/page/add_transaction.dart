@@ -2,6 +2,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pi_007/databases/db_transactions.dart';
+import 'package:intl/intl.dart';
 
 class addTransaction extends StatelessWidget {
   const addTransaction({Key key}) : super(key: key);
@@ -65,7 +66,7 @@ class _addTransactionPage extends State<addTransactionPage>{
       body: ListView(children: <Widget>[
         Form(key:_formKey,
             child: Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.fromLTRB(10.0,0,80,0),
               child: Column(
                 children: <Widget>[
                   DropdownButton<String>(
@@ -93,9 +94,24 @@ class _addTransactionPage extends State<addTransactionPage>{
                     }).toList(),
                   ),
                   TextFormField(
-                    decoration: new InputDecoration(labelText: 'Date'),
+                    decoration: new InputDecoration(
+                        // icon: Icon(Icons.calendar_today_rounded),
+                        labelText: 'Date'),
                     controller: _timeController,
                     validator: (val) => val.isNotEmpty? null:'Date should not be empty',
+                    onTap: ()async {
+                      DateTime pickeddate = await showDatePicker(
+                          context: context,
+                          initialDate: DateTime.now(),
+                          firstDate: DateTime(2021),
+                          lastDate: DateTime(2023),
+                      );
+                      if(pickeddate!=null){
+                        setState(() {
+                          _timeController.text = DateFormat('yyyy-MM-dd').format(pickeddate);
+                        });
+                      }
+                    },
                   ),
                   TextFormField(
                     decoration: new InputDecoration(labelText: 'Name'),
