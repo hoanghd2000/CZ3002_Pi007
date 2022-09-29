@@ -22,6 +22,7 @@ class MyApp extends StatelessWidget {
         primaryColor: Colors.blue,
       ),
       home: MyHomePage(),
+      debugShowCheckedModeBanner: false,
     );
   }
 
