@@ -15,8 +15,9 @@ class BudgetPage extends StatelessWidget{
   static const secondary_section =  Color(0xFFC5E0F9); //blue
   static const list_color =  Color(0xFFECECEC);  //grey
 
-  // hard coded data
-  List<String> course = [
+  // sample hard coded data - to be extracted from database
+  // idk what format it will be extracted as though - json / string / ???
+  List<String> budget = [
     "c",
     "c++",
     "java",
@@ -29,23 +30,67 @@ class BudgetPage extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     return MaterialApp(home: Scaffold(
-      body:ListView.builder(
-        itemCount: course.length,
-        itemBuilder: (context, pos) {
-          return Padding(
-              padding: EdgeInsets.only(bottom: 5.0, left: 5.0, right: 5.0),
-              child: Card(
-                color: list_color,
-                child: Padding(
-                  padding: EdgeInsets.symmetric(vertical: 24.0, horizontal: 16.0),
-                  child: Text(course[pos], style: TextStyle(
-                    fontSize: 18.0,
-                    height: 1.6,
-                  ),),
+      body:
+      ListView(
+        padding: const EdgeInsets.only(
+          top: 20,
+          bottom: 20,
+          left: 10,
+          right: 10
+        ),
+        children: <Widget>[
+          Card(child:ListTile(
+              title: Padding(
+                padding: const EdgeInsets.only(
+                  top: 10,
+                  bottom: 10,
                 ),
-              )
-          );
-        },
+                child: Text("15th Aug 2022 - 15th Sep 2022 (Budget Name)\n\nBudget: 500"),
+              ),
+            tileColor: list_color,
+             ),
+          margin: const EdgeInsets.only(
+            bottom: 20,
+          ),
+          elevation:5,
+          // margin: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 16.0),
+          shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(5.0))),
+          Card(child:ListTile(
+            title: Padding(
+              padding: const EdgeInsets.only(
+                top: 10,
+                bottom: 10,
+              ),
+              child: Text("15th Jul 2022 - 15th Aug 2022 (Budget Name)\n\nBudget: 500"),
+            ),
+            tileColor: list_color,
+          ),
+          margin: const EdgeInsets.only(
+            bottom: 20,
+          ),
+          elevation:5,
+          // margin: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 16.0),
+          shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(5.0))),
+          Card(child:ListTile(
+            title: Padding(
+              padding: const EdgeInsets.only(
+                top: 10,
+                bottom: 10,
+              ),
+              child: Text("15th May 2022 - 15th Jun 2022 (Budget Name)\n\nBudget: 500"),
+            ),
+            tileColor: list_color,
+          ),
+          margin: const EdgeInsets.only(
+            bottom: 20,
+          ),
+          elevation:5,
+          // margin: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 16.0),
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(5.0))),
+        ],
       ),
       floatingActionButton: FloatingActionButton(
           child: Icon(Icons.add),
@@ -67,4 +112,13 @@ class BudgetPage extends StatelessWidget{
     );
   }
 
+}
+
+class MyCardWidget extends StatelessWidget {
+  MyCardWidget({Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+
+  }
 }
