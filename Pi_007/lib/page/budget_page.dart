@@ -15,6 +15,9 @@ class BudgetPage extends StatelessWidget{
   static const secondary_section =  Color(0xFFC5E0F9); //blue
   static const list_color =  Color(0xFFECECEC);  //grey
 
+  static const IconData pencil = IconData(0xf37e);
+  static const IconData create_sharp = IconData(0xe89b, fontFamily: 'MaterialIcons');
+
   // sample hard coded data - to be extracted from database
   // idk what format it will be extracted as though - json / string / ???
   List<String> budget = [
@@ -35,61 +38,126 @@ class BudgetPage extends StatelessWidget{
         padding: const EdgeInsets.only(
           top: 20,
           bottom: 20,
-          left: 10,
-          right: 10
+          left: 15,
+          right: 15
         ),
         children: <Widget>[
-          Card(child:ListTile(
-              title: Padding(
-                padding: const EdgeInsets.only(
-                  top: 10,
-                  bottom: 10,
-                ),
-                child: Text("15th Aug 2022 - 15th Sep 2022 (Budget Name)\n\nBudget: 500"),
+
+          // 1st Budget
+          Card(child: Column(children: [
+            Row(children: [
+              Padding(
+                  padding: EdgeInsets.all(15.0),
+                  child: Column(children: [
+                    Text("15th Sep 2022 - 15th Oct 2022 (Budget Name)"),
+                  ])
               ),
-            tileColor: list_color,
-             ),
-          margin: const EdgeInsets.only(
-            bottom: 20,
-          ),
+              Padding(
+                  padding: EdgeInsets.all(15.0),
+                  child: Column(children: [
+                    Icon(create_sharp),
+                  ])
+              ),
+            ]),
+            Row(children: [
+              Padding(
+                  padding: EdgeInsets.only(
+                      left: 15,
+                      right: 15,
+                      bottom: 15
+                  ),
+                  child: Column(children: [
+                    Text("Budget: 500")
+                  ])
+              ),
+            ]),
+          ]),
+              elevation:5,
+              // margin: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 16.0),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(5.0)),
+              color: list_color,
+              margin: const EdgeInsets.only(
+                bottom: 20,
+              )),
+
+          // 2nd Budget
+
+          Card(child: Column(children: [
+            Row(children: [
+              Padding(
+                  padding: EdgeInsets.all(15.0),
+                  child: Column(children: [
+                    Text("15th Jul 2022 - 15th Aug 2022 (Budget Name)"),
+                  ])
+              ),
+              Padding(
+                  padding: EdgeInsets.all(15.0),
+                  child: Column(children: [
+                    Icon(create_sharp),
+                  ])
+              ),
+            ]),
+            Row(children: [
+              Padding(
+                  padding: EdgeInsets.only(
+                      left: 15,
+                      right: 15,
+                      bottom: 15
+                  ),
+                  child: Column(children: [
+                    Text("Budget: 500")
+                  ])
+              ),
+            ]),
+          ]),
+              elevation:5,
+              // margin: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 16.0),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(5.0)),
+              color: list_color,
+              margin: const EdgeInsets.only(
+                bottom: 20,
+              )),
+
+          // 3rd Budget
+
+          Card(child: Column(children: [
+            Row(children: [
+              Padding(
+                  padding: EdgeInsets.all(15.0),
+                child: Column(children: [
+                  Text("15th May 2022 - 15th Jun 2022 (Budget Name)"),
+                ])
+              ),
+              Padding(
+                  padding: EdgeInsets.all(15.0),
+                  child: Column(children: [
+                    Icon(create_sharp),
+                  ])
+              ),
+            ]),
+            Row(children: [
+              Padding(
+                  padding: EdgeInsets.only(
+                    left: 15,
+                    right: 15,
+                    bottom: 15
+                  ),
+                  child: Column(children: [
+                    Text("Budget: 500")
+                  ])
+              ),
+            ]),
+          ]),
           elevation:5,
           // margin: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 16.0),
           shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(5.0))),
-          Card(child:ListTile(
-            title: Padding(
-              padding: const EdgeInsets.only(
-                top: 10,
-                bottom: 10,
-              ),
-              child: Text("15th Jul 2022 - 15th Aug 2022 (Budget Name)\n\nBudget: 500"),
-            ),
-            tileColor: list_color,
-          ),
+              borderRadius: BorderRadius.circular(5.0)),
+          color: list_color,
           margin: const EdgeInsets.only(
             bottom: 20,
-          ),
-          elevation:5,
-          // margin: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 16.0),
-          shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(5.0))),
-          Card(child:ListTile(
-            title: Padding(
-              padding: const EdgeInsets.only(
-                top: 10,
-                bottom: 10,
-              ),
-              child: Text("15th May 2022 - 15th Jun 2022 (Budget Name)\n\nBudget: 500"),
-            ),
-            tileColor: list_color,
-          ),
-          margin: const EdgeInsets.only(
-            bottom: 20,
-          ),
-          elevation:5,
-          // margin: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 16.0),
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(5.0))),
+          ))
         ],
       ),
       floatingActionButton: FloatingActionButton(
