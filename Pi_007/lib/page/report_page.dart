@@ -24,7 +24,7 @@ class ReportPage extends StatelessWidget{
               },
               child: Text('View Weekly'),
               style: ElevatedButton.styleFrom(
-                foregroundColor: Colors.black, side: BorderSide(color: Colors.black,),
+                onPrimary: Colors.black, side: BorderSide(color: Colors.black,),
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12)
                 ),
