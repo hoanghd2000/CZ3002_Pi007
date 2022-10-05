@@ -15,7 +15,7 @@ part 'db_trans_v2.g.dart';
 class Txn extends Table {
   //a column that stores int values - id
   //autoincrement of id - primary key of this table
-  IntColumn get id => integer().autoincrement()();
+  IntColumn get id => integer().autoIncrement()();
 
   BoolColumn get spending => boolean()();
   //must create a another category table for users to choose
@@ -30,21 +30,15 @@ class Txn extends Table {
   DateTimeColumn get timestamp => dateTime().withDefault(currentDateAndTime)();
 }
 
-@DriftDatabase(tables : [Txn])
-class TxnDb extends _$TransDb {
+@DriftDatabase(tables : [Txn], daos: [TxnDao])
+class TxnDb extends _$TxnDb {
   //tell the database where to store the data with this constructor and logs it
   /*TransDb(): super(_openConnection());*/
-  TransDb(): super(FlutterQueryExecutor.inDatabaseFolder(path: 'db.sqlite', logStatements: true));
+  TxnDb(): super(FlutterQueryExecutor.inDatabaseFolder(path: 'db.sqlite', logStatements: true));
   // you should bump this number whenever you change or add a table definition.
   // Migrations are covered later in the documentation.
   @override
   int get schemaVersion => 1;
-
-  Future<List<Txn>> getAllTxn() => select(txn).get();
-  Stream<List<Txn>> watchAllTxn() => select(txn).watch();
-  Future insertTxn(Txn txn) => into(txn).insert(txn);
-  Future updateTxn(Txn txn) => update(txn).replace(txn);
-  Future deleteTcn(Txn txn) => delete(txn).delete(txn);
 
 
   // //loads all transaction entries
@@ -56,6 +50,64 @@ class TxnDb extends _$TransDb {
   // }
   // //The where method takes a function that should map the given table to an Expression of boolean.
 
+}
+
+// Denote which tables this DAO can access
+@UseDao(tables: [Txn]) //may need to change to @DriftAccessor
+class TxnDao extends DatabaseAccessor<TxnDb> with _$TxnDaoMixin {
+  final TxnDb db;
+
+  // Called by the AppDatabase class
+  TxnDao(this.db) : super(db);
+
+  Future<List<Txn>> getAllTxn() => select(txn).get();
+  Stream<List<Txn>> watchAllTxn() {
+    // Wrap the whole select statement in parenthesis
+    return (select(txn)
+    // Statements like orderBy and where return void => the need to use a cascading ".." operator
+      ..orderBy(
+        ([
+          // Primary sorting by timestamp
+              (t) =>
+              OrderingTerm(expression: t.timestamp, mode: OrderingMode.desc),
+        ]),
+      ))
+    // watch the whole select statement
+        .watch();
+  }
+  Stream<List<Txn>> watchMonthlyTxn() {
+    // where returns void, need to use the cascading operator
+    return (select(tasks)
+      ..orderBy(
+        ([
+          // Primary sorting by due date
+              (t) =>
+              OrderingTerm(expression: t.dueDate, mode: OrderingMode.desc),
+          // Secondary alphabetical sorting
+              (t) => OrderingTerm(expression: t.name),
+        ]),
+      )
+      ..where((t) => t.completed.equals(true)))
+        .watch();
+  }
+  Stream<List<Txn>> watchYearlyTxn() {
+    // where returns void, need to use the cascading operator
+    return (select(tasks)
+      ..orderBy(
+        ([
+          // Primary sorting by due date
+              (t) =>
+              OrderingTerm(expression: t.dueDate, mode: OrderingMode.desc),
+          // Secondary alphabetical sorting
+              (t) => OrderingTerm(expression: t.name),
+        ]),
+      )
+      ..where((t) => t.completed.equals(true)))
+        .watch();
+  }
+  Future insertTxn(Insertable<Txn> txn) => into(Txn).insert(txn);
+  Future updateTxn(Insertable<Txn> txn) => update(Txn).replace(txn);
+  Future deleteTxn(Insertable<Txn> txn) => delete(Txn).delete(txn);
 }
 
 // LazyDatabase _openConnection() {
@@ -81,3 +133,4 @@ class TxnDb extends _$TransDb {
 //   final allCategories = await TransDatabase.select(TransDatabase.categories).get();
 //   print('Categories in TransDatabase: $allCategories');
 // }
+
