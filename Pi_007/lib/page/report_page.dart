@@ -20,9 +20,20 @@ class ReportPage extends StatelessWidget{
             SizedBox(width:25),
             ElevatedButton(
               onPressed: (){
-                //display weekly report
-              },
-              child: Text('View Weekly'),
+                showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      title: Text('Display Weekly Report.'),
+                      actions: [
+                        TextButton(
+                          child: Text('OK'),
+                          onPressed: () => Navigator.pop(context),
+
+                        ),
+                      ],
+                    )
+                );
+              },              child: Text('View Weekly'),
               style: ElevatedButton.styleFrom(
                 onPrimary: Colors.black, side: BorderSide(color: Colors.black,),
                 shape: RoundedRectangleBorder(
@@ -35,6 +46,19 @@ class ReportPage extends StatelessWidget{
             ElevatedButton(
               onPressed: (){
                 //display monthly report
+                showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      title: Text('Display Monthly Report.'),
+                      actions: [
+                        TextButton(
+                          child: Text('OK'),
+                          onPressed: () => Navigator.pop(context),
+
+                        ),
+                      ],
+                    )
+                );
               },
               child: Text('View Monthly'),
               style: ElevatedButton.styleFrom(
@@ -50,8 +74,20 @@ class ReportPage extends StatelessWidget{
             ElevatedButton(
               onPressed: (){
                 //display yearly report
-              },
-              child: Text('View Yearly'),
+                showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      title: Text('Display Monthly Report.'),
+                      actions: [
+                        TextButton(
+                          child: Text('OK'),
+                          onPressed: () => Navigator.pop(context),
+
+                        ),
+                      ],
+                    )
+                );
+              },              child: Text('View Yearly'),
               style: ElevatedButton.styleFrom(
                 side: BorderSide(color: Colors.black,),
                 shape: RoundedRectangleBorder(
