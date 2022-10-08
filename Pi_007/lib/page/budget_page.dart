@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:grouped_list/grouped_list.dart';
 
 import 'package:pi_007/page/add_budget.dart';
+import 'package:pi_007/page/edit_budget.dart';
 
 class BudgetPage extends StatelessWidget{
 
@@ -71,7 +72,11 @@ class BudgetPage extends StatelessWidget{
                   IconButton(
                     icon: const Icon(create_sharp),
                     color: Colors.black,
-                    onPressed: () {},
+                      onPressed: (){
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => EditBudget()));
+                      }
                   ),
                 ]),
               ),
@@ -121,7 +126,11 @@ class BudgetPage extends StatelessWidget{
                     IconButton(
                       icon: const Icon(create_sharp),
                       color: Colors.black,
-                      onPressed: () {},
+                        onPressed: (){
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => EditBudget()));
+                        }
                     ),
                   ]),
               ),
@@ -171,7 +180,11 @@ class BudgetPage extends StatelessWidget{
                   IconButton(
                     icon: const Icon(create_sharp),
                     color: Colors.black,
-                    onPressed: () {},
+                      onPressed: (){
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => EditBudget()));
+                      }
                   ),
                 ]),
               ),
