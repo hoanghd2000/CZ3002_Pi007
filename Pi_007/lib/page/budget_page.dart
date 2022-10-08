@@ -36,27 +36,44 @@ class BudgetPage extends StatelessWidget{
       body:
       ListView(
         padding: const EdgeInsets.only(
-          top: 20,
-          bottom: 20,
-          left: 15,
-          right: 15
+          top: 15,
+          bottom: 15,
+          left: 10,
+          right: 10
         ),
         children: <Widget>[
 
           // 1st Budget
           Card(child: Column(children: [
-            Row(children: [
+            Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
               Padding(
-                  padding: EdgeInsets.all(15.0),
+                  padding: EdgeInsets.only(
+                      left: 15
+                  ),
                   child: Column(children: [
                     Text("15th Sep 2022 - 15th Oct 2022 (Budget Name)"),
                   ])
               ),
+              // Padding(
+              //     padding: EdgeInsets.all(15.0),
+              //     child: Column(children: [
+              //       Icon(create_sharp),
+              //     ])
+              // ),
               Padding(
-                  padding: EdgeInsets.all(15.0),
-                  child: Column(children: [
-                    Icon(create_sharp),
-                  ])
+                padding: EdgeInsets.only(
+                    right: 5
+                ),
+                child: Column(children: [
+                  // Icon(create_sharp),
+                  IconButton(
+                    icon: const Icon(create_sharp),
+                    color: Colors.black,
+                    onPressed: () {},
+                  ),
+                ]),
               ),
             ]),
             Row(children: [
@@ -84,18 +101,29 @@ class BudgetPage extends StatelessWidget{
           // 2nd Budget
 
           Card(child: Column(children: [
-            Row(children: [
+            Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
               Padding(
-                  padding: EdgeInsets.all(15.0),
+                  padding: EdgeInsets.only(
+                    left: 15
+                  ),
                   child: Column(children: [
                     Text("15th Jul 2022 - 15th Aug 2022 (Budget Name)"),
                   ])
               ),
               Padding(
-                  padding: EdgeInsets.all(15.0),
+                  padding: EdgeInsets.only(
+                    right: 5
+                  ),
                   child: Column(children: [
-                    Icon(create_sharp),
-                  ])
+                    // Icon(create_sharp),
+                    IconButton(
+                      icon: const Icon(create_sharp),
+                      color: Colors.black,
+                      onPressed: () {},
+                    ),
+                  ]),
               ),
             ]),
             Row(children: [
@@ -123,18 +151,29 @@ class BudgetPage extends StatelessWidget{
           // 3rd Budget
 
           Card(child: Column(children: [
-            Row(children: [
+            Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
               Padding(
-                  padding: EdgeInsets.all(15.0),
+                  padding: EdgeInsets.only(
+                      left: 15
+                  ),
                 child: Column(children: [
                   Text("15th May 2022 - 15th Jun 2022 (Budget Name)"),
                 ])
               ),
               Padding(
-                  padding: EdgeInsets.all(15.0),
-                  child: Column(children: [
-                    Icon(create_sharp),
-                  ])
+                padding: EdgeInsets.only(
+                    right: 5
+                ),
+                child: Column(children: [
+                  // Icon(create_sharp),
+                  IconButton(
+                    icon: const Icon(create_sharp),
+                    color: Colors.black,
+                    onPressed: () {},
+                  ),
+                ]),
               ),
             ]),
             Row(children: [
