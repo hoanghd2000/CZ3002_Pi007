@@ -11,7 +11,7 @@ class AddBudget extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Scaffold(
     appBar: AppBar(
-      title: Text('Edit Budget'),
+      title: Text('Add Budget'),
       backgroundColor: navigation_bar,
       foregroundColor: Colors.black,
     ),

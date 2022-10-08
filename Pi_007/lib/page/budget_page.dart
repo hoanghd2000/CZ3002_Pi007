@@ -21,120 +21,51 @@ class BudgetPage extends StatelessWidget{
 
   // sample hard coded data - to be extracted from database
   // idk what format it will be extracted as though - json / string / ???
-  List<String> budget = [
-    "c",
-    "c++",
-    "java",
-    "kotlin",
-    "objective c",
-    "swift",
-    "php"
-  ];
+  final budgetList = List.generate(
+    20,
+        (i) => budget(
+      'Budget $i',
+      'Budget Amount \$500',
+    ),
+  );
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(home: Scaffold(
       body:
-      ListView(
-        padding: const EdgeInsets.only(
-          top: 15,
-          bottom: 15,
-          left: 10,
-          right: 10
-        ),
-        children: <Widget>[
-
-          // 1st Budget
-          Card(child: Column(children: [
+      ListView.builder(
+        itemCount: budgetList.length,
+        itemBuilder: (context, index) {
+          return  Card(child: Column(children: [
             Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-              Padding(
-                  padding: EdgeInsets.only(
-                      left: 15
+                  Padding(
+                      padding: EdgeInsets.only(
+                          left: 15
+                      ),
+                      child: Column(children: [
+                        Text(budgetList[index].title),
+                      ])
                   ),
-                  child: Column(children: [
-                    Text("15th Sep 2022 - 15th Oct 2022 (Budget Name)"),
-                  ])
-              ),
-              // Padding(
-              //     padding: EdgeInsets.all(15.0),
-              //     child: Column(children: [
-              //       Icon(create_sharp),
-              //     ])
-              // ),
-              Padding(
-                padding: EdgeInsets.only(
-                    right: 5
-                ),
-                child: Column(children: [
-                  // Icon(create_sharp),
-                  IconButton(
-                    icon: const Icon(create_sharp),
-                    color: Colors.black,
-                      onPressed: (){
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => EditBudget()));
-                      }
-                  ),
-                ]),
-              ),
-            ]),
-            Row(children: [
-              Padding(
-                  padding: EdgeInsets.only(
-                      left: 15,
-                      right: 15,
-                      bottom: 15
-                  ),
-                  child: Column(children: [
-                    Text("Budget: \$500")
-                  ])
-              ),
-            ]),
-          ]),
-              elevation:5,
-              // margin: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 16.0),
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(5.0)),
-              color: list_color,
-              margin: const EdgeInsets.only(
-                bottom: 20,
-              )),
-
-          // 2nd Budget
-
-          Card(child: Column(children: [
-            Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-              Padding(
-                  padding: EdgeInsets.only(
-                    left: 15
-                  ),
-                  child: Column(children: [
-                    Text("15th Jul 2022 - 15th Aug 2022 (Budget Name)"),
-                  ])
-              ),
-              Padding(
-                  padding: EdgeInsets.only(
-                    right: 5
-                  ),
-                  child: Column(children: [
-                    // Icon(create_sharp),
-                    IconButton(
-                      icon: const Icon(create_sharp),
-                      color: Colors.black,
-                        onPressed: (){
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => EditBudget()));
-                        }
+                  Padding(
+                    padding: EdgeInsets.only(
+                        right: 5
                     ),
-                  ]),
-              ),
-            ]),
+                    child: Column(children: [
+                      // Icon(create_sharp),
+                      IconButton(
+                          icon: const Icon(create_sharp),
+                          color: Colors.black,
+                          onPressed: (){
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => EditBudget()));
+                          }
+                      ),
+                    ]),
+                  ),
+                ]),
             Row(children: [
               Padding(
                   padding: EdgeInsets.only(
@@ -143,7 +74,7 @@ class BudgetPage extends StatelessWidget{
                       bottom: 15
                   ),
                   child: Column(children: [
-                    Text("Budget: \$500")
+                    Text(budgetList[index].amount)
                   ])
               ),
             ]),
@@ -155,62 +86,14 @@ class BudgetPage extends StatelessWidget{
               color: list_color,
               margin: const EdgeInsets.only(
                 bottom: 20,
-              )),
-
-          // 3rd Budget
-
-          Card(child: Column(children: [
-            Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-              Padding(
-                  padding: EdgeInsets.only(
-                      left: 15
-                  ),
-                child: Column(children: [
-                  Text("15th May 2022 - 15th Jun 2022 (Budget Name)"),
-                ])
-              ),
-              Padding(
-                padding: EdgeInsets.only(
-                    right: 5
-                ),
-                child: Column(children: [
-                  // Icon(create_sharp),
-                  IconButton(
-                    icon: const Icon(create_sharp),
-                    color: Colors.black,
-                      onPressed: (){
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => EditBudget()));
-                      }
-                  ),
-                ]),
-              ),
-            ]),
-            Row(children: [
-              Padding(
-                  padding: EdgeInsets.only(
-                    left: 15,
-                    right: 15,
-                    bottom: 15
-                  ),
-                  child: Column(children: [
-                    Text("Budget: \$500")
-                  ])
-              ),
-            ]),
-          ]),
-          elevation:5,
-          // margin: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 16.0),
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(5.0)),
-          color: list_color,
-          margin: const EdgeInsets.only(
-            bottom: 20,
-          ))
-        ],
+              ));
+        },
+        padding: const EdgeInsets.only(
+            top: 15,
+            bottom: 15,
+            left: 10,
+            right: 10
+        ),
       ),
       floatingActionButton: FloatingActionButton(
           child: Icon(Icons.add),
@@ -234,11 +117,9 @@ class BudgetPage extends StatelessWidget{
 
 }
 
-class MyCardWidget extends StatelessWidget {
-  MyCardWidget({Key key}) : super(key: key);
+class budget {
+  final String title;
+  final String amount;
 
-  @override
-  Widget build(BuildContext context) {
-
-  }
+  const budget(this.title, this.amount);
 }
