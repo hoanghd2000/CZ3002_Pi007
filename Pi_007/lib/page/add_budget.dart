@@ -4,18 +4,19 @@ import 'package:pi_007/databases/db_transactions.dart';
 import 'package:intl/intl.dart';
 
 class AddBudget extends StatelessWidget {
+  // colors
+  static const navigation_bar =  Color(0xFFFFEAD1);  //beige
   const AddBudget({Key key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData(
-        primaryColor: Colors.blue,
-      ),
-      home: addBudgetPage(),
-      debugShowCheckedModeBanner: false,
-    );
-  }
+  Widget build(BuildContext context) => Scaffold(
+    appBar: AppBar(
+      title: Text('Edit Budget'),
+      backgroundColor: navigation_bar,
+      foregroundColor: Colors.black,
+    ),
+    body: addBudgetPage(),
+  );
 
 }
 
@@ -28,23 +29,13 @@ class addBudgetPage extends StatefulWidget {
 class _addBudgetPage extends State<addBudgetPage>{
 
   // colors
-  static const navigation_bar =  Color(0xFFFFEAD1);  //beige
-  static const main_section =  Color(0xFFC9C5F9);   //purple
-  static const action_button =  Color(0xFFF8C8DC);  //pink
   static const confirm_button =  Color(0xFFB4ECB4); //green
-  static const secondary_section =  Color(0xFFC5E0F9); //blue
-  static const list_color =  Color(0xFFECECEC);  //grey
 
   final _formKey = GlobalKey<FormState>();
   final _timeController = TextEditingController();
 
   @override
   Widget build(BuildContext context) => Scaffold(
-      appBar: AppBar(
-        title: Text('Add Budget'),
-        backgroundColor: navigation_bar,
-        foregroundColor: Colors.black,
-      ),
 
       body: Form(
         key: _formKey,
