@@ -89,7 +89,7 @@ class BudgetPage extends StatelessWidget{
                       bottom: 15
                   ),
                   child: Column(children: [
-                    Text("Budget: 500")
+                    Text("Budget: \$500")
                   ])
               ),
             ]),
@@ -143,7 +143,7 @@ class BudgetPage extends StatelessWidget{
                       bottom: 15
                   ),
                   child: Column(children: [
-                    Text("Budget: 500")
+                    Text("Budget: \$500")
                   ])
               ),
             ]),
@@ -197,7 +197,7 @@ class BudgetPage extends StatelessWidget{
                     bottom: 15
                   ),
                   child: Column(children: [
-                    Text("Budget: 500")
+                    Text("Budget: \$500")
                   ])
               ),
             ]),
