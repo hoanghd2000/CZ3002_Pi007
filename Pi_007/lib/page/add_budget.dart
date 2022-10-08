@@ -1,7 +1,31 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:pi_007/databases/db_transactions.dart';
+import 'package:intl/intl.dart';
 
-class AddBudget extends StatelessWidget{
+class AddBudget extends StatelessWidget {
+  const AddBudget({Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      theme: ThemeData(
+        primaryColor: Colors.blue,
+      ),
+      home: addBudgetPage(),
+      debugShowCheckedModeBanner: false,
+    );
+  }
+
+}
+
+class addBudgetPage extends StatefulWidget {
+  @override
+  State<addBudgetPage> createState() => _addBudgetPage();
+}
+
+
+class _addBudgetPage extends State<addBudgetPage>{
 
   // colors
   static const navigation_bar =  Color(0xFFFFEAD1);  //beige
@@ -12,6 +36,7 @@ class AddBudget extends StatelessWidget{
   static const list_color =  Color(0xFFECECEC);  //grey
 
   final _formKey = GlobalKey<FormState>();
+  final _timeController = TextEditingController();
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -28,9 +53,24 @@ class AddBudget extends StatelessWidget{
             Padding(
               padding: const EdgeInsets.all(15.0),
               child: TextFormField(
-                decoration: InputDecoration(
-                    labelText: "Month"
-                ),
+                decoration: new InputDecoration(
+                  // icon: Icon(Icons.calendar_today_rounded),
+                    labelText: 'Date'),
+                controller: _timeController,
+                validator: (val) => val.isNotEmpty? null:'Date should not be empty',
+                onTap: ()async {
+                  DateTime pickeddate = await showDatePicker(
+                    context: context,
+                    initialDate: DateTime.now(),
+                    firstDate: DateTime(2021),
+                    lastDate: DateTime(2023),
+                  );
+                  if(pickeddate!=null){
+                    setState(() {
+                      _timeController.text = DateFormat('yyyy-MM-dd').format(pickeddate);
+                    });
+                  }
+                },
               ),
             ),
             Padding(
