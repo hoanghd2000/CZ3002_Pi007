@@ -54,7 +54,9 @@ class EditBudget extends StatelessWidget{
                 Padding(
                   padding: const EdgeInsets.only(
                       right: 5.0),
-                  child: TextButton(onPressed: (){Navigator.pop(context);}, child: Text("Delete"), style: TextButton.styleFrom(
+                  child: TextButton(onPressed: (){
+                    showAlertDialog(context);
+                  }, child: Text("Delete"), style: TextButton.styleFrom(
                     backgroundColor: cancel_button,
                     foregroundColor: Colors.black,
                     padding: EdgeInsets.only(
@@ -83,5 +85,54 @@ class EditBudget extends StatelessWidget{
     ),
 
 
+  );
+}
+
+showAlertDialog(BuildContext context) {
+  // Create button
+  Widget okButton = TextButton(
+    child: Text("Ok"),
+    onPressed: () {
+      Navigator.of(context).pop();
+      Navigator.pop(context);
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text("Budget Deleted"),
+      ));
+    },
+  );
+
+  Widget cancelButton = TextButton(
+    child: Text("Cancel"),
+    onPressed: () {
+      Navigator.of(context).pop();
+    },
+  );
+
+  AlertDialog alert = AlertDialog(
+    title: Row(
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(
+            right: 10.0,
+            top: 5.0,
+            bottom: 5.0
+          ),
+          child: Icon(Icons.delete),
+        ),
+        Text("Delete Budget"),
+      ],
+    ),
+    content: Text("Are you sure you want to delete this Budget?"),
+    actions: [
+      cancelButton, okButton
+    ],
+  );
+
+  // show the dialog
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return alert;
+    },
   );
 }
