@@ -39,70 +39,59 @@ class _TransactionsPageState extends State<TransactionsPage> {
             onPressed: () => _addTransaction(),
             child: Text("TEXT BUTTON"),
           ),
-          Form(
-            // key: _formKey,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                children: <Widget>[
-                  FutureBuilder(
-                    future: dbmanager.getTransactionList(),
-                    builder: (context, snapshot) {
-                      if (snapshot.hasData) {
-                        txnList = snapshot.data;
-                        return ListView.builder(
-                          shrinkWrap: true,
-                          itemCount: txnList == null ? 0 : txnList.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            txn = txnList[index];
-                            return Card(
-                              child: Row(
-                                children: <Widget>[
-                                  Container(
-                                    width: width * 0.6,
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: <Widget>[
-                                        Text(
-                                          'Name: ${txn.name}',
-                                          style: TextStyle(fontSize: 15),
-                                        ),
-                                        Text(
-                                          'Course: ${txn.amount}',
-                                          style: TextStyle(
-                                              fontSize: 15,
-                                              color: Colors.black54),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
+          FutureBuilder(
+            future: dbmanager.getTransactionList(),
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                txnList = snapshot.data;
+                return ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: txnList == null ? 0 : txnList.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    txn = txnList[index];
+                    return Card(
+                      child: Row(
+                        children: <Widget>[
+                          Container(
+                            padding: const EdgeInsets.all(0.0),
+                            width: width * 0.6,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Text(
+                                  'Name: ${txn.name}',
+                                  style: TextStyle(fontSize: 15),
+                                ),
+                                Text(
+                                  'Course: ${txn.amount}',
+                                  style: TextStyle(
+                                      fontSize: 15, color: Colors.black54),
+                                ),
+                              ],
+                            ),
+                          ),
 
-                                  //  IconButton(onPressed: (){
-                                  //    _nameController.text=st.name;
-                                  //    _courseController.text=st.course;
-                                  //    student=st;
-                                  //    updateIndex = index;
-                                  //  }, icon: Icon(Icons.edit, color: Colors.blueAccent,),),
-                                  // IconButton(onPressed: (){
-                                  //   dbmanager.deleteStudent(st.id);
-                                  //   setState(() {
-                                  //    txnList.removeAt(index);
-                                  //   });
-                                  // }, icon: Icon(Icons.delete, color: Colors.red,),)
-                                ],
-                              ),
-                            );
-                          },
-                        );
-                      }
-                      return new CircularProgressIndicator();
-                    },
-                  )
-                ],
-              ),
-            ),
-          ),
+                          //  IconButton(onPressed: (){
+                          //    _nameController.text=st.name;
+                          //    _courseController.text=st.course;
+                          //    student=st;
+                          //    updateIndex = index;
+                          //  }, icon: Icon(Icons.edit, color: Colors.blueAccent,),),
+                          // IconButton(onPressed: (){
+                          //   dbmanager.deleteStudent(st.id);
+                          //   setState(() {
+                          //    txnList.removeAt(index);
+                          //   });
+                          // }, icon: Icon(Icons.delete, color: Colors.red,),)
+                        ],
+                      ),
+                    );
+                  },
+                );
+              }
+              return new CircularProgressIndicator();
+            },
+          )
         ],
       ),
 
@@ -158,15 +147,15 @@ class _TransactionsPageState extends State<TransactionsPage> {
   }
 
   void _navigateToNextScreen(BuildContext context) {
-    // Navigator.of(context)
-        // .push(MaterialPageRoute(builder: (context) => addTransaction()));
+    Navigator.of(context)
+    .push(MaterialPageRoute(builder: (context) => addTransaction()));
   }
 
   void _addTransaction() {
     Transaction t = new Transaction(
         spendings: 1,
         category: "food",
-        name: "morning",
+        name: "hi",
         amount: 123,
         timestamp: "08-11-2000");
     dbmanager.insertTransaction(t);
