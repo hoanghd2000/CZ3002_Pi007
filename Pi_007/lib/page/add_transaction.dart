@@ -182,12 +182,12 @@ class _addTransactionPage extends State<addTransactionPage>{
   void _submitTransaction(BuildContext context){
     if(_formKey.currentState.validate()){
       if(transaction==null){
-        bool spendings;
+        int spendings;
         if(_type=="spendings"){
-          spendings=true;
+          spendings=1;
         }
         else{
-          spendings=false;
+          spendings=0;
         }
         Transaction tr = new Transaction(
           spendings: spendings,
