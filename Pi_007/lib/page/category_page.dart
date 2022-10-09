@@ -34,13 +34,13 @@ class CategoryPage extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Icon(category, size: 50),
-                Text("Category", style: TextStyle(fontSize: 25)),
+                Icon(category, size: 40),
+                Text("Category", style: TextStyle(fontSize: 30)),
                 TextButton(
                     onPressed: (){
 
                     },
-                    child: Text("+ Add Category", style: TextStyle(fontSize: 25)),
+                    child: Text("+ Add Category", style: TextStyle(fontSize: 20)),
                   style: TextButton.styleFrom(
                     backgroundColor: action_button,
                     foregroundColor: Colors.black,
@@ -119,4 +119,11 @@ class CategoryPage extends StatelessWidget {
       ])
     );
   }
+}
+
+class Categories {
+  final String title;
+  final Icon icon;
+
+  const Categories(this.title, this.icon);
 }
