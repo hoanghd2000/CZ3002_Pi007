@@ -22,10 +22,10 @@ class BudgetPage extends StatelessWidget{
   // sample hard coded data - to be extracted from database
   // idk what format it will be extracted as though - json / string / ???
   final budgetList = List.generate(
-    20,
-        (i) => budget(
+    5,
+        (i) => Budget(
       'Budget $i',
-      'Budget Amount \$500',
+      '500',
     ),
   );
 
@@ -59,7 +59,7 @@ class BudgetPage extends StatelessWidget{
                           onPressed: (){
                             Navigator.push(
                                 context,
-                                MaterialPageRoute(builder: (context) => EditBudget()));
+                                MaterialPageRoute(builder: (context) => EditBudget(budgetList[index])));
                           }
                       ),
                     ]),
@@ -73,7 +73,7 @@ class BudgetPage extends StatelessWidget{
                       bottom: 15
                   ),
                   child: Column(children: [
-                    Text(budgetList[index].amount)
+                    Text("Total budget: \$" + budgetList[index].amount)
                   ])
               ),
             ]),
@@ -113,9 +113,33 @@ class BudgetPage extends StatelessWidget{
 
 }
 
-class budget {
+// class EditScreen extends StatelessWidget {
+//   // In the constructor, require a Todo.
+//   // const EditScreen({super.key, required this.budget});
+//   EditScreen(this.budget);
+//
+//   // Declare a field that holds the Todo.
+//   final Budget budget;
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     // Use the Todo to create the UI.
+//     return Scaffold(
+//       appBar: AppBar(
+//         title: Text(budget.title),
+//       ),
+//       body: Padding(
+//         padding: const EdgeInsets.all(16.0),
+//         child: Text(budget.amount),
+//       ),
+//     );
+//   }
+//
+// }
+
+class Budget {
   final String title;
   final String amount;
 
-  const budget(this.title, this.amount);
+  const Budget(this.title, this.amount);
 }

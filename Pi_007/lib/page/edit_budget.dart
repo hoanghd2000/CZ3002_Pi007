@@ -1,7 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:pi_007/page/budget_page.dart';
 
 class EditBudget extends StatelessWidget{
+
+  // EditScreen(this.budget);
+  final Budget budget;
+  EditBudget(this.budget);
 
   // colors
   static const navigation_bar =  Color(0xFFFFEAD1);  //beige
@@ -40,14 +45,16 @@ class EditBudget extends StatelessWidget{
                   decoration: InputDecoration(
                       labelText: "Budget"
                   ),
+                  initialValue: budget.amount,
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.all(15.0),
                 child: TextFormField(
                   decoration: InputDecoration(
-                      labelText: "Name"
+                      labelText: "Name",
                   ),
+                  initialValue: budget.title,
                 ),
               ),
               Row(mainAxisAlignment: MainAxisAlignment.center, children: [
