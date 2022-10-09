@@ -235,7 +235,7 @@ class _AddTransactionPageState extends State<AddTransactionPage> {
   void _navigateBack(BuildContext context) {
     // Navigator.pop(context);  
     // Navigator.pop(context);  
-    Navigator.of(context).push(MaterialPageRoute(builder: (context) => MyHomePage()));
+    Navigator.of(context).push(MaterialPageRoute(builder: (context) => TransactionsPage()));
     // Navigator.pushNamed(
     //   context,
     //   'Transactions',

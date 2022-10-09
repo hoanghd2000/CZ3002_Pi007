@@ -26,69 +26,45 @@ class _TransactionsPageState extends State<TransactionsPage> {
       body: ListView(
         children: <Widget>[
           Text("Transactions list here", style: TextStyle(fontSize: 40)),
+
+          /************* START debug code ************/ 
           TextButton(
-            onPressed: () {
-              dbmanager.deleteAllTransaction('transactions');
-            },
-            child: Text("delete all"),
+            onPressed: () => dbmanager.deleteAllTransaction('transactions'),
+            child: Text("delete all txn"),
+          ), 
+          TextButton(
+            onPressed: () => _addTransaction(true),
+            child: Text("add dummy spending"),
           ),
-          StreamBuilder(
-            stream: dbmanager.getTransactionList().asStream(),
-            builder: (context, snapshot) {
+          TextButton(
+            onPressed: () => _addTransaction(false),
+            child: Text("add dummy earning"),
+          ),
+          /************* END debug code ************/ 
+
+          FutureBuilder(
+            future: dbmanager.getTransactionList(),
+            builder: (BuildContext context,
+                AsyncSnapshot<List<Transaction>> snapshot) {
               if (snapshot.hasData) {
                 txnList = snapshot.data;
                 return ListView.builder(
                   primary: false,
                   shrinkWrap: true,
-                  itemCount: txnList == null ? 0 : txnList.length,
+                  itemCount: txnList.length,
                   itemBuilder: (context, index) {
-                    txn = txnList[index];
-                    return Card(
-                      child: Row(
-                        children: <Widget>[
-                          Container(
-                            padding: const EdgeInsets.all(0.0),
-                            width: width * 0.6,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Text(
-                                  'Name: ${txn.name}',
-                                  style: TextStyle(fontSize: 15),
-                                ),
-                                Text(
-                                  'Course: ${txn.amount}',
-                                  style: TextStyle(
-                                      fontSize: 15, color: Colors.black54),
-                                ),
-                              ],
-                            ),
-                          ),
-
-                          //  IconButton(onPressed: (){
-                          //    _nameController.text=st.name;
-                          //    _courseController.text=st.course;
-                          //    student=st;
-                          //    updateIndex = index;
-                          //  }, icon: Icon(Icons.edit, color: Colors.blueAccent,),),
-                          // IconButton(onPressed: (){
-                          //   dbmanager.deleteStudent(st.id);
-                          //   setState(() {
-                          //    txnList.removeAt(index);
-                          //   });
-                          // }, icon: Icon(Icons.delete, color: Colors.red,),)
-                        ],
-                      ),
-                    );
+                    return _displayCard(txnList[index]);
                   },
                 );
+              } else {
+                return const Center(
+                  child: Text("No data found."),
+                );
               }
-              return new CircularProgressIndicator();
             },
           )
         ],
       ),
-
       floatingActionButton: FloatingActionButton(
           child: Icon(Icons.add),
           backgroundColor: action_button,
@@ -142,16 +118,94 @@ class _TransactionsPageState extends State<TransactionsPage> {
 
   void _navigateToNextScreen(BuildContext context) {
     Navigator.of(context)
-    .push(MaterialPageRoute(builder: (context) => AddTransactionPage()));
+        .push(MaterialPageRoute(builder: (context) => AddTransactionPage()));
   }
 
-  void _addTransaction() {
-    Transaction t = new Transaction(
+  void _addTransaction(bool spendings) {
+    Transaction t1 = new Transaction(
         spendings: 1,
-        category: "food",
-        name: "hi",
-        amount: 123,
+        category: "Food",
+        name: "Mala",
+        amount: 55.0,
         timestamp: "08-11-2000");
-    dbmanager.insertTransaction(t);
+    Transaction t2 = new Transaction(
+        spendings: 0,
+        category: "Allowance",
+        name: "Weekly",
+        amount: 30.0,
+        timestamp: "31-12-2022");
+    dbmanager.insertTransaction(spendings ? t1 : t2);
+  }
+
+  Widget _displayCard(Transaction txn) {
+    //TODO use .map to wrap each txn data into a row widget, then display according to their dates
+    return Card(
+      child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            children: [
+              Row(
+                children: [
+                  Expanded(
+                      flex: 2,
+                      child:
+                          Text(txn.timestamp, style: TextStyle(fontSize: 16))),
+                  Expanded(
+                      flex: 1,
+                      child: Text("\$ total", // TODO
+                          style: TextStyle(fontSize: 16, color: Colors.red))),
+                  Expanded(
+                      flex: 1,
+                      child: Text("\$ total", // TODO
+                          style: TextStyle(fontSize: 16, color: Colors.blue))),
+                ],
+              ),
+              Row(
+                children: [
+                  Expanded(
+                      flex: 1,
+                      child:
+                          Text(txn.category, style: TextStyle(fontSize: 16))),
+                  Expanded(
+                      flex: 1,
+                      child: Text(txn.name, style: TextStyle(fontSize: 16))),
+                  Expanded(
+                      flex: 1,
+                      child: (txn.spendings == 1)
+                          ? Text("\$ ${txn.amount}",
+                              style: TextStyle(fontSize: 16, color: Colors.red))
+                          : SizedBox.shrink()),
+                  Expanded(
+                      flex: 1,
+                      child: (txn.spendings == 0)
+                          ? Text("\$ ${txn.amount}",
+                              style:
+                                  TextStyle(fontSize: 16, color: Colors.blue))
+                          : SizedBox.shrink()),
+                ],
+              ),
+            ],
+          )),
+    );
+  }
+
+  Widget _displayAmount(Transaction txn) {
+    return Row(
+      children: (txn.spendings == 1)
+          ? [
+              Expanded(
+                  flex: 1,
+                  child: Text("\$ ${txn.amount}",
+                      style: TextStyle(fontSize: 16, color: Colors.red))),
+              Expanded(flex: 1)
+            ]
+          : [
+              Expanded(flex: 1),
+              Expanded(
+                  flex: 1,
+                  child: Text("\$ ${txn.amount}",
+                      style: TextStyle(fontSize: 16, color: Colors.blue)))
+            ],
+    );
   }
 }
