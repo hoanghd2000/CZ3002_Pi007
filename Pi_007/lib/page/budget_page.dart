@@ -30,9 +30,8 @@ class BudgetPage extends StatelessWidget{
   );
 
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(home: Scaffold(
-      body:
+  Widget build(BuildContext context) => Scaffold(
+    body:
       ListView.builder(
         itemCount: budgetList.length,
         itemBuilder: (context, index) {
@@ -110,10 +109,7 @@ class BudgetPage extends StatelessWidget{
         icon: Icon(Icons.save),
         label: Text("Save"),
       ), */
-    ),
-      debugShowCheckedModeBanner: false,
     );
-  }
 
 }
 
