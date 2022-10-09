@@ -50,6 +50,12 @@ class DbTrans_Manager {
     await openDb();
     await _database.delete('transactions', where: "id = ?", whereArgs: [id]);
   }
+
+  Future<void> deleteAllTransaction(String table) async {
+    await openDb();
+    await _database.rawDelete('DELETE FROM transactions');
+    print("Deleted all records from transactions table");
+  }
 }
 
 class Transaction {

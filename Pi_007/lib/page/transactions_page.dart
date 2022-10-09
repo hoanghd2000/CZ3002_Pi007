@@ -21,33 +21,27 @@ class _TransactionsPageState extends State<TransactionsPage> {
 
   @override
   Widget build(BuildContext context) {
-    // Transaction t = new Transaction(
-    //     spendings: true,
-    //     category: "food",
-    //     name: "morning",
-    //     amount: 123,
-    //     timestamp: "08-11-2000");
-    // dbmanager.insertTransaction(t);
-
     double width = MediaQuery.of(context).size.width;
     return Scaffold(
-      // body: Text("Transactions list here",style: TextStyle(fontSize: 40)),
       body: ListView(
         children: <Widget>[
           Text("Transactions list here", style: TextStyle(fontSize: 40)),
           TextButton(
-            onPressed: () => _addTransaction(),
-            child: Text("TEXT BUTTON"),
+            onPressed: () {
+              dbmanager.deleteAllTransaction('transactions');
+            },
+            child: Text("delete all"),
           ),
-          FutureBuilder(
-            future: dbmanager.getTransactionList(),
+          StreamBuilder(
+            stream: dbmanager.getTransactionList().asStream(),
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 txnList = snapshot.data;
                 return ListView.builder(
+                  primary: false,
                   shrinkWrap: true,
                   itemCount: txnList == null ? 0 : txnList.length,
-                  itemBuilder: (BuildContext context, int index) {
+                  itemBuilder: (context, index) {
                     txn = txnList[index];
                     return Card(
                       child: Row(
@@ -148,7 +142,7 @@ class _TransactionsPageState extends State<TransactionsPage> {
 
   void _navigateToNextScreen(BuildContext context) {
     Navigator.of(context)
-    .push(MaterialPageRoute(builder: (context) => addTransaction()));
+    .push(MaterialPageRoute(builder: (context) => AddTransactionPage()));
   }
 
   void _addTransaction() {
