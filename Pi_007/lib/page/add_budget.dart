@@ -33,6 +33,26 @@ class _addBudgetPage extends State<addBudgetPage>{
 
   final _formKey = GlobalKey<FormState>();
   final _timeController = TextEditingController();
+  DateTimeRange _selectedDateRange;
+
+  // This function will be triggered when the floating button is pressed
+  // void _show() async {
+  //   final DateTimeRange result = await showDateRangePicker(
+  //     context: context,
+  //     firstDate: DateTime(2022, 1, 1),
+  //     lastDate: DateTime(2030, 12, 31),
+  //     currentDate: DateTime.now(),
+  //     saveText: 'Done',
+  //   );
+  //
+  //   if (result != null) {
+  //     // Rebuild the UI
+  //     print(result.start.toString());
+  //     setState(() {
+  //       _selectedDateRange = result;
+  //     });
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -50,15 +70,19 @@ class _addBudgetPage extends State<addBudgetPage>{
                 controller: _timeController,
                 validator: (val) => val.isNotEmpty? null:'Date should not be empty',
                 onTap: ()async {
-                  DateTime pickeddate = await showDatePicker(
+                  DateTimeRange pickeddate = await showDateRangePicker(
                     context: context,
-                    initialDate: DateTime.now(),
-                    firstDate: DateTime(2021),
-                    lastDate: DateTime(2023),
+                    firstDate: DateTime(2022, 1, 1),
+                    lastDate: DateTime(2030, 12, 31),
+                    currentDate: DateTime.now(),
+                    saveText: 'Done',
                   );
                   if(pickeddate!=null){
                     setState(() {
-                      _timeController.text = DateFormat('yyyy-MM-dd').format(pickeddate);
+                      // _timeController.text = DateFormat('yyyy-MM-dd').format(pickeddate);
+                      // _selectedDateRange = pickeddate;
+                      // _startdate = DateFormat('yyyy-MM-dd').format(pickeddate.start) as TextEditingController;
+                      _timeController.text = DateFormat('yyyy-MM-dd').format(pickeddate.start) + " to " + DateFormat('yyyy-MM-dd').format(pickeddate.end);
                     });
                   }
                 },

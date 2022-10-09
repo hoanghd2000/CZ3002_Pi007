@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 // import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:grouped_list/grouped_list.dart';
+import 'package:intl/intl.dart';
 
 import 'package:pi_007/page/add_budget.dart';
 import 'package:pi_007/page/edit_budget.dart';
@@ -26,6 +27,7 @@ class BudgetPage extends StatelessWidget{
         (i) => Budget(
       'Budget $i',
       '500',
+      DateTimeRange(start: DateTime.parse("2022-0${i+1}-01"), end: DateTime.parse("2022-0${i+1}-28"))
     ),
   );
 
@@ -44,7 +46,7 @@ class BudgetPage extends StatelessWidget{
                           left: 15
                       ),
                       child: Column(children: [
-                        Text(budgetList[index].title),
+                        Text(DateFormat('yyyy-MM-dd').format(budgetList[index].dateRange.start) + " to " + DateFormat('yyyy-MM-dd').format(budgetList[index].dateRange.end) + " (" + budgetList[index].title + ")"),
                       ])
                   ),
                   Padding(
@@ -140,6 +142,7 @@ class BudgetPage extends StatelessWidget{
 class Budget {
   final String title;
   final String amount;
+  final DateTimeRange dateRange;
 
-  const Budget(this.title, this.amount);
+  const Budget(this.title, this.amount, this.dateRange);
 }

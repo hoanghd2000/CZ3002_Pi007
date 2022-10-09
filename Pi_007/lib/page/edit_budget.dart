@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:pi_007/page/budget_page.dart';
 
 class EditBudget extends StatelessWidget{
@@ -18,6 +19,7 @@ class EditBudget extends StatelessWidget{
   static const cancel_button = Color(0xFFFA7979);
 
   final _formKey = GlobalKey<FormState>();
+  final _timeController = TextEditingController();
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -35,8 +37,26 @@ class EditBudget extends StatelessWidget{
                 padding: const EdgeInsets.all(15.0),
                 child: TextFormField(
                   decoration: InputDecoration(
-                      labelText: "Month"
+                      labelText: "Date"
                   ),
+                  initialValue: DateFormat('yyyy-MM-dd').format(budget.dateRange.start) + " to " + DateFormat('yyyy-MM-dd').format(budget.dateRange.end),
+                  // controller: _timeController,
+                  // validator: (val) => val.isNotEmpty? null:'Date should not be empty',
+                  // onTap: ()async {
+                  //   DateTimeRange pickeddate = await showDateRangePicker(
+                  //     context: context,
+                  //     firstDate: DateTime(2022, 1, 1),
+                  //     lastDate: DateTime(2030, 12, 31),
+                  //     currentDate: DateTime.now(),
+                  //     saveText: 'Done',
+                  //   );
+                  //   if(pickeddate!=null){
+                  //     (context as Element).markNeedsBuild();
+                  //     setState(() {
+                  //       _timeController.text = DateFormat('yyyy-MM-dd').format(pickeddate.start) + " to " + DateFormat('yyyy-MM-dd').format(pickeddate.end);
+                  //     });
+                  //   }
+                  // },
                 ),
               ),
               Padding(
@@ -52,7 +72,7 @@ class EditBudget extends StatelessWidget{
                 padding: const EdgeInsets.all(15.0),
                 child: TextFormField(
                   decoration: InputDecoration(
-                      labelText: "Name",
+                    labelText: "Name",
                   ),
                   initialValue: budget.title,
                 ),
@@ -120,9 +140,9 @@ showAlertDialog(BuildContext context) {
       children: [
         Padding(
           padding: const EdgeInsets.only(
-            right: 10.0,
-            top: 5.0,
-            bottom: 5.0
+              right: 10.0,
+              top: 5.0,
+              bottom: 5.0
           ),
           child: Icon(Icons.delete),
         ),
