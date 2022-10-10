@@ -19,111 +19,100 @@ class CategoryPage extends StatelessWidget {
   static const list_color =  Color(0xFFECECEC);  //grey
   static const cancel_button = Color(0xFFFA7979);
 
+  List<Categories> categoryList = [
+    Categories(title: 'Food', icon: fastfood),
+    Categories(title: 'Transport', icon: car),
+    Categories(title: 'Shopping', icon: shopping_bag),
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Category'),
-        backgroundColor: navigation_bar,
-        foregroundColor: Colors.black,
-      ),
-      body: Column(
-      children: <Widget>[
-        Padding(
-          padding: const EdgeInsets.all(15.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Icon(category, size: 40),
-                Text("Category", style: TextStyle(fontSize: 30)),
-                TextButton(
-                    onPressed: (){
+        appBar: AppBar(
+          title: const Text('Category'),
+          backgroundColor: navigation_bar,
+          foregroundColor: Colors.black,
+        ),
+        body:
+        Column(
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.all(15.0),
+                child: Row(
+                    children: [
+                      Icon(category, size: 35),
+                      Padding(
+                        padding: const EdgeInsets.only(
+                          left: 10.0
+                        ),
+                        child: Text("Category", style: TextStyle(fontSize: 35)),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(
+                          left: 10.0
+                        ),
+                        child: OutlinedButton(
+                          onPressed: (){
 
-                    },
-                    child: Text("+ Add Category", style: TextStyle(fontSize: 20)),
-                  style: TextButton.styleFrom(
-                    backgroundColor: action_button,
-                    foregroundColor: Colors.black,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12)
+                          },
+                          child: Text("+ Add Category", style: TextStyle(fontSize: 20)),
+                          style: TextButton.styleFrom(
+                            side: BorderSide(color: Colors.black),
+                            backgroundColor: action_button,
+                            foregroundColor: Colors.black,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                            ),
+                          ),
+                        ),
+                      )
+                    ]),
+              ),
+              const Divider(
+                height: 10,
+                thickness: 1,
+                indent: 5,
+                endIndent: 5,
+                color: Colors.black,
+              ),
+              ...categoryList.map((item) =>
+                  Padding(
+                    padding: const EdgeInsets.all(0.0),
+                    child: Card(
+                      elevation: 0,
+                      shape: Border(bottom: BorderSide(color: Colors.black)),
+                      child:
+                      Row(
+                          // mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Column(children: [
+                              IconButton(
+                                icon: Icon(item.icon, color: Colors.black),
+                              ),
+                            ]),
+                            Column(children: [
+                              Text(item.title,style: TextStyle(fontSize: 20)),
+                            ]),
+                            Spacer(),
+                            Column(children: [
+                              IconButton(
+                                icon: Icon(Icons.delete, color: Colors.black),
+                                onPressed: (){},
+                              ),
+                            ]),
+                          ]),
+                      color: Colors.grey[50],
                     ),
                   ),
-                )
-              ]),
-        ),
-        Padding(
-          padding: const EdgeInsets.all(0.0),
-          child: Card(
-            elevation: 0,
-            shape: Border(top: BorderSide(color: Colors.black)),
-            child:
-            Row(
-                children: [
-                    Column(children: [
-                      IconButton(
-                        icon: const Icon(fastfood, color: Colors.black),
-                      ),
-                    ]),
-                    Column(children: [
-                      Text("Food",style: TextStyle(fontSize: 20)),
-                    ]),
-                ]),
-            color: Colors.grey[50],
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.all(0.0),
-          child: Card(
-            elevation: 0,
-            shape: Border(top: BorderSide(color: Colors.black)),
-            child:
-            Row(
-                children: [
-                  Column(children: [
-                    IconButton(
-                      icon: const Icon(car, color: Colors.black),
-                    ),
-                  ]),
-                  Column(children: [
-                    Text("Transport",style: TextStyle(fontSize: 20)),
-                  ]),
-                ]),
-            color: Colors.grey[50],
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.all(0.0),
-          child: Card(
-            elevation: 0,
-            shape: Border(bottom: BorderSide(color: Colors.black), top: BorderSide(color: Colors.black)),
-            child:
-            Padding(
-              padding: const EdgeInsets.only(
-                bottom: 8.0
-              ),
-              child: Row(
-                  children: [
-                    Column(children: [
-                      IconButton(
-                        icon: const Icon(shopping_bag, color: Colors.black),
-                      ),
-                    ]),
-                    Column(children: [
-                      Text("Shopping",style: TextStyle(fontSize: 20)),
-                    ]),
-                  ]),
-            ),
-            color: Colors.grey[50],
-          ),
-        )
-      ])
+              ).toList(),
+            ])
     );
   }
 }
 
 class Categories {
   final String title;
-  final Icon icon;
+  final IconData icon;
 
-  const Categories(this.title, this.icon);
+  const Categories({this.title, this.icon});
 }
