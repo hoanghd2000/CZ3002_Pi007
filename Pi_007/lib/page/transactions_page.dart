@@ -209,13 +209,13 @@ class _TransactionsPageState extends State<TransactionsPage> {
       Expanded(
           flex: 1,
           child: (txn.spendings == 1)
-              ? Text("\$ ${txn.amount}",
+              ? Text("- \$ ${txn.amount}",
                   style: TextStyle(fontSize: 16, color: Colors.red))
               : SizedBox.shrink()),
       Expanded(
           flex: 1,
           child: (txn.spendings == 0)
-              ? Text("\$ ${txn.amount}",
+              ? Text("+ \$ ${txn.amount}",
                   style: TextStyle(fontSize: 16, color: Colors.blue))
               : SizedBox.shrink()),
     ]);

@@ -44,7 +44,7 @@ class _AddTransactionPageState extends State<AddTransactionPage> {
   static const navigation_bar = Color(0xFFFFEAD1); //beige
   static const list_color = Color(0xFFECECEC); //grey
 
-  static const List<String> list_type = <String>['Spendings', 'Earnings'];
+  static const List<String> list_type = <String>['Spending', 'Earning'];
   static const List<String> list_spend = <String>[
     'Food',
     'Transport',
