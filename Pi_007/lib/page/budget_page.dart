@@ -22,6 +22,7 @@ class BudgetPage extends StatelessWidget{
 
   // sample hard coded data - to be extracted from database
   // idk what format it will be extracted as though - json / string / ???
+  // currently this sample is a class
   final budgetList = List.generate(
     5,
         (i) => Budget(
