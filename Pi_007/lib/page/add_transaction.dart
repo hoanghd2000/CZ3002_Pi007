@@ -186,7 +186,7 @@ class _AddTransactionPageState extends State<AddTransactionPage> {
                           // Navigator.pushNamed(context, "Transactions");
                           // Navigator.pushNamed(context, 'Transactions').then((result) => setState(() {}));
                           // Navigator.of(context).push(MaterialPageRoute(builder: (context) => MyHomePage()));
-                          _navigateBack(context);
+                          // _navigateBack(context);
                         },
                         child: Text('Save'),
                         style: ElevatedButton.styleFrom(
@@ -227,7 +227,7 @@ class _AddTransactionPageState extends State<AddTransactionPage> {
               print('Transaction added to Trans_database ${id}')
             });
 
-        // await _navigativeBack(context);
+        _navigateBack(context);
       }
     }
   }

@@ -15,6 +15,9 @@ class _TransactionsPageState extends State<TransactionsPage> {
 
   Transaction txn;
   List<Transaction> txnList;
+  // Iterable<String> txnTimestampList;
+  List<String> distinctTimestampList;
+  Map<String, int> timestampMap;
   int updateIndex;
 
   static const action_button = Color(0xFFF8C8DC); //pink
@@ -25,13 +28,13 @@ class _TransactionsPageState extends State<TransactionsPage> {
     return Scaffold(
       body: ListView(
         children: <Widget>[
-          Text("Transactions list here", style: TextStyle(fontSize: 40)),
+          // Text("Transactions list here", style: TextStyle(fontSize: 40)),
 
-          /************* START debug code ************/ 
+          /************* debug code BEGIN ************/
           TextButton(
             onPressed: () => dbmanager.deleteAllTransaction('transactions'),
             child: Text("delete all txn"),
-          ), 
+          ),
           TextButton(
             onPressed: () => _addTransaction(true),
             child: Text("add dummy spending"),
@@ -40,20 +43,34 @@ class _TransactionsPageState extends State<TransactionsPage> {
             onPressed: () => _addTransaction(false),
             child: Text("add dummy earning"),
           ),
-          /************* END debug code ************/ 
+          /************* debug code END ************/
 
           FutureBuilder(
-            future: dbmanager.getTransactionList(),
+            future: dbmanager.getAllTransactionOrderBy('timestamp DESC'),
             builder: (BuildContext context,
                 AsyncSnapshot<List<Transaction>> snapshot) {
               if (snapshot.hasData) {
                 txnList = snapshot.data;
+                distinctTimestampList =
+                    txnList.map((txn) => txn.timestamp).toSet().toList();
+                timestampMap = <String, int>{};
+                txnList.forEach((txn) => timestampMap[txn.timestamp] =
+                    !timestampMap.containsKey(txn.timestamp)
+                        ? (1)
+                        : (timestampMap[txn.timestamp] + 1));
+
+                print(txnList.toString());
+                // print(distinctTxnTimestampList);
+
+                print(timestampMap);
+
                 return ListView.builder(
                   primary: false,
                   shrinkWrap: true,
-                  itemCount: txnList.length,
+                  itemCount: timestampMap.length,
                   itemBuilder: (context, index) {
-                    return _displayCard(txnList[index]);
+                    // sort here, or in SQL
+                    return _displayCard(distinctTimestampList[index]);
                   },
                 );
               } else {
@@ -122,34 +139,43 @@ class _TransactionsPageState extends State<TransactionsPage> {
   }
 
   void _addTransaction(bool spendings) {
-    Transaction t1 = new Transaction(
+    Transaction t1 = Transaction(
         spendings: 1,
         category: "Food",
         name: "Mala",
         amount: 55.0,
-        timestamp: "08-11-2000");
-    Transaction t2 = new Transaction(
+        timestamp: "2000-11-08");
+    Transaction t2 = Transaction(
         spendings: 0,
         category: "Allowance",
         name: "Weekly",
         amount: 30.0,
-        timestamp: "31-12-2022");
+        timestamp: "2022-12-31");
     dbmanager.insertTransaction(spendings ? t1 : t2);
   }
 
-  Widget _displayCard(Transaction txn) {
+  Widget _displayCard(String timestamp) {
     //TODO use .map to wrap each txn data into a row widget, then display according to their dates
+    // filter out txn of that date
+    int numTxn = timestampMap[timestamp];
+    // List txnListOfDate = txnList.map((txn) {
+    //   if (txn.timestamp == timestamp) return txn;
+    // });
+
+    var txnListOfDate = txnList.where((txn) => txn.timestamp == timestamp).toList();
+    print(txnListOfDate);
+
     return Card(
       child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
             children: [
               Row(
+                // header
                 children: [
                   Expanded(
                       flex: 2,
-                      child:
-                          Text(txn.timestamp, style: TextStyle(fontSize: 16))),
+                      child: Text(timestamp, style: TextStyle(fontSize: 16))),
                   Expanded(
                       flex: 1,
                       child: Text("\$ total", // TODO
@@ -160,52 +186,38 @@ class _TransactionsPageState extends State<TransactionsPage> {
                           style: TextStyle(fontSize: 16, color: Colors.blue))),
                 ],
               ),
-              Row(
-                children: [
-                  Expanded(
-                      flex: 1,
-                      child:
-                          Text(txn.category, style: TextStyle(fontSize: 16))),
-                  Expanded(
-                      flex: 1,
-                      child: Text(txn.name, style: TextStyle(fontSize: 16))),
-                  Expanded(
-                      flex: 1,
-                      child: (txn.spendings == 1)
-                          ? Text("\$ ${txn.amount}",
-                              style: TextStyle(fontSize: 16, color: Colors.red))
-                          : SizedBox.shrink()),
-                  Expanded(
-                      flex: 1,
-                      child: (txn.spendings == 0)
-                          ? Text("\$ ${txn.amount}",
-                              style:
-                                  TextStyle(fontSize: 16, color: Colors.blue))
-                          : SizedBox.shrink()),
-                ],
-              ),
+              ListView.builder(
+                // primary: false,
+                physics: NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                itemCount: numTxn,
+                itemBuilder: (context, index) {
+                  // sort here, or in SQL
+                  return _displayCardItem(txnListOfDate[index]);
+                },
+              )
             ],
           )),
     );
   }
 
-  Widget _displayAmount(Transaction txn) {
-    return Row(
-      children: (txn.spendings == 1)
-          ? [
-              Expanded(
-                  flex: 1,
-                  child: Text("\$ ${txn.amount}",
-                      style: TextStyle(fontSize: 16, color: Colors.red))),
-              Expanded(flex: 1)
-            ]
-          : [
-              Expanded(flex: 1),
-              Expanded(
-                  flex: 1,
-                  child: Text("\$ ${txn.amount}",
-                      style: TextStyle(fontSize: 16, color: Colors.blue)))
-            ],
-    );
+  Widget _displayCardItem(Transaction txn) {
+    return Row(children: [
+      Expanded(
+          flex: 1, child: Text((txn.category??""), style: TextStyle(fontSize: 16))),
+      Expanded(flex: 1, child: Text(txn.name, style: TextStyle(fontSize: 16))),
+      Expanded(
+          flex: 1,
+          child: (txn.spendings == 1)
+              ? Text("\$ ${txn.amount}",
+                  style: TextStyle(fontSize: 16, color: Colors.red))
+              : SizedBox.shrink()),
+      Expanded(
+          flex: 1,
+          child: (txn.spendings == 0)
+              ? Text("\$ ${txn.amount}",
+                  style: TextStyle(fontSize: 16, color: Colors.blue))
+              : SizedBox.shrink()),
+    ]);
   }
 }

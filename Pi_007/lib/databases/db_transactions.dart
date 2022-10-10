@@ -5,6 +5,15 @@ import 'package:sqflite/sqflite.dart';
 
 class DbTrans_Manager {
   Database _database;
+  final txnFields = [
+    'id',
+    'spendings',
+    'category',
+    'name',
+    'amount',
+    'note',
+    'timestamp'
+  ];
 
   Future openDb() async {
     // _database = await openDatabase(join(await getDatabasesPath(), "trans.db"),
@@ -12,7 +21,8 @@ class DbTrans_Manager {
     //     await db.execute(
     //       'DROP TABLE IF EXISTS trans');
     if (_database == null) {
-      _database = await openDatabase(join(await getDatabasesPath(), "transactions.db"),
+      _database = await openDatabase(
+          join(await getDatabasesPath(), "transactions.db"),
           version: 1, onCreate: (Database db, int version) async {
         await db.execute(
             'CREATE TABLE transactions(id INTEGER PRIMARY KEY AUTOINCREMENT, spendings INTEGER, category TEXT, name TEXT, amount REAL, note TEXT, timestamp TEXT)');
@@ -22,12 +32,13 @@ class DbTrans_Manager {
 
   Future<int> insertTransaction(Transaction transaction) async {
     await openDb();
-    return await _database.insert('transactions', transaction.toMap());
+    return await _database.insert('transactions', transaction.toJson());
   }
 
-  Future<List<Transaction>> getTransactionList() async {
+  Future<List<Transaction>> getAllTransaction() async {
     await openDb();
-    final List<Map<String, dynamic>> maps = await _database.query('transactions');
+    final List<Map<String, dynamic>> maps =
+        await _database.query('transactions');
     return List.generate(maps.length, (i) {
       return Transaction(
           id: maps[i]['id'],
@@ -40,9 +51,34 @@ class DbTrans_Manager {
     });
   }
 
+  Future<List<Transaction>> getAllTransactionOrderBy(String sqlOrderBy) async {
+    await openDb();
+    final List<Map<String, dynamic>> maps = await _database.query(
+      'transactions',
+      columns: null,
+      orderBy: sqlOrderBy,
+    );
+    return List.generate(maps.length, (i) {
+      return Transaction(
+          id: maps[i]['id'],
+          spendings: maps[i]['spendings'],
+          category: maps[i]['category'],
+          name: maps[i]['name'],
+          amount: maps[i]['amount'],
+          note: maps[i]['note'],
+          timestamp: maps[i]['timestamp']);
+    });
+  }
+
+  Future<List<Transaction>> test() async {
+    await openDb();
+    final List<Map<String, dynamic>> maps =
+        await _database.rawQuery('SELECT * FROM ');
+  }
+
   Future<int> updateTransaction(Transaction transaction) async {
     await openDb();
-    return await _database.update('transactions', transaction.toMap(),
+    return await _database.update('transactions', transaction.toJson(),
         where: "id = ?", whereArgs: [transaction.id]);
   }
 
@@ -55,6 +91,20 @@ class DbTrans_Manager {
     await openDb();
     await _database.rawDelete('DELETE FROM transactions');
     print("Deleted all records from transactions table");
+  }
+
+  // read from db
+  static List<Transaction> fromJson(Map<String, dynamic> maps) {
+    return List.generate(maps.length, (i) {
+      return Transaction(
+          id: maps[i]['id'],
+          spendings: maps[i]['spendings'],
+          category: maps[i]['category'],
+          name: maps[i]['name'],
+          amount: maps[i]['amount'],
+          note: maps[i]['note'],
+          timestamp: maps[i]['timestamp']);
+    });
   }
 }
 
@@ -75,7 +125,9 @@ class Transaction {
       @required this.amount,
       this.note,
       @required this.timestamp});
-  Map<String, dynamic> toMap() => {
+
+  // write to db
+  Map<String, dynamic> toJson() => {
         'spendings': spendings,
         'category': category,
         'name': name,
