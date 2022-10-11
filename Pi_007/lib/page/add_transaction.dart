@@ -42,7 +42,7 @@ class _addTransactionPage extends State<addTransactionPage>{
   static const navigation_bar =  Color(0xFFFFEAD1);  //beige
   static const list_color =  Color(0xFFECECEC);  //grey
 
-  static const List<String> list_type = <String>['Spendings', 'Earnings'];
+  static const List<String> list_type = <String>['Spending', 'Earning'];
   static const List<String> list_spend = <String>['Food', 'Transport','Shopping'];
   static const List<String> list_earn = <String>['Allowance', 'Stock','Work'];
   String type_list = list_type.first;
@@ -83,7 +83,7 @@ class _addTransactionPage extends State<addTransactionPage>{
                       // This is called when the user selects an item.
                       setState(() {
                         _type = value;
-                        _model=null;
+                        _model=_selectType(_type).first;
                         print(value);
                       });
                     },
