@@ -61,6 +61,16 @@ class _editTransactionPage extends State<editTransactionPage>{
         ? list_spend
         : list_earn;
   }
+  String _currentType(int typeName){
+    String _type2;
+    if(typeName==1){
+      _type2=list_type.first;
+    }
+    else{
+      _type2 = list_type[1];
+    }
+    return _type2;
+  }
 
 
   @override
@@ -77,7 +87,7 @@ class _editTransactionPage extends State<editTransactionPage>{
               child: Column(
                 children: <Widget>[
                   DropdownButton<String>(
-                    value: _type,
+                    value: _currentType(txn2.spendings),
                     dropdownColor: list_color,
                     icon: const Icon(Icons.expand_more),
                     elevation: 16,
