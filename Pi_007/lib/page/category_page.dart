@@ -59,7 +59,7 @@ class CategoryPage extends StatelessWidget {
                           style: TextButton.styleFrom(
                             side: BorderSide(color: Colors.black),
                             backgroundColor: action_button,
-                            foregroundColor: Colors.black,
+                            primary: Colors.black,
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(12),
                             ),

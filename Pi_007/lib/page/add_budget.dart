@@ -106,7 +106,7 @@ class _addBudgetPage extends State<addBudgetPage>{
             ),
             TextButton(onPressed: (){Navigator.pop(context);}, child: Text("Done"), style: TextButton.styleFrom(
               backgroundColor: confirm_button,
-              foregroundColor: Colors.black,
+              primary: Colors.black,
               padding: EdgeInsets.only(
                 left: 30,
                 right: 30

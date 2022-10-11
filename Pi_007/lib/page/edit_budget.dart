@@ -85,7 +85,7 @@ class EditBudget extends StatelessWidget{
                     showAlertDialog(context);
                   }, child: Text("Delete"), style: TextButton.styleFrom(
                     backgroundColor: cancel_button,
-                    foregroundColor: Colors.black,
+                    primary: Colors.black,
                     padding: EdgeInsets.only(
                         left: 30,
                         right: 30
@@ -97,7 +97,7 @@ class EditBudget extends StatelessWidget{
                 ),
                 TextButton(onPressed: (){Navigator.pop(context);}, child: Text("Done"), style: TextButton.styleFrom(
                   backgroundColor: confirm_button,
-                  foregroundColor: Colors.black,
+                  primary: Colors.black,
                   padding: EdgeInsets.only(
                       left: 30,
                       right: 30

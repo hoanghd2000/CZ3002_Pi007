@@ -54,7 +54,7 @@ class DbTrans_Manager {
 
 class Transaction {
   int id;
-  bool spendings;
+  int spendings;
   String category;
   String name;
   double amount;

@@ -49,7 +49,8 @@ class _addTransactionPage extends State<addTransactionPage>{
   String spend_list = list_spend.first;
   String earn_list = list_earn.first;
   
-  String _type,_model;
+  String _model;
+  String _type = list_type.first;
   List<String> _selectType(String typeName){
     return typeName == list_type[0]
         ? list_spend
@@ -169,8 +170,7 @@ class _addTransactionPage extends State<addTransactionPage>{
                         primary: confirm_button,  //background
                         onPrimary: Colors.black, //foreground
                       )
-
-                  )
+                  ),
                 ],
               ),
             )
@@ -182,12 +182,12 @@ class _addTransactionPage extends State<addTransactionPage>{
   void _submitTransaction(BuildContext context){
     if(_formKey.currentState.validate()){
       if(transaction==null){
-        bool spendings;
+        int spendings;
         if(_type=="spendings"){
-          spendings=true;
+          spendings=1;
         }
         else{
-          spendings=false;
+          spendings=0;
         }
         Transaction tr = new Transaction(
           spendings: spendings,

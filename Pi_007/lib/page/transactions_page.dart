@@ -3,14 +3,37 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pi_007/page/add_transaction.dart';
 
+import '../databases/db_transactions.dart';
 
-class TransactionsPage extends StatelessWidget{
+class Transactions extends StatelessWidget {
+  const Transactions({Key key}) : super(key: key);
 
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      theme: ThemeData(
+        primaryColor: Colors.blue,
+      ),
+      home: TransactionsPage(),
+    );
+  }
+
+}
+class TransactionsPage extends StatefulWidget {
+  @override
+  State<TransactionsPage> createState() => _TransactionPage();
+}
+class _TransactionPage extends State<TransactionsPage>{
+  final DbTrans_Manager dbTrans_manager = new DbTrans_Manager();
   static const action_button =  Color(0xFFF8C8DC);  //pink
+
+  Transaction transaction;
+  List<Transaction> translist;
+  int updateIndex;
 
   @override
   Widget build(BuildContext context) => Scaffold(
-    body: Text("Transactions list here",style: TextStyle(fontSize: 40)),
+    body: Text("Transaction List here",style:TextStyle(fontSize: 40)),
     floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
         backgroundColor: action_button,
