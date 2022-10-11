@@ -85,6 +85,7 @@ class _addTransactionPage extends State<addTransactionPage>{
                         _type = value;
                         _model=_selectType(_type).first;
                         print(value);
+                        print(_model);
                       });
                     },
                     items: list_type.map<DropdownMenuItem<String>>((String value) {
@@ -129,8 +130,9 @@ class _addTransactionPage extends State<addTransactionPage>{
                       Container(
                         child: Text('Category',style: TextStyle(fontSize: 15,color: Colors.grey[700]),),
                         padding: EdgeInsets.only(right:15.0)),
+
                       DropdownButton<String>(
-                        value: _model,
+                        value: _model =_selectType(_type).first,
                         dropdownColor: list_color,
                         icon: const Icon(Icons.expand_more),
                         elevation: 16,
