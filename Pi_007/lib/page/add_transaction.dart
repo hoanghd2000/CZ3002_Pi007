@@ -183,7 +183,7 @@ class _addTransactionPage extends State<addTransactionPage>{
     if(_formKey.currentState.validate()){
       if(transaction==null){
         int spendings;
-        if(_type=="spendings"){
+        if(_type=="Spending"){
           spendings=1;
         }
         else{
