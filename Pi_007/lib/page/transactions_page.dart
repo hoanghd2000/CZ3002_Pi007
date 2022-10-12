@@ -41,7 +41,6 @@ class _TransactionsPageState extends State<TransactionsPage> {
           ),
           TextButton(
             onPressed: () => _addTransaction(false),
-            child: Text("add dummy earning"),
           ),
           /************* debug code END ************/
 

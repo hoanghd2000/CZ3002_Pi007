@@ -2,11 +2,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:pi_007/page/budget_page.dart';
+import 'package:pi_007/databases/db_budget.dart';
 
 class EditBudget extends StatelessWidget{
 
   // EditScreen(this.budget);
-  final Budget budget;
+  //final Budget budget;
+  Budget budget;
   EditBudget(this.budget);
 
   // colors
@@ -39,7 +41,7 @@ class EditBudget extends StatelessWidget{
                   decoration: InputDecoration(
                       labelText: "Date"
                   ),
-                  initialValue: DateFormat('yyyy-MM-dd').format(budget.dateRange.start) + " to " + DateFormat('yyyy-MM-dd').format(budget.dateRange.end),
+                  initialValue: DateFormat('yyyy-MM-dd').format(DateTime.parse(budget.startBudget)) + " to " + DateFormat('yyyy-MM-dd').format(DateTime.parse(budget.endBudget)),
                   // controller: _timeController,
                   // validator: (val) => val.isNotEmpty? null:'Date should not be empty',
                   // onTap: ()async {
@@ -65,7 +67,7 @@ class EditBudget extends StatelessWidget{
                   decoration: InputDecoration(
                       labelText: "Budget"
                   ),
-                  initialValue: budget.amount,
+                  initialValue: budget.limitBudget.toString(),
                 ),
               ),
               Padding(
@@ -74,7 +76,7 @@ class EditBudget extends StatelessWidget{
                   decoration: InputDecoration(
                     labelText: "Name",
                   ),
-                  initialValue: budget.title,
+                  initialValue: budget.name,
                 ),
               ),
               Row(mainAxisAlignment: MainAxisAlignment.center, children: [
@@ -120,6 +122,7 @@ showAlertDialog(BuildContext context) {
   Widget okButton = TextButton(
     child: Text("Ok"),
     onPressed: () {
+
       Navigator.of(context).pop();
       Navigator.pop(context);
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -131,6 +134,7 @@ showAlertDialog(BuildContext context) {
   Widget cancelButton = TextButton(
     child: Text("Cancel"),
     onPressed: () {
+
       Navigator.of(context).pop();
     },
   );

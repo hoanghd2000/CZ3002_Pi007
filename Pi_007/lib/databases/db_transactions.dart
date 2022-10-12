@@ -20,14 +20,12 @@ class DbTrans_Manager {
     //     version: 1, onCreate: (Database db, int version) async {
     //     await db.execute(
     //       'DROP TABLE IF EXISTS trans');
-    if (_database == null) {
-      _database = await openDatabase(
+    _database ??= await openDatabase(
           join(await getDatabasesPath(), "transactions.db"),
           version: 1, onCreate: (Database db, int version) async {
         await db.execute(
             'CREATE TABLE transactions(id INTEGER PRIMARY KEY AUTOINCREMENT, spendings INTEGER, category TEXT, name TEXT, amount REAL, note TEXT, timestamp TEXT)');
       });
-    }
   }
 
   Future<int> insertTransaction(Transaction transaction) async {

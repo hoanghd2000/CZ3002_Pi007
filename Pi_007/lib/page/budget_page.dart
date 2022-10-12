@@ -3,9 +3,24 @@ import 'package:flutter/material.dart';
 // import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:grouped_list/grouped_list.dart';
 import 'package:intl/intl.dart';
-
+import 'package:pi_007/databases/db_budget.dart';
 import 'package:pi_007/page/add_budget.dart';
 import 'package:pi_007/page/edit_budget.dart';
+
+/*class Budget extends StatelessWidget {
+  const Budget({Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      theme: ThemeData(
+        primaryColor: Colors.blue,
+      ),
+      home: BudgetPage(),
+    );
+  }
+
+}*/
 
 class BudgetPage extends StatelessWidget{
 
@@ -20,17 +35,21 @@ class BudgetPage extends StatelessWidget{
   static const IconData pencil = IconData(0xf37e);
   static const IconData create_sharp = IconData(0xe89b, fontFamily: 'MaterialIcons');
 
+  dbBudget_manager budgetDBM = dbBudget_manager();
+  Budget budget;
+  List<Budget> budgetList;
   // sample hard coded data - to be extracted from database
   // idk what format it will be extracted as though - json / string / ???
   // currently this sample is a class
-  final budgetList = List.generate(
-    5,
+  /*final budgetList = List.generate(
+    1,
         (i) => Budget(
       'Budget $i',
       '500',
-      DateTimeRange(start: DateTime.parse("2022-0${i+1}-01"), end: DateTime.parse("2022-0${i+1}-28"))
+      DateTime(start: DateTime.parse("2022-0${i+1}-01"), end: DateTime.parse("2022-0${i+1}-28"))
     ),
   );
+*/
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -47,7 +66,7 @@ class BudgetPage extends StatelessWidget{
                           left: 15
                       ),
                       child: Column(children: [
-                        Text(DateFormat('yyyy-MM-dd').format(budgetList[index].dateRange.start) + " to " + DateFormat('yyyy-MM-dd').format(budgetList[index].dateRange.end) + " (" + budgetList[index].title + ")"),
+                        Text(DateFormat('yyyy-MM-dd').format(DateTime.parse(budgetList[index].startBudget)) + " to " + DateFormat('yyyy-MM-dd').format(DateTime.parse(budgetList[index].endBudget)) + " (" + budgetList[index].name + ")"),
                       ])
                   ),
                   Padding(
@@ -76,7 +95,7 @@ class BudgetPage extends StatelessWidget{
                       bottom: 15
                   ),
                   child: Column(children: [
-                    Text("Total budget: \$" + budgetList[index].amount)
+                    Text("Total budget: \$" + budgetList[index].limitBudget.toString())
                   ])
               ),
             ]),
@@ -139,11 +158,11 @@ class BudgetPage extends StatelessWidget{
 //   }
 //
 // }
-
+/*
 class Budget {
   final String title;
   final String amount;
   final DateTimeRange dateRange;
 
   const Budget(this.title, this.amount, this.dateRange);
-}
+}*/

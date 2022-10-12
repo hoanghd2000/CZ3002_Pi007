@@ -7,23 +7,27 @@ import 'package:sqflite/sqflite.dart';
 //budget manager
 class dbBudget_manager {
   Database budgetDB;
-
-  //open budgetDB on page open, else create budgetDB
-  //Future
+  final budgetFields = [
+    'id',
+    'name',
+    'limitBudget',
+    'remainingBudget',
+    'startBudget',
+    'endBudget'
+  ];
+  //open/create budgetDB on page open
   Future openDb() async {
     budgetDB ??= await openDatabase(
-        join(await getDatabasesPath(), "DB_budget.db"),
+        join(await getDatabasesPath(), "budgets.db"),
         version: 1, onCreate: (Database db, int version) async {
       await db.execute(
-          'CREATE TABLE budget(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, limitBudget TEXT, remainingBudget TEXT, startBudget TEXT, endBudget TEXT)');
+          'CREATE TABLE budgets(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, limitBudget TEXT, remainingBudget TEXT, startBudget TEXT, endBudget TEXT)');
       } );
   }
 
-  //get Budget list from db
-  //Future<List<Budget>>
   Future<List<Budget>> getBudgetList() async {
     await openDb();
-    final List<Map<String, dynamic>> maps = await budgetDB.query('budget');
+    final List<Map<String, dynamic>> maps = await budgetDB.query('budgets');
     return List.generate(maps.length, (i) {
       return Budget(
           id: maps[i]['id'],
@@ -35,22 +39,17 @@ class dbBudget_manager {
     });
   }
 
-  //new budget upon click on add budget
-  //Future<int>
-  Future<int> newBudget(Budget budget) async {
+  //insert budget
+  Future<int> insertBudget(Budget budget) async {
     await openDb();
-    return await budgetDB.insert('budget', budget.toMap());
+    return await budgetDB.insert('budgets', budget.toJson());
   }
 
-  //update/edit budgets upon clicking on specific budget
-  //update Budget, date and time to db
-  //Future<int>
   Future<int> updateBudgetDB(Budget budget) async {
     await openDb();
-    return await budgetDB.update('budget', budget.toMap(),
+    return await budgetDB.update('budgets', budget.toJson(),
         where: "id = ?", whereArgs: [budget.id]);
   }
-  //set budgets for transactions
 }
 
 class Budget {
@@ -62,14 +61,14 @@ class Budget {
   String endBudget;
 
   Budget({ this.id,
-           this.name,
+    @required this.name,
     @required this.limitBudget,
               this.remainingBudget,
     @required this.startBudget,
     @required this.endBudget
   });
 
-  Map<String, dynamic> toMap() {
+  Map<String, dynamic> toJson() {
     return {
       'id': id,
       'name' : name,
