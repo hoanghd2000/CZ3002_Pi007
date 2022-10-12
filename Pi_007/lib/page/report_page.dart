@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pi_007/databases/db_transactions.dart';
+import 'package:pi_007/page/spendings_chart.dart';
+import 'package:charts_flutter/flutter.dart' as charts;
 
 
 class ReportPage extends StatelessWidget{
@@ -106,6 +108,8 @@ class ReportPage extends StatelessWidget{
         SizedBox(height:240),
 
         //add chart here
+      // spendingsChart(data: )
+
         
         
 

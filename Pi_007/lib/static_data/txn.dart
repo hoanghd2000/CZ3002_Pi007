@@ -1,4 +1,5 @@
 import 'package:pi_007/databases/db_transactions.dart';
+import 'dart:math';
 
 Transaction t1 = Transaction(
     spendings: 1,
@@ -26,13 +27,27 @@ final _timestamp2021List = [
 ];
 
 
-var _2022data = [];
+// var _2022data = [];
 
 // for each month, generate 10, with random amt, then append to _2022data list
+List<Transaction> get2022data() {
+  List<Transaction> data = [];
+  var rng = Random();
 
-// final _2022data = List.generate(100, (index) => {
+  for (var i=0; i<12; i++) {
+    var temp = List.generate(5, (index) {
+      return Transaction(
+          spendings: rng.nextInt(2),
+          timestamp:_timestamp2022List[i],
+          name: "Txn" + (rng.nextInt(60)).toString(),
+          amount: num.parse((rng.nextDouble() * 100).toStringAsFixed(2)),
+          category: _categoryList[rng.nextInt(3)],
+          note: "",
+        );
+    });
+    data.addAll(temp);
+  }
+  return data;
+}
 
-// });
-  
-var list = []..addAll(_timestamp2022List)..addAll(_timestamp2022List);
 

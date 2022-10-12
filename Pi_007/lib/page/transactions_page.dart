@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pi_007/page/add_transaction.dart';
 import 'package:pi_007/databases/db_transactions.dart';
+import 'package:pi_007/static_data/txn.dart';
 import 'dart:convert';
 
 class TransactionsPage extends StatefulWidget {
@@ -10,7 +11,6 @@ class TransactionsPage extends StatefulWidget {
   @override
   State<TransactionsPage> createState() => _TransactionsPageState();
 }
-
 
 class _TransactionsPageState extends State<TransactionsPage> {
   final DbTrans_Manager dbmanager = new DbTrans_Manager();
@@ -36,6 +36,10 @@ class _TransactionsPageState extends State<TransactionsPage> {
           TextButton(
             onPressed: () => dbmanager.deleteAllTransaction('transactions'),
             child: Text("delete all txn"),
+          ),
+          TextButton(
+            onPressed: () => _generate2022data(),
+            child: Text("generate data"),
           ),
           // TextButton(
           //   onPressed: () => _addTransaction(true),
@@ -149,8 +153,14 @@ class _TransactionsPageState extends State<TransactionsPage> {
   //   dbmanager.insertTransaction(spendings ? t1 : t2);
   // }
 
+  void _generate2022data() {
+    var data = get2022data();
+    for (var i = 0; i < data.length; i++) {
+      dbmanager.insertTransaction(data[i]);
+    }
+  }
+
   Widget _displayCard(String timestamp) {
-    //TODO use .map to wrap each txn data into a row widget, then display according to their dates
     // filter out txn of that date
     int numTxn = timestampMap[timestamp];
     print(timestamp);
@@ -164,7 +174,7 @@ class _TransactionsPageState extends State<TransactionsPage> {
 
     return Card(
       child: Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(12.0),
           child: Column(
             children: [
               Row(
@@ -173,16 +183,20 @@ class _TransactionsPageState extends State<TransactionsPage> {
                   Expanded(
                       flex: 2,
                       child: Text(timestamp, style: TextStyle(fontSize: 16))),
-                  Expanded(
-                      flex: 1,
-                      child: Text("\$ total", // TODO
-                          style: TextStyle(fontSize: 16, color: Colors.red))),
-                  Expanded(
-                      flex: 1,
-                      child: Text("\$ total", // TODO
-                          style: TextStyle(fontSize: 16, color: Colors.blue))),
+                  // Expanded(
+                  //     flex: 1,
+                  //     child: Text("\$ total", // TODO
+                  //         style: TextStyle(fontSize: 16, color: Colors.red))),
+                  // Expanded(
+                  //     flex: 1,
+                  //     child: Text("\$ total", // TODO
+                  //         style: TextStyle(fontSize: 16, color: Colors.blue))),
+                  Expanded(flex: 2, child: SizedBox.shrink()),
                 ],
               ),
+              // Center(
+              //   child: Text(timestamp, style: TextStyle(fontSize: 16)),
+              // ),
               ListView.builder(
                 // primary: false,
                 physics: NeverScrollableScrollPhysics(),
@@ -201,23 +215,29 @@ class _TransactionsPageState extends State<TransactionsPage> {
   Widget _displayCardItem(Transaction txn) {
     return Row(children: [
       Expanded(
-          flex: 1,
+          flex: 2,
           child: Text((txn.category ?? ""), style: TextStyle(fontSize: 16))),
-      Expanded(flex: 1, child: Text(txn.name, style: TextStyle(fontSize: 16))),
+      Expanded(flex: 2, child: Text(txn.name, style: TextStyle(fontSize: 16))),
       Expanded(
-          flex: 1,
+          flex: 3,
           child: (txn.spendings == 1)
               ? Text("- \$ ${txn.amount}",
+                  textAlign: TextAlign.right,
                   style: TextStyle(fontSize: 16, color: Colors.red))
-              : SizedBox.shrink()),
-      Expanded(
-          flex: 1,
-          child: (txn.spendings == 0)
-              ? Text("+ \$ ${txn.amount}",
-                  style: TextStyle(fontSize: 16, color: Colors.blue))
-              : SizedBox.shrink()),
+              : Text("+ \$ ${txn.amount}",
+                  textAlign: TextAlign.right,
+                  style: TextStyle(fontSize: 16, color: Colors.blue))),
+      Expanded(flex: 1, child: SizedBox.shrink())
     ]);
   }
+
+  // Expanded(flex: 2, child: SizedBox.shrink())
+  // Expanded(
+  //     flex: 1,
+  //     child: (txn.spendings == 0)
+  //         ? Text("+ \$ ${txn.amount}",
+  //             style: TextStyle(fontSize: 16, color: Colors.blue))
+  //         : SizedBox.shrink()),
 
   void printObject(Object object) {
     // Encode your object and then decode your object to Map variable
