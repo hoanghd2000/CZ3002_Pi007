@@ -59,11 +59,14 @@ class BudgetPage extends StatelessWidget{
                       IconButton(
                           icon: const Icon(create_sharp),
                           color: Colors.black,
-                          onPressed: () {
-                            Navigator.push(
+                          onPressed: () async {
+                            final edittedresult = await Navigator.push(
                                 context,
                                 MaterialPageRoute(builder: (context) => EditBudget(budgetList[index])));
-                            // print(edittedresult);
+                            print(edittedresult);
+                            budgetList[index] = Budget(edittedresult[3], edittedresult[2], DateTimeRange(start: edittedresult[0], end: edittedresult[1]));
+                            print(budgetList);
+                            (context as Element).reassemble();
                           }
                       ),
                     ]),
