@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import 'add_category.dart';
+
 class CategoryPage extends StatelessWidget {
 
   static const IconData category = IconData(0xe148, fontFamily: 'MaterialIcons');
@@ -43,17 +45,20 @@ class CategoryPage extends StatelessWidget {
                       Icon(category, size: 35),
                       Padding(
                         padding: const EdgeInsets.only(
-                          left: 10.0
+                            left: 10.0
                         ),
                         child: Text("Category", style: TextStyle(fontSize: 35)),
                       ),
                       Padding(
                         padding: const EdgeInsets.only(
-                          left: 10.0
+                            left: 10.0
                         ),
                         child: OutlinedButton(
                           onPressed: (){
-
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => const AddCategory())
+                            );
                           },
                           child: Text("+ Add Category", style: TextStyle(fontSize: 20)),
                           style: TextButton.styleFrom(
@@ -61,7 +66,7 @@ class CategoryPage extends StatelessWidget {
                             backgroundColor: action_button,
                             primary: Colors.black,
                             shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12),
+                              borderRadius: BorderRadius.circular(12),
                             ),
                           ),
                         ),
@@ -83,7 +88,7 @@ class CategoryPage extends StatelessWidget {
                       shape: Border(bottom: BorderSide(color: Colors.black)),
                       child:
                       Row(
-                          // mainAxisAlignment: MainAxisAlignment.start,
+                        // mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             Column(children: [
                               IconButton(

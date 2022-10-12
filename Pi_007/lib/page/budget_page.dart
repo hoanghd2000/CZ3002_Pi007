@@ -59,10 +59,11 @@ class BudgetPage extends StatelessWidget{
                       IconButton(
                           icon: const Icon(create_sharp),
                           color: Colors.black,
-                          onPressed: (){
+                          onPressed: () {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(builder: (context) => EditBudget(budgetList[index])));
+                            // print(edittedresult);
                           }
                       ),
                     ]),
@@ -101,10 +102,15 @@ class BudgetPage extends StatelessWidget{
           child: Icon(Icons.add),
           backgroundColor: action_button,
           foregroundColor: Colors.black,
-          onPressed: (){
-            Navigator.push(
+          onPressed: () async {
+            final result = await Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => AddBudget()));
+                MaterialPageRoute(builder: (context) => AddBudget())
+            );
+            print(result);
+            budgetList.add(Budget(result[3], result[2], DateTimeRange(start: result[0], end: result[1])));
+            print(budgetList);
+            (context as Element).reassemble();
           }
       ),
       /*floatingActionButton:FloatingActionButton.extended(
