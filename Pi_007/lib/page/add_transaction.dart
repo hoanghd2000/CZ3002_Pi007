@@ -1,7 +1,7 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pi_007/databases/db_transactions.dart';
+import 'package:pi_007/page/transactions_page.dart';
 import 'package:intl/intl.dart';
 
 class addTransaction extends StatelessWidget {
@@ -210,5 +210,17 @@ class _addTransactionPage extends State<addTransactionPage>{
       }
     }
   }
-}
 
+
+  void _navigateBack(BuildContext context) {
+    // Navigator.pop(context);  
+    // Navigator.pop(context);  
+    Navigator.of(context).push(MaterialPageRoute(builder: (context) => TransactionsPage()));
+    // Navigator.pushNamed(
+    //   context,
+    //   'Transactions',
+    //   // arguments: noteId,
+    // );
+    // // _refreshData();
+  }
+}
