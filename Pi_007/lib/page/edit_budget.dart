@@ -64,6 +64,8 @@ class _editBudgetPage extends State<EditBudget>{
   final _formKey = GlobalKey<FormState>();
   // final _timeController = TextEditingController(text: DateFormat('yyyy-MM-dd').format(widget.budget.dateRange.start) + " to " + DateFormat('yyyy-MM-dd').format(widget.budget.dateRange.end));
   var _timeController = TextEditingController();
+  var _budgetController = TextEditingController();
+  var _nameController = TextEditingController();
 
   String _budgetDate = "";
   DateTime _startDate = null;
@@ -76,6 +78,8 @@ class _editBudgetPage extends State<EditBudget>{
     super.initState();
     budget = widget.budget;  //here var is call and set to
     _timeController = TextEditingController(text: DateFormat('yyyy-MM-dd').format(widget.budget.dateRange.start) + " to " + DateFormat('yyyy-MM-dd').format(widget.budget.dateRange.end));
+    _budgetController = TextEditingController(text: widget.budget.amount);
+    _nameController = TextEditingController(text: widget.budget.title);
   }
 
 
@@ -127,10 +131,10 @@ class _editBudgetPage extends State<EditBudget>{
                   decoration: InputDecoration(
                       labelText: "Budget"
                   ),
-                  initialValue: widget.budget.amount,
-                  onChanged: (text){
-                    _budgetAmount = text;
-                  },
+                  controller: _budgetController,
+                  // onChanged: (text){
+                  //   _budgetAmount = text;
+                  // },
                 ),
               ),
               Padding(
@@ -163,7 +167,7 @@ class _editBudgetPage extends State<EditBudget>{
                     ),
                   ),),
                 ),
-                TextButton(onPressed: (){Navigator.pop(context, [_startDate, _endDate, _budgetAmount, _budgetName]);}, child: Text("Done"), style: TextButton.styleFrom(
+                TextButton(onPressed: (){Navigator.pop(context, [_startDate, _endDate, _budgetController.text, _budgetName]);}, child: Text("Done"), style: TextButton.styleFrom(
                   backgroundColor: confirm_button,
                   primary: Colors.black,
                   padding: EdgeInsets.only(
@@ -189,7 +193,7 @@ showAlertDialog(BuildContext context) {
     child: Text("Ok"),
     onPressed: () {
       Navigator.of(context).pop();
-      Navigator.pop(context);
+      Navigator.pop(context, "Delete");
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text("Budget Deleted"),
       ));
