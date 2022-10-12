@@ -1,7 +1,9 @@
 import 'dart:async';
 import 'package:flutter/foundation.dart';
+import 'package:intl/intl.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
+import 'dart:convert';
 
 class DbTrans_Manager {
   Database _database;
@@ -94,7 +96,7 @@ class DbTrans_Manager {
   }
 
   // read from db
-  static List<Transaction> fromJson(Map<String, dynamic> maps) {
+  static List<Transaction> fromJsonList(Map<String, dynamic> maps) {
     return List.generate(maps.length, (i) {
       return Transaction(
           id: maps[i]['id'],
@@ -106,6 +108,49 @@ class DbTrans_Manager {
           timestamp: maps[i]['timestamp']);
     });
   }
+
+  //view monthly: filter year
+  Future<List<Transaction>> getTransactionByYear() async {
+    DateFormat formater = DateFormat('yyyy-MM-dd');
+    String today = formater.format(DateTime.now());
+    print(today);
+    // String from = formater.format(DateTime.now().subtract(Duration(days: 180)));
+    // String to = formater.format(DateTime.now().toIso8601String());
+    // String currentYear = strftime('%m', today);
+    await openDb();
+    final monthlyResult = await _database
+        .rawQuery("SELECT * FROM transactions WHERE strftime('%y', $today)");
+    // print(monthlyResult.length);
+    //   List<Transaction> list =
+    //       monthlyResult.isNotEmpty ? monthlyResult.map((c) => Transaction.fromMap(c)).toList() : [];
+    print(monthlyResult.toString());
+    //convert json to transaction object in a list
+    return List.generate(monthlyResult.length, (i) {
+      return Transaction(
+          id: monthlyResult[i]['id'],
+          spendings: monthlyResult[i]['spendings'],
+          category: monthlyResult[i]['category'],
+          name: monthlyResult[i]['name'],
+          amount: monthlyResult[i]['amount'],
+          note: monthlyResult[i]['note'],
+          timestamp: monthlyResult[i]['timestamp']);
+    });
+
+    // return list;
+  }
+
+  //view yearly: everything in database
+  // Future<List<Transaction>> getTransactionByYear(currentYear) async {
+  //     await openDb();
+  //     var yearlyResult = await db.rawQuery(
+  //         'SELECT * FROM transactions WHERE strftime('%y', timestamp) = $currentYear',
+  //     );
+  //     print(yearlyResult.length);
+  //     List<Transaction> list =
+  //         yearlyResult.isNotEmpty ? yearlyResult.map((c) => Transaction.fromMap(c)).toList() : [];
+  //     return list;
+  // }
+
 }
 
 class Transaction {

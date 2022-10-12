@@ -43,6 +43,10 @@ class _TransactionsPageState extends State<TransactionsPage> {
             onPressed: () => _addTransaction(false),
             child: Text("add dummy earning"),
           ),
+          TextButton(
+            onPressed: () => getTransactionByYear(),
+            child: Text("add dummy spending"),
+          ),
           /************* debug code END ************/
 
           FutureBuilder(
@@ -162,7 +166,8 @@ class _TransactionsPageState extends State<TransactionsPage> {
     //   if (txn.timestamp == timestamp) return txn;
     // });
 
-    var txnListOfDate = txnList.where((txn) => txn.timestamp == timestamp).toList();
+    var txnListOfDate =
+        txnList.where((txn) => txn.timestamp == timestamp).toList();
     print(txnListOfDate);
 
     return Card(
@@ -204,7 +209,8 @@ class _TransactionsPageState extends State<TransactionsPage> {
   Widget _displayCardItem(Transaction txn) {
     return Row(children: [
       Expanded(
-          flex: 1, child: Text((txn.category??""), style: TextStyle(fontSize: 16))),
+          flex: 1,
+          child: Text((txn.category ?? ""), style: TextStyle(fontSize: 16))),
       Expanded(flex: 1, child: Text(txn.name, style: TextStyle(fontSize: 16))),
       Expanded(
           flex: 1,
