@@ -113,17 +113,20 @@ class DbTrans_Manager {
   Future<List<Transaction>> getTransactionByYear() async {
     DateFormat formater = DateFormat('yyyy-MM-dd');
     String today = formater.format(DateTime.now());
-    print(today);
-    // String from = formater.format(DateTime.now().subtract(Duration(days: 180)));
-    // String to = formater.format(DateTime.now().toIso8601String());
-    // String currentYear = strftime('%m', today);
+    String thisYear = today.substring(0, 4);
+
     await openDb();
-    final monthlyResult = await _database
-        .rawQuery("SELECT * FROM transactions WHERE strftime('%y', $today)");
-    // print(monthlyResult.length);
-    //   List<Transaction> list =
-    //       monthlyResult.isNotEmpty ? monthlyResult.map((c) => Transaction.fromMap(c)).toList() : [];
-    print(monthlyResult.toString());
+    // final monthlyResult = await _database
+    //     .rawQuery("SELECT * FROM transactions WHERE ");
+    // WHERE strftime('%y', timestamp) = strftime('%y', $today)
+
+    final monthlyResult = await _database.query(
+      'transactions',
+      columns: null,
+      where: "timestamp LIKE ?",
+      whereArgs: ['$thisYear%'] // string matching
+    );
+
     //convert json to transaction object in a list
     return List.generate(monthlyResult.length, (i) {
       return Transaction(
@@ -135,8 +138,6 @@ class DbTrans_Manager {
           note: monthlyResult[i]['note'],
           timestamp: monthlyResult[i]['timestamp']);
     });
-
-    // return list;
   }
 
   //view yearly: everything in database

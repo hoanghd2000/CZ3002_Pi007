@@ -1,11 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:pi_007/page/report_query.dart';
+import 'package:pi_007/databases/db_transactions.dart';
+
 
 class ReportPage extends StatelessWidget{
 
   static const action_button =  Color(0xFFF8C8DC);  //pink
   static const confirm_button =  Color(0xFFB4ECB4); //green
+
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -103,6 +105,10 @@ class ReportPage extends StatelessWidget{
         ),
         SizedBox(height:240),
 
+        //add chart here
+        
+        
+
         Text('   Budget for the month:',style: TextStyle(fontSize:20, fontWeight: FontWeight.bold)),
         SizedBox(height:10),
         Padding(
@@ -183,5 +189,5 @@ class ReportPage extends StatelessWidget{
       ]
       )
   );
-
+  
 }

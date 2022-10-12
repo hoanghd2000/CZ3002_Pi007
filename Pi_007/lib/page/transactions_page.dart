@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pi_007/page/add_transaction.dart';
 import 'package:pi_007/databases/db_transactions.dart';
+import 'dart:convert';
 
 class TransactionsPage extends StatefulWidget {
   const TransactionsPage({Key key}) : super(key: key);
@@ -35,22 +36,23 @@ class _TransactionsPageState extends State<TransactionsPage> {
             onPressed: () => dbmanager.deleteAllTransaction('transactions'),
             child: Text("delete all txn"),
           ),
-          TextButton(
-            onPressed: () => _addTransaction(true),
-            child: Text("add dummy spending"),
-          ),
-          TextButton(
-            onPressed: () => _addTransaction(false),
-            child: Text("add dummy earning"),
-          ),
-          TextButton(
-            onPressed: () => getTransactionByYear(),
-            child: Text("add dummy spending"),
-          ),
+          // TextButton(
+          //   onPressed: () => _addTransaction(true),
+          //   child: Text("add dummy spending"),
+          // ),
+          // TextButton(
+          //   onPressed: () => _addTransaction(false),
+          //   child: Text("add dummy earning"),
+          // ),
+          // TextButton(
+          //   onPressed: () => _getTxnByYear(),
+          //   child: Text("get txn by year"),
+          // ),
           /************* debug code END ************/
 
           FutureBuilder(
             future: dbmanager.getAllTransactionOrderBy('timestamp DESC'),
+            // future: dbmanager.getTransactionByYear(),
             builder: (BuildContext context,
                 AsyncSnapshot<List<Transaction>> snapshot) {
               if (snapshot.hasData) {
@@ -63,10 +65,9 @@ class _TransactionsPageState extends State<TransactionsPage> {
                         ? (1)
                         : (timestampMap[txn.timestamp] + 1));
 
-                print(txnList.toString());
+                // print(txnList.toString());
                 // print(distinctTxnTimestampList);
-
-                print(timestampMap);
+                // print(timestampMap);
 
                 return ListView.builder(
                   primary: false,
@@ -142,33 +143,23 @@ class _TransactionsPageState extends State<TransactionsPage> {
         .push(MaterialPageRoute(builder: (context) => AddTransactionPage()));
   }
 
-  void _addTransaction(bool spendings) {
-    Transaction t1 = Transaction(
-        spendings: 1,
-        category: "Food",
-        name: "Mala",
-        amount: 55.0,
-        timestamp: "2000-11-08");
-    Transaction t2 = Transaction(
-        spendings: 0,
-        category: "Allowance",
-        name: "Weekly",
-        amount: 30.0,
-        timestamp: "2022-12-31");
-    dbmanager.insertTransaction(spendings ? t1 : t2);
-  }
+  // void _addTransaction(bool spendings) {
+
+  //   dbmanager.insertTransaction(spendings ? t1 : t2);
+  // }
 
   Widget _displayCard(String timestamp) {
     //TODO use .map to wrap each txn data into a row widget, then display according to their dates
     // filter out txn of that date
     int numTxn = timestampMap[timestamp];
+    print(timestamp);
     // List txnListOfDate = txnList.map((txn) {
     //   if (txn.timestamp == timestamp) return txn;
     // });
 
     var txnListOfDate =
         txnList.where((txn) => txn.timestamp == timestamp).toList();
-    print(txnListOfDate);
+    // print(txnListOfDate);
 
     return Card(
       child: Padding(
@@ -225,5 +216,19 @@ class _TransactionsPageState extends State<TransactionsPage> {
                   style: TextStyle(fontSize: 16, color: Colors.blue))
               : SizedBox.shrink()),
     ]);
+  }
+
+  void printObject(Object object) {
+    // Encode your object and then decode your object to Map variable
+    Map jsonMapped = json.decode(json.encode(object));
+
+    // Using JsonEncoder for spacing
+    JsonEncoder encoder = new JsonEncoder.withIndent('  ');
+
+    // encode it to string
+    String prettyPrint = encoder.convert(jsonMapped);
+
+    // print or debugPrint your object
+    print(prettyPrint);
   }
 }
