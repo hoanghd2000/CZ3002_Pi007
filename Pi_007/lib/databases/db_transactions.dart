@@ -110,7 +110,7 @@ class DbTrans_Manager {
   }
 
   //view monthly: filter year
-  Future<List<Transaction>> getTransactionByYear() async {
+  Future<List<Transaction>> getSpendingCurrentYearOrderBy(String sqlOrderBy) async {
     DateFormat formater = DateFormat('yyyy-MM-dd');
     String today = formater.format(DateTime.now());
     String thisYear = today.substring(0, 4);
@@ -123,8 +123,9 @@ class DbTrans_Manager {
     final monthlyResult = await _database.query(
       'transactions',
       columns: null,
-      where: "timestamp LIKE ?",
-      whereArgs: ['$thisYear%'] // string matching
+      where: "timestamp LIKE ? AND spendings = 1",
+      whereArgs: ['$thisYear%'], // string matching
+      orderBy: sqlOrderBy
     );
 
     //convert json to transaction object in a list

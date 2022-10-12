@@ -62,8 +62,12 @@ class _TransactionsPageState extends State<TransactionsPage> {
                 AsyncSnapshot<List<Transaction>> snapshot) {
               if (snapshot.hasData) {
                 txnList = snapshot.data;
+
+                // find distinct dates
                 distinctTimestampList =
                     txnList.map((txn) => txn.timestamp).toSet().toList();
+
+                // finding number of duplicate dates: {timestamp : number of duplicates}
                 timestampMap = <String, int>{};
                 txnList.forEach((txn) => timestampMap[txn.timestamp] =
                     !timestampMap.containsKey(txn.timestamp)

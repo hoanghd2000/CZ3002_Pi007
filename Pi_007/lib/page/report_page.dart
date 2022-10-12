@@ -105,10 +105,10 @@ class ReportPage extends StatelessWidget{
 
           ],
         ),
-        SizedBox(height:240),
+        // SizedBox(height:240),
 
         //add chart here
-      // spendingsChart(data: )
+      spendingsChart(), 
 
         
         
