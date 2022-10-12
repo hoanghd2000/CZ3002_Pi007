@@ -68,7 +68,7 @@ class MorePage extends StatelessWidget{
                           left: 15
                       ),
                       child: Column(children: [
-                        Text("Add category",style: TextStyle(fontSize: 20)),
+                        Text("Add Category",style: TextStyle(fontSize: 20)),
                       ])
                   ),
                   Padding(

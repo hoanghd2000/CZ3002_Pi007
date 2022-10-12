@@ -1,30 +1,35 @@
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pi_007/databases/db_transactions.dart';
-import 'package:pi_007/page/transactions_page.dart';
 import 'package:intl/intl.dart';
 
-class addTransaction extends StatelessWidget {
-  const addTransaction({Key key}) : super(key: key);
-
+class editTransaction extends StatelessWidget {
+  // const editTransaction({Key key}) : super(key: key);
+  Transaction txn;
+  editTransaction(this.txn);
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
         primaryColor: Colors.blue,
       ),
-      home: addTransactionPage(),
+      home: editTransactionPage(),
     );
   }
 
 }
 
-class addTransactionPage extends StatefulWidget {
+class editTransactionPage extends StatefulWidget {
+  Transaction txn2;
   @override
-  State<addTransactionPage> createState() => _addTransactionPage();
+  State<editTransactionPage> createState() => _editTransactionPage(this.txn2);
 }
 
-class _addTransactionPage extends State<addTransactionPage>{
+class _editTransactionPage extends State<editTransactionPage>{
+  Transaction txn2;
+  _editTransactionPage(this.txn2);
+
   final DbTrans_Manager dbTrans_manager = new DbTrans_Manager();
 
   final _nameController = TextEditingController();
@@ -34,13 +39,12 @@ class _addTransactionPage extends State<addTransactionPage>{
 
   final _formKey = new GlobalKey<FormState>();
 
-  Transaction transaction;
   List<Transaction> translist;
   int updateIndex;
-
   static const confirm_button =  Color(0xFFB4ECB4); //green
   static const navigation_bar =  Color(0xFFFFEAD1);  //beige
   static const list_color =  Color(0xFFECECEC);  //grey
+  static const action_button =  Color(0xFFF8C8DC);  //pink
 
   static const List<String> list_type = <String>['Spending', 'Earning'];
   static const List<String> list_spend = <String>['Food', 'Transport','Shopping'];
@@ -51,16 +55,28 @@ class _addTransactionPage extends State<addTransactionPage>{
   
   String _model;
   String _type = list_type.first;
+  String type2;
   List<String> _selectType(String typeName){
     return typeName == list_type[0]
         ? list_spend
         : list_earn;
   }
+  String _currentType(int typeName){
+    String _type2;
+    if(typeName==1){
+      _type2=list_type.first;
+    }
+    else{
+      _type2 = list_type[1];
+    }
+    return _type2;
+  }
+
 
   @override
   Widget build(BuildContext context) => Scaffold(
       appBar: AppBar(
-        title: Text('Add Manually'),
+        title: Text('Edit Record'),
         backgroundColor: navigation_bar,
         foregroundColor: Colors.black,
       ),
@@ -71,7 +87,7 @@ class _addTransactionPage extends State<addTransactionPage>{
               child: Column(
                 children: <Widget>[
                   DropdownButton<String>(
-                    value: _type,
+                    value: _currentType(txn2.spendings),
                     dropdownColor: list_color,
                     icon: const Icon(Icons.expand_more),
                     elevation: 16,
@@ -99,31 +115,34 @@ class _addTransactionPage extends State<addTransactionPage>{
                     decoration: new InputDecoration(
                         // icon: Icon(Icons.calendar_today_rounded),
                         labelText: 'Date'),
+                    initialValue: txn2.timestamp,
                     controller: _timeController,
-                    validator: (val) => val.isNotEmpty? null:'Date should not be empty',
-                    onTap: ()async {
-                      DateTime pickeddate = await showDatePicker(
-                          context: context,
-                          initialDate: DateTime.now(),
-                          firstDate: DateTime(2021),
-                          lastDate: DateTime(2023),
-                      );
-                      if(pickeddate!=null){
-                        setState(() {
-                          _timeController.text = DateFormat('yyyy-MM-dd').format(pickeddate);
-                        });
-                      }
-                    },
+                    // validator: (val) => val.isNotEmpty? null:'Date should not be empty',
+                    // onTap: ()async {
+                    //   DateTime pickeddate = await showDatePicker(
+                    //       context: context,
+                    //       initialDate: DateTime.now(),
+                    //       firstDate: DateTime(2021),
+                    //       lastDate: DateTime(2023),
+                    //   );
+                    //   if(pickeddate!=null){
+                    //     setState(() {
+                    //       _timeController.text = DateFormat('yyyy-MM-dd').format(pickeddate);
+                    //     });
+                    //   }
+                    // },
                   ),
                   TextFormField(
                     decoration: new InputDecoration(labelText: 'Name'),
+                    initialValue: txn2.name,
                     controller: _nameController,
-                    validator: (val) => val.isNotEmpty? null:'Name should not be empty',
+                    // validator: (val) => val.isNotEmpty? null:'Name should not be empty',
                   ),
                   TextFormField(
                     decoration: new InputDecoration(labelText: 'Amount'),
+                    initialValue: txn2.amount as String,
                     controller: _amountController,
-                    validator: (val) => val.isNotEmpty? null:'Amount should not be empty',
+                    // validator: (val) => val.isNotEmpty? null:'Amount should not be empty',
                   ),
                   Row(
                     children: [
@@ -132,7 +151,8 @@ class _addTransactionPage extends State<addTransactionPage>{
                         padding: EdgeInsets.only(right:15.0)),
 
                       DropdownButton<String>(
-                        value: _model =_selectType(_type).first,
+                        value:txn2.category,
+                        // value: _model =_selectType(_type).first,
                         dropdownColor: list_color,
                         icon: const Icon(Icons.expand_more),
                         elevation: 16,
@@ -157,19 +177,37 @@ class _addTransactionPage extends State<addTransactionPage>{
                   ),
                   TextFormField(
                     decoration: new InputDecoration(labelText: 'Note'),
+                    initialValue: txn2.note,
                     controller: _noteController,
                   ),
 
                   ElevatedButton(
                       onPressed: (){
-                        _submitTransaction(context);
+                        // how to get index of clicked transaction?
+                        _editTransaction(context);
                       },
-                      child: Text('Save'),
+                      child: Text('Save Changes'),
                       style: ElevatedButton.styleFrom(
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12)
                         ),
                         primary: confirm_button,  //background
+                        onPrimary: Colors.black, //foreground
+                      )
+                  ),
+                  ElevatedButton(
+                      onPressed: (){
+                        dbTrans_manager.deleteTransaction(txn2.id);
+                        setState(() {
+                          translist.removeAt(txn2.id);
+                        });
+                      },
+                      child: Text('Delete'),
+                      style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12)
+                        ),
+                        primary: action_button,  //background
                         onPrimary: Colors.black, //foreground
                       )
                   ),
@@ -181,9 +219,28 @@ class _addTransactionPage extends State<addTransactionPage>{
       )
   );
 
-  void _submitTransaction(BuildContext context){
-    if(_formKey.currentState.validate()){
-      if(transaction==null){
+  void _editTransaction(BuildContext context){
+    txn2.name = _nameController.text;
+    txn2.amount = _amountController.text as double;
+    txn2.category=_model;
+    txn2.note=_noteController.text;
+    txn2.timestamp = _timeController.text;
+    int spendings;
+    if(_type=="Spending"){
+      spendings=1;
+    }
+    else{
+      spendings=0;
+    }
+    txn2.spendings = spendings;
+
+    dbTrans_manager.updateTransaction(txn2).then((id) =>{
+      setState((){
+        translist[updateIndex].name = _nameController.text;
+        translist[updateIndex].amount = _amountController.text as double;
+        translist[updateIndex].category=_model;
+        translist[updateIndex].note=_noteController.text;
+        translist[updateIndex].timestamp = _timeController.text;
         int spendings;
         if(_type=="Spending"){
           spendings=1;
@@ -191,36 +248,14 @@ class _addTransactionPage extends State<addTransactionPage>{
         else{
           spendings=0;
         }
-        Transaction tr = new Transaction(
-          spendings: spendings,
-          timestamp:_timeController.text,
-          name: _nameController.text,
-          amount: double.parse(_amountController.text),
-          category:_model,
-          note:_noteController.text,
-        );
-        //after transaction is added, clear the textfields
-        dbTrans_manager.insertTransaction(tr).then((id)=>{
-          _timeController.clear(),
-          _nameController.clear(),
-          _amountController.clear(),
-          _noteController.clear(),
-          print('Transaction added to Trans_database ${id}')
-        });
-      }
-    }
-  }
-
-
-  void _navigateBack(BuildContext context) {
-    // Navigator.pop(context);  
-    // Navigator.pop(context);  
-    Navigator.of(context).push(MaterialPageRoute(builder: (context) => TransactionsPage()));
-    // Navigator.pushNamed(
-    //   context,
-    //   'Transactions',
-    //   // arguments: noteId,
-    // );
-    // // _refreshData();
+        translist[updateIndex].spendings = spendings;
+      }),
+      _nameController.clear(),
+      _amountController.clear(),
+      _noteController.clear(),
+      _timeController.clear(),
+      txn2=null
+    });
   }
 }
+

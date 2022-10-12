@@ -3,11 +3,54 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:pi_007/page/budget_page.dart';
 
-class EditBudget extends StatelessWidget{
+// class EditBudget extends StatelessWidget {
+//   // colors
+//   static const navigation_bar =  Color(0xFFFFEAD1);  //beige
+//   // final Budget budget;
+//   // Budget get createdBudget => budget;
+//   // const EditBudget({Key key, @required this.budget}) : super(key: key);
+//   // const EditBudget(this.budget);
+//
+//   // final Budget budget;
+//   // EditBudget(this.budget);
+//
+//   @override
+//   Widget build(BuildContext context) => Scaffold(
+//     appBar: AppBar(
+//       title: Text('Edit Budget'),
+//       backgroundColor: navigation_bar,
+//       foregroundColor: Colors.black,
+//     ),
+//     body: editBudgetPage(),
+//   );
+//
+// }
 
-  // EditScreen(this.budget);
+class EditBudget extends StatefulWidget {
   final Budget budget;
   EditBudget(this.budget);
+  // const editBudgetPage({Key key, this.budget}) : super(key: key);
+
+  @override
+  State<EditBudget> createState() => _editBudgetPage();
+}
+
+
+class _editBudgetPage extends State<EditBudget>{
+
+  // EditScreen(this.budget);
+  // final Budget budget;
+  // _editBudgetPage(this.budget);
+  // EditBudget(this.budget);
+
+  // Budget _createdBudget = null;
+  // Budget get createdBudget => _createdBudget;
+
+  // EditScreen(this.budget);
+  // final Budget budget;
+  // _editBudgetPage(this.budget);
+
+  Budget budget = null;
 
   // colors
   static const navigation_bar =  Color(0xFFFFEAD1);  //beige
@@ -19,7 +62,22 @@ class EditBudget extends StatelessWidget{
   static const cancel_button = Color(0xFFFA7979);
 
   final _formKey = GlobalKey<FormState>();
-  final _timeController = TextEditingController();
+  // final _timeController = TextEditingController(text: DateFormat('yyyy-MM-dd').format(widget.budget.dateRange.start) + " to " + DateFormat('yyyy-MM-dd').format(widget.budget.dateRange.end));
+  var _timeController = TextEditingController();
+
+  String _budgetDate = "";
+  DateTime _startDate = null;
+  DateTime _endDate = null;
+  String _budgetAmount = "";
+  String _budgetName = "";
+
+  @override
+  void initState() {
+    super.initState();
+    budget = widget.budget;  //here var is call and set to
+    _timeController = TextEditingController(text: DateFormat('yyyy-MM-dd').format(widget.budget.dateRange.start) + " to " + DateFormat('yyyy-MM-dd').format(widget.budget.dateRange.end));
+  }
+
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -35,28 +93,32 @@ class EditBudget extends StatelessWidget{
             children: <Widget> [
               Padding(
                 padding: const EdgeInsets.all(15.0),
-                child: TextFormField(
+                child: new TextFormField(
                   decoration: InputDecoration(
                       labelText: "Date"
                   ),
-                  initialValue: DateFormat('yyyy-MM-dd').format(budget.dateRange.start) + " to " + DateFormat('yyyy-MM-dd').format(budget.dateRange.end),
-                  // controller: _timeController,
-                  // validator: (val) => val.isNotEmpty? null:'Date should not be empty',
-                  // onTap: ()async {
-                  //   DateTimeRange pickeddate = await showDateRangePicker(
-                  //     context: context,
-                  //     firstDate: DateTime(2022, 1, 1),
-                  //     lastDate: DateTime(2030, 12, 31),
-                  //     currentDate: DateTime.now(),
-                  //     saveText: 'Done',
-                  //   );
-                  //   if(pickeddate!=null){
-                  //     (context as Element).markNeedsBuild();
-                  //     setState(() {
-                  //       _timeController.text = DateFormat('yyyy-MM-dd').format(pickeddate.start) + " to " + DateFormat('yyyy-MM-dd').format(pickeddate.end);
-                  //     });
-                  //   }
-                  // },
+                  // initialValue: DateFormat('yyyy-MM-dd').format(widget.budget.dateRange.start) + " to " + DateFormat('yyyy-MM-dd').format(widget.budget.dateRange.end),
+                  controller: _timeController,
+                  onTap: ()async {
+                    DateTimeRange pickeddate = await showDateRangePicker(
+                      context: context,
+                      firstDate: DateTime(2022, 1, 1),
+                      lastDate: DateTime(2030, 12, 31),
+                      currentDate: DateTime.now(),
+                      saveText: 'Done',
+                    );
+                    if(pickeddate!=null){
+                      (context as Element).markNeedsBuild();
+                      setState(() {
+                        // _timeController.text = DateFormat('yyyy-MM-dd').format(pickeddate);
+                        // _selectedDateRange = pickeddate;
+                        // _startdate = DateFormat('yyyy-MM-dd').format(pickeddate.start) as TextEditingController;
+                        _timeController.text = DateFormat('yyyy-MM-dd').format(pickeddate.start) + " to " + DateFormat('yyyy-MM-dd').format(pickeddate.end);
+                        _startDate = pickeddate.start;
+                        _endDate = pickeddate.end;
+                      });
+                    }
+                  },
                 ),
               ),
               Padding(
@@ -65,7 +127,10 @@ class EditBudget extends StatelessWidget{
                   decoration: InputDecoration(
                       labelText: "Budget"
                   ),
-                  initialValue: budget.amount,
+                  initialValue: widget.budget.amount,
+                  onChanged: (text){
+                    _budgetAmount = text;
+                  },
                 ),
               ),
               Padding(
@@ -74,7 +139,10 @@ class EditBudget extends StatelessWidget{
                   decoration: InputDecoration(
                     labelText: "Name",
                   ),
-                  initialValue: budget.title,
+                  initialValue: widget.budget.title,
+                  onChanged: (text){
+                    _budgetName = text;
+                  },
                 ),
               ),
               Row(mainAxisAlignment: MainAxisAlignment.center, children: [
@@ -85,7 +153,7 @@ class EditBudget extends StatelessWidget{
                     showAlertDialog(context);
                   }, child: Text("Delete"), style: TextButton.styleFrom(
                     backgroundColor: cancel_button,
-                    foregroundColor: Colors.black,
+                    primary: Colors.black,
                     padding: EdgeInsets.only(
                         left: 30,
                         right: 30
@@ -95,9 +163,9 @@ class EditBudget extends StatelessWidget{
                     ),
                   ),),
                 ),
-                TextButton(onPressed: (){Navigator.pop(context);}, child: Text("Done"), style: TextButton.styleFrom(
+                TextButton(onPressed: (){Navigator.pop(context, [_startDate, _endDate, _budgetAmount, _budgetName]);}, child: Text("Done"), style: TextButton.styleFrom(
                   backgroundColor: confirm_button,
-                  foregroundColor: Colors.black,
+                  primary: Colors.black,
                   padding: EdgeInsets.only(
                       left: 30,
                       right: 30

@@ -11,6 +11,7 @@ class TransactionsPage extends StatefulWidget {
   State<TransactionsPage> createState() => _TransactionsPageState();
 }
 
+
 class _TransactionsPageState extends State<TransactionsPage> {
   final DbTrans_Manager dbmanager = new DbTrans_Manager();
 
@@ -140,7 +141,7 @@ class _TransactionsPageState extends State<TransactionsPage> {
 
   void _navigateToNextScreen(BuildContext context) {
     Navigator.of(context)
-        .push(MaterialPageRoute(builder: (context) => AddTransactionPage()));
+        .push(MaterialPageRoute(builder: (context) => addTransactionPage()));
   }
 
   // void _addTransaction(bool spendings) {
