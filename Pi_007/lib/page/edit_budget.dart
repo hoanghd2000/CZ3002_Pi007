@@ -171,7 +171,18 @@ class _editBudgetPage extends State<EditBudget>{
                     ),
                   ),),
                 ),
-                TextButton(onPressed: (){Navigator.pop(context, [_startDate, _endDate, _budgetController.text, _nameController.text]);}, child: Text("Done"), style: TextButton.styleFrom(
+                TextButton(onPressed: (){
+                  if (_startDate == null){
+                    _startDate = widget.budget.dateRange.start;
+                  }
+                  if (_endDate == null){
+                    _endDate = widget.budget.dateRange.end;
+                  }
+                  Navigator.pop(
+                      context,
+                      [_startDate, _endDate, _budgetController.text, _nameController.text]);
+                  },
+                  child: Text("Done"), style: TextButton.styleFrom(
                   backgroundColor: confirm_button,
                   primary: Colors.black,
                   padding: EdgeInsets.only(
