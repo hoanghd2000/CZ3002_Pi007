@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:pi_007/databases/db_transactions.dart';
 import 'package:intl/intl.dart';
 
 class AddBudget extends StatelessWidget {
@@ -40,8 +39,6 @@ class _addBudgetPage extends State<addBudgetPage>{
   DateTime _startTime = null;
   DateTime _endTime = null;
 
-  DateTimeRange _selectedDateRange;
-
   @override
   Widget build(BuildContext context) => Scaffold(
 
@@ -55,8 +52,8 @@ class _addBudgetPage extends State<addBudgetPage>{
               padding: const EdgeInsets.all(15.0),
               child: TextFormField(
                 decoration: new InputDecoration(
-                  // icon: Icon(Icons.calendar_today_rounded),
-                    labelText: 'Date'),
+                    labelText: 'Date'
+                ),
                 controller: _timeController,
                 validator: (val) => val.isNotEmpty? null:'Date should not be empty',
                 onTap: ()async {
@@ -69,9 +66,6 @@ class _addBudgetPage extends State<addBudgetPage>{
                   );
                   if(pickeddate!=null){
                     setState(() {
-                      // _timeController.text = DateFormat('yyyy-MM-dd').format(pickeddate);
-                      // _selectedDateRange = pickeddate;
-                      // _startdate = DateFormat('yyyy-MM-dd').format(pickeddate.start) as TextEditingController;
                       _timeController.text = DateFormat('yyyy-MM-dd').format(pickeddate.start) + " to " + DateFormat('yyyy-MM-dd').format(pickeddate.end);
                       _startTime = pickeddate.start;
                       _endTime = pickeddate.end;
@@ -113,45 +107,5 @@ class _addBudgetPage extends State<addBudgetPage>{
         )
         )
       ),
-
-
   );
 }
-
-
-
-//   @override
-//   Widget build(BuildContext context) => Scaffold(
-//       appBar: AppBar(
-//         title: Text('Add Budget'),
-//         backgroundColor: navigation_bar,
-//         foregroundColor: Colors.black,
-//       ),
-//
-//       body: children: <Widget>[Container(
-//   margin: EdgeInsets.all(10.0),
-//   // decoration: BoxDecoration(
-//   //     color: Colors.white,
-//   //     borderRadius: new BorderRadius.circular(5.0),
-//   //     boxShadow: [
-//   //       BoxShadow(
-//   //         color: Colors.grey,
-//   //         offset: Offset(0.0, 1.0), //(x,y)
-//   //         blurRadius: 6.0,
-//   //       )
-//   //     ]),
-//   child: Padding(
-//   padding: const EdgeInsets.all(5.0),
-//   child: TextField(
-//   decoration: InputDecoration(
-//   border: UnderlineInputBorder(),
-//   hintText: 'Enter a search term',
-//   labelText: "Month: "
-//   ),
-//   ),
-//
-//   ),)]
-//
-//
-//   );
-// }
