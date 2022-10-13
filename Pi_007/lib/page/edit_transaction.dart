@@ -197,11 +197,8 @@ class _editTransactionPage extends State<editTransactionPage>{
                         padding: const EdgeInsets.fromLTRB(50, 20, 0, 0),
                         child: ElevatedButton(
                             onPressed: (){
-                              // once u delete a record with food, u cant delete another record with food?
-                              // applies to each category, u cannot delete more than 1 item from the same category??
                               dbTrans_manager.deleteTransaction(widget.txn2.id);
                               print("Transaction ${txn2.id} deleted");
-                              // _navigateBack(context);
                               setState(() {
                                 // translist.removeAt(txn2.id);
                               });

@@ -5,6 +5,7 @@ import 'package:pi_007/databases/db_transactions.dart';
 import 'package:pi_007/static_data/txn.dart';
 import 'dart:convert';
 
+import '../main.dart';
 import 'edit_transaction.dart';
 
 class TransactionsPage extends StatefulWidget {
@@ -32,11 +33,14 @@ class _TransactionsPageState extends State<TransactionsPage> {
     return Scaffold(
       body: ListView(
         children: <Widget>[
-          Text("Transactions list here", style: TextStyle(fontSize: 40)),
+          // Text("Transactions list here", style: TextStyle(fontSize: 40)),
 
           /************* debug code BEGIN ************/
           TextButton(
-            onPressed: () => dbmanager.deleteAllTransaction('transactions'),
+            onPressed: () {
+              dbmanager.deleteAllTransaction('transactions');
+              _navigateBack(context);
+            },
             child: Text("delete all txn"),
           ),
           TextButton(
@@ -91,7 +95,7 @@ class _TransactionsPageState extends State<TransactionsPage> {
                 );
               } else {
                 return const Center(
-                  child: Text("No data found."),
+                  child: CircularProgressIndicator(),
                 );
               }
             },
@@ -164,6 +168,7 @@ class _TransactionsPageState extends State<TransactionsPage> {
     for (var i = 0; i < data.length; i++) {
       dbmanager.insertTransaction(data[i]);
     }
+    _navigateBack(context);
   }
 
   Widget _displayCard(String timestamp) {
@@ -269,4 +274,16 @@ class _TransactionsPageState extends State<TransactionsPage> {
   }
 
 
+}
+void _navigateBack(BuildContext context) {
+  // Navigator.pop(context);
+  // Navigator.pop(context);
+  Navigator.of(context)
+      .push(MaterialPageRoute(builder: (context) => MyApp()));
+  // Navigator.pushNamed(
+  //   context,
+  //   'Transactions',
+  //   // arguments: noteId,
+  // );
+  // // _refreshData();
 }
