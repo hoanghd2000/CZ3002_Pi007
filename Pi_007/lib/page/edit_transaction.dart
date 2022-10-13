@@ -49,19 +49,16 @@ class _editTransactionPage extends State<editTransactionPage>{
   static const action_button =  Color(0xFFF8C8DC);  //pink
 
   static const List<String> list_type = <String>['Spending', 'Earning'];
-  static const List<String> list_spend = <String>['Food', 'Transport','Shopping'];
-  static const List<String> list_earn = <String>['Allowance', 'Stock','Work'];
+  final List<String> list_spend = <String>['Food', 'Transport','Shopping'];
+  final List<String> list_earn = <String>['Allowance', 'Stock','Work'];
   String type_list = list_type.first;
-  String spend_list = list_spend.first;
-  String earn_list = list_earn.first;
+
   
   var _model;
   var _type;
   String type2;
   List<String> _selectType(String typeName){
-    return typeName == list_type[0]
-        ? list_spend
-        : list_earn;
+    return typeName == list_type[0] ? list_spend : list_earn;
   }
   String _currentType(int typeName){
     String _type2;
@@ -114,9 +111,7 @@ class _editTransactionPage extends State<editTransactionPage>{
                       // This is called when the user selects an item.
                       setState(() {
                         _type = value;
-                        _model=_selectType(_type).first;
                         print(value);
-                        print(_model);
                       });
                     },
                     items: list_type.map<DropdownMenuItem<String>>((String value) {
@@ -204,12 +199,14 @@ class _editTransactionPage extends State<editTransactionPage>{
                             onPressed: (){
                               // once u delete a record with food, u cant delete another record with food?
                               // applies to each category, u cannot delete more than 1 item from the same category??
-                              // dbTrans_manager.deleteTransaction(txn2.id);
+                              dbTrans_manager.deleteTransaction(widget.txn2.id);
                               print("Transaction ${txn2.id} deleted");
                               // _navigateBack(context);
                               setState(() {
                                 // translist.removeAt(txn2.id);
                               });
+                              _navigateBack(context);
+
                             },
                             child: Text('Delete'),
                             style: ElevatedButton.styleFrom(
