@@ -135,6 +135,9 @@ class _editBudgetPage extends State<EditBudget>{
                   // onChanged: (text){
                   //   _budgetAmount = text;
                   // },
+                  onChanged: (text){
+                    _budgetAmount = text;
+                  },
                 ),
               ),
               Padding(
@@ -143,10 +146,11 @@ class _editBudgetPage extends State<EditBudget>{
                   decoration: InputDecoration(
                     labelText: "Name",
                   ),
-                  initialValue: widget.budget.title,
-                  onChanged: (text){
-                    _budgetName = text;
-                  },
+                  controller: _nameController,
+                  // initialValue: widget.budget.title,
+                  // onChanged: (text){
+                  //   _budgetName = text;
+                  // },
                 ),
               ),
               Row(mainAxisAlignment: MainAxisAlignment.center, children: [
@@ -167,7 +171,7 @@ class _editBudgetPage extends State<EditBudget>{
                     ),
                   ),),
                 ),
-                TextButton(onPressed: (){Navigator.pop(context, [_startDate, _endDate, _budgetController.text, _budgetName]);}, child: Text("Done"), style: TextButton.styleFrom(
+                TextButton(onPressed: (){Navigator.pop(context, [_startDate, _endDate, _budgetController.text, _nameController.text]);}, child: Text("Done"), style: TextButton.styleFrom(
                   backgroundColor: confirm_button,
                   primary: Colors.black,
                   padding: EdgeInsets.only(
