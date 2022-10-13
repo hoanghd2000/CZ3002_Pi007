@@ -51,7 +51,7 @@ class _addCategoryPage extends State<addCategoryPage>{
     Icons.edit,
     Icons.sunny,
     Icons.radar,
-    Icons.wallet
+    // Icons.wallet
     // all the icons you want to include
   ];
   Icon _categoryController = null;

@@ -53,10 +53,15 @@ class _addTransactionPage extends State<addTransactionPage> {
   String spend_list = list_spend.first;
   String earn_list = list_earn.first;
 
+
   String _model;
   String _type = list_type.first;
   List<String> _selectType(String typeName) {
     return typeName == list_type[0] ? list_spend : list_earn;
+  }
+  String _currentType(String type){
+    _model = _selectType(type).first;
+    return _model;
   }
 
   @override
@@ -144,7 +149,7 @@ class _addTransactionPage extends State<addTransactionPage> {
                             ),
                             padding: EdgeInsets.only(right: 15.0)),
                         DropdownButton<String>(
-                          value: _model = _selectType(_type).first,
+                          value: _model,
                           dropdownColor: list_color,
                           icon: const Icon(Icons.expand_more),
                           elevation: 16,
