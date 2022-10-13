@@ -196,41 +196,53 @@ class _editTransactionPage extends State<editTransactionPage>{
                     controller: _noteController,
                   ),
 
-                  ElevatedButton(
-                      onPressed: (){
-                        // how to get index of clicked transaction?
-                        // some async problem and method doesn't exist
-                        _editTransaction(context);
-                      },
-                      child: Text('Save Changes'),
-                      style: ElevatedButton.styleFrom(
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12)
+                  Row(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(50, 20, 0, 0),
+                        child: ElevatedButton(
+                            onPressed: (){
+                              // once u delete a record with food, u cant delete another record with food?
+                              // applies to each category, u cannot delete more than 1 item from the same category??
+                              // dbTrans_manager.deleteTransaction(txn2.id);
+                              print("Transaction ${txn2.id} deleted");
+                              // _navigateBack(context);
+                              setState(() {
+                                // translist.removeAt(txn2.id);
+                              });
+                            },
+                            child: Text('Delete'),
+                            style: ElevatedButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12)
+                              ),
+                              primary: action_button,  //background
+                              onPrimary: Colors.black, //foreground
+                            )
                         ),
-                        primary: confirm_button,  //background
-                        onPrimary: Colors.black, //foreground
-                      )
-                  ),
-                  ElevatedButton(
-                      onPressed: (){
-                        // once u delete a record with food, u cant delete another record with food?
-                        // applies to each category, u cannot delete more than 1 item from the same category??
-                        // dbTrans_manager.deleteTransaction(txn2.id);
-                        print("Transaction ${txn2.id} deleted");
-                        // _navigateBack(context);
-                        setState(() {
-                          // translist.removeAt(txn2.id);
-                        });
-                      },
-                      child: Text('Delete'),
-                      style: ElevatedButton.styleFrom(
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12)
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(100, 20, 0, 0),
+                        child: ElevatedButton(
+                            onPressed: (){
+                              // how to get index of clicked transaction?
+                              // some async problem and method doesn't exist
+                              _editTransaction(context);
+                            },
+                            child: Text('Save'),
+                            style: ElevatedButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12)
+                              ),
+                              primary: confirm_button,  //background
+                              onPrimary: Colors.black, //foreground
+                            )
                         ),
-                        primary: action_button,  //background
-                        onPrimary: Colors.black, //foreground
-                      )
+                      ),
+
+                    ],
                   ),
+
                 ],
               ),
             )
