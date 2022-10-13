@@ -1,7 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:pi_007/databases/db_transactions.dart';
-import 'package:intl/intl.dart';
 
 class AddCategory extends StatelessWidget {
   // colors

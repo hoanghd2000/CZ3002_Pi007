@@ -3,33 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:pi_007/page/budget_page.dart';
 
-// class EditBudget extends StatelessWidget {
-//   // colors
-//   static const navigation_bar =  Color(0xFFFFEAD1);  //beige
-//   // final Budget budget;
-//   // Budget get createdBudget => budget;
-//   // const EditBudget({Key key, @required this.budget}) : super(key: key);
-//   // const EditBudget(this.budget);
-//
-//   // final Budget budget;
-//   // EditBudget(this.budget);
-//
-//   @override
-//   Widget build(BuildContext context) => Scaffold(
-//     appBar: AppBar(
-//       title: Text('Edit Budget'),
-//       backgroundColor: navigation_bar,
-//       foregroundColor: Colors.black,
-//     ),
-//     body: editBudgetPage(),
-//   );
-//
-// }
-
 class EditBudget extends StatefulWidget {
   final Budget budget;
   EditBudget(this.budget);
-  // const editBudgetPage({Key key, this.budget}) : super(key: key);
 
   @override
   State<EditBudget> createState() => _editBudgetPage();
@@ -37,18 +13,6 @@ class EditBudget extends StatefulWidget {
 
 
 class _editBudgetPage extends State<EditBudget>{
-
-  // EditScreen(this.budget);
-  // final Budget budget;
-  // _editBudgetPage(this.budget);
-  // EditBudget(this.budget);
-
-  // Budget _createdBudget = null;
-  // Budget get createdBudget => _createdBudget;
-
-  // EditScreen(this.budget);
-  // final Budget budget;
-  // _editBudgetPage(this.budget);
 
   Budget budget = null;
 
@@ -62,16 +26,12 @@ class _editBudgetPage extends State<EditBudget>{
   static const cancel_button = Color(0xFFFA7979);
 
   final _formKey = GlobalKey<FormState>();
-  // final _timeController = TextEditingController(text: DateFormat('yyyy-MM-dd').format(widget.budget.dateRange.start) + " to " + DateFormat('yyyy-MM-dd').format(widget.budget.dateRange.end));
   var _timeController = TextEditingController();
   var _budgetController = TextEditingController();
   var _nameController = TextEditingController();
 
-  String _budgetDate = "";
   DateTime _startDate = null;
   DateTime _endDate = null;
-  String _budgetAmount = "";
-  String _budgetName = "";
 
   @override
   void initState() {
@@ -101,7 +61,6 @@ class _editBudgetPage extends State<EditBudget>{
                   decoration: InputDecoration(
                       labelText: "Date"
                   ),
-                  // initialValue: DateFormat('yyyy-MM-dd').format(widget.budget.dateRange.start) + " to " + DateFormat('yyyy-MM-dd').format(widget.budget.dateRange.end),
                   controller: _timeController,
                   onTap: ()async {
                     DateTimeRange pickeddate = await showDateRangePicker(
@@ -114,9 +73,6 @@ class _editBudgetPage extends State<EditBudget>{
                     if(pickeddate!=null){
                       (context as Element).markNeedsBuild();
                       setState(() {
-                        // _timeController.text = DateFormat('yyyy-MM-dd').format(pickeddate);
-                        // _selectedDateRange = pickeddate;
-                        // _startdate = DateFormat('yyyy-MM-dd').format(pickeddate.start) as TextEditingController;
                         _timeController.text = DateFormat('yyyy-MM-dd').format(pickeddate.start) + " to " + DateFormat('yyyy-MM-dd').format(pickeddate.end);
                         _startDate = pickeddate.start;
                         _endDate = pickeddate.end;
@@ -132,12 +88,6 @@ class _editBudgetPage extends State<EditBudget>{
                       labelText: "Budget"
                   ),
                   controller: _budgetController,
-                  // onChanged: (text){
-                  //   _budgetAmount = text;
-                  // },
-                  onChanged: (text){
-                    _budgetAmount = text;
-                  },
                 ),
               ),
               Padding(
@@ -147,10 +97,6 @@ class _editBudgetPage extends State<EditBudget>{
                     labelText: "Name",
                   ),
                   controller: _nameController,
-                  // initialValue: widget.budget.title,
-                  // onChanged: (text){
-                  //   _budgetName = text;
-                  // },
                 ),
               ),
               Row(mainAxisAlignment: MainAxisAlignment.center, children: [
@@ -197,8 +143,6 @@ class _editBudgetPage extends State<EditBudget>{
             ]
         )
     ),
-
-
   );
 }
 

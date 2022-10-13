@@ -1,7 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-// import 'package:syncfusion_flutter_datepicker/datepicker.dart';
-import 'package:grouped_list/grouped_list.dart';
 import 'package:intl/intl.dart';
 
 import 'package:pi_007/page/add_budget.dart';
@@ -20,12 +18,10 @@ class BudgetPage extends StatelessWidget{
   static const IconData pencil = IconData(0xf37e);
   static const IconData create_sharp = IconData(0xe89b, fontFamily: 'MaterialIcons');
 
-  // sample hard coded data - to be extracted from database
-  // idk what format it will be extracted as though - json / string / ???
-  // currently this sample is a class
+  // sample hard coded data
   final budgetList = List.generate(
     8,
-        (i) => Budget(
+      (i) => Budget(
       'Budget $i',
       '500',
       DateTimeRange(start: DateTime.parse("2022-0${i+1}-01"), end: DateTime.parse("2022-0${i+1}-28"))
@@ -55,7 +51,6 @@ class BudgetPage extends StatelessWidget{
                         right: 5
                     ),
                     child: Column(children: [
-                      // Icon(create_sharp),
                       IconButton(
                           icon: const Icon(create_sharp),
                           color: Colors.black,
@@ -124,38 +119,8 @@ class BudgetPage extends StatelessWidget{
             (context as Element).reassemble();
           }
       ),
-      /*floatingActionButton:FloatingActionButton.extended(
-        onPressed: () {},
-        icon: Icon(Icons.save),
-        label: Text("Save"),
-      ), */
     );
-
 }
-
-// class EditScreen extends StatelessWidget {
-//   // In the constructor, require a Todo.
-//   // const EditScreen({super.key, required this.budget});
-//   EditScreen(this.budget);
-//
-//   // Declare a field that holds the Todo.
-//   final Budget budget;
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     // Use the Todo to create the UI.
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: Text(budget.title),
-//       ),
-//       body: Padding(
-//         padding: const EdgeInsets.all(16.0),
-//         child: Text(budget.amount),
-//       ),
-//     );
-//   }
-//
-// }
 
 class Budget {
   final String title;
