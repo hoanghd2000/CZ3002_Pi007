@@ -30,7 +30,7 @@ class _TransactionsPageState extends State<TransactionsPage> {
     return Scaffold(
       body: ListView(
         children: <Widget>[
-          // Text("Transactions list here", style: TextStyle(fontSize: 40)),
+          Text("Transactions list here", style: TextStyle(fontSize: 40)),
 
           /************* debug code BEGIN ************/
           TextButton(
