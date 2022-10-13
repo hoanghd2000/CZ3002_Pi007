@@ -5,6 +5,8 @@ import 'package:pi_007/databases/db_transactions.dart';
 import 'package:pi_007/static_data/txn.dart';
 import 'dart:convert';
 
+import 'edit_transaction.dart';
+
 class TransactionsPage extends StatefulWidget {
   const TransactionsPage({Key key}) : super(key: key);
 
@@ -231,7 +233,16 @@ class _TransactionsPageState extends State<TransactionsPage> {
               : Text("+ \$ ${txn.amount}",
                   textAlign: TextAlign.right,
                   style: TextStyle(fontSize: 16, color: Colors.blue))),
-      Expanded(flex: 1, child: SizedBox.shrink())
+      Expanded(flex: 1, child: SizedBox.shrink()),
+      IconButton(
+          onPressed: ()async{
+            // print("edit transaction ${txn.id}" );
+            // how to pass the index of id into txn list
+            final edittedresult = await Navigator.push(context,
+                MaterialPageRoute(builder: (context) => editTransactionPage(txn)));;
+            print(edittedresult);
+
+          }, icon: Icon(Icons.edit))
     ]);
   }
 
@@ -256,4 +267,6 @@ class _TransactionsPageState extends State<TransactionsPage> {
     // print or debugPrint your object
     print(prettyPrint);
   }
+
+
 }
