@@ -37,7 +37,7 @@ class _TransactionsPageState extends State<TransactionsPage> {
           /************* debug code BEGIN ************/
           TextButton(
             onPressed: () {
-              dbmanager.deleteAllTransaction('transactions');
+              dbmanager.deleteAllTransaction();
               _navigateBack(context);
             },
             child: Text("delete all txn"),

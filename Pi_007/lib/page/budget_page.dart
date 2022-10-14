@@ -64,17 +64,6 @@ class _BudgetPageState extends State<BudgetPage> {
             Text("Budget list here", style: TextStyle(fontSize: 40)),
 
             /************* debug code BEGIN ************/
-            // TextButton(
-            //   onPressed: () {
-            //     dbmanager.deleteAllTransaction('transactions');
-            //     _navigateBack(context);
-            //   },
-            //   child: Text("delete all txn"),
-            // ),
-            TextButton(
-              onPressed: () => budgetDBM.openDb(),
-              child: Text("create table"),
-            ),
             TextButton(
               onPressed: () => budgetDBM.insertBudget(Budget(
                   name: 'test1',
@@ -84,10 +73,9 @@ class _BudgetPageState extends State<BudgetPage> {
               child: Text("add budget"),
             ),
             TextButton(
-              onPressed: () => budgetDBM.drop(),
-              child: Text("drop table"),
+              onPressed: () => budgetDBM.deleteAllBudget(),
+              child: Text("delete all txn"),
             ),
-
             FutureBuilder(
               future: budgetDBM.getBudgetList(),
               // future: dbmanager.getTransactionByYear(),
