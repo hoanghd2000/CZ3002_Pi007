@@ -2,6 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pi_007/page/add_transaction.dart';
 import 'package:pi_007/databases/db_transactions.dart';
+import 'package:pi_007/static_data/txn.dart';
+import 'dart:convert';
+
+import 'edit_transaction.dart';
 
 class TransactionsPage extends StatefulWidget {
   const TransactionsPage({Key key}) : super(key: key);
@@ -28,7 +32,7 @@ class _TransactionsPageState extends State<TransactionsPage> {
     return Scaffold(
       body: ListView(
         children: <Widget>[
-          // Text("Transactions list here", style: TextStyle(fontSize: 40)),
+          Text("Transactions list here", style: TextStyle(fontSize: 40)),
 
           /************* debug code BEGIN ************/
           TextButton(
@@ -36,32 +40,45 @@ class _TransactionsPageState extends State<TransactionsPage> {
             child: Text("delete all txn"),
           ),
           TextButton(
-            onPressed: () => _addTransaction(true),
-            child: Text("add dummy spending"),
+            onPressed: () => _generate2022data(),
+            child: Text("generate data"),
           ),
-          TextButton(
-            onPressed: () => _addTransaction(false),
-          ),
+          // TextButton(
+          //   onPressed: () => _addTransaction(true),
+          //   child: Text("add dummy spending"),
+          // ),
+          // TextButton(
+          //   onPressed: () => _addTransaction(false),
+          //   child: Text("add dummy earning"),
+          // ),
+          // TextButton(
+          //   onPressed: () => _getTxnByYear(),
+          //   child: Text("get txn by year"),
+          // ),
           /************* debug code END ************/
 
           FutureBuilder(
             future: dbmanager.getAllTransactionOrderBy('timestamp DESC'),
+            // future: dbmanager.getTransactionByYear(),
             builder: (BuildContext context,
                 AsyncSnapshot<List<Transaction>> snapshot) {
               if (snapshot.hasData) {
                 txnList = snapshot.data;
+
+                // find distinct dates
                 distinctTimestampList =
                     txnList.map((txn) => txn.timestamp).toSet().toList();
+
+                // finding number of duplicate dates: {timestamp : number of duplicates}
                 timestampMap = <String, int>{};
                 txnList.forEach((txn) => timestampMap[txn.timestamp] =
                     !timestampMap.containsKey(txn.timestamp)
                         ? (1)
                         : (timestampMap[txn.timestamp] + 1));
 
-                print(txnList.toString());
+                // print(txnList.toString());
                 // print(distinctTxnTimestampList);
-
-                print(timestampMap);
+                // print(timestampMap);
 
                 return ListView.builder(
                   primary: false,
@@ -134,39 +151,36 @@ class _TransactionsPageState extends State<TransactionsPage> {
 
   void _navigateToNextScreen(BuildContext context) {
     Navigator.of(context)
-        .push(MaterialPageRoute(builder: (context) => AddTransactionPage()));
+        .push(MaterialPageRoute(builder: (context) => addTransactionPage()));
   }
 
-  void _addTransaction(bool spendings) {
-    Transaction t1 = Transaction(
-        spendings: 1,
-        category: "Food",
-        name: "Mala",
-        amount: 55.0,
-        timestamp: "2000-11-08");
-    Transaction t2 = Transaction(
-        spendings: 0,
-        category: "Allowance",
-        name: "Weekly",
-        amount: 30.0,
-        timestamp: "2022-12-31");
-    dbmanager.insertTransaction(spendings ? t1 : t2);
+  // void _addTransaction(bool spendings) {
+
+  //   dbmanager.insertTransaction(spendings ? t1 : t2);
+  // }
+
+  void _generate2022data() {
+    var data = get2022data();
+    for (var i = 0; i < data.length; i++) {
+      dbmanager.insertTransaction(data[i]);
+    }
   }
 
   Widget _displayCard(String timestamp) {
-    //TODO use .map to wrap each txn data into a row widget, then display according to their dates
     // filter out txn of that date
     int numTxn = timestampMap[timestamp];
+    print(timestamp);
     // List txnListOfDate = txnList.map((txn) {
     //   if (txn.timestamp == timestamp) return txn;
     // });
 
-    var txnListOfDate = txnList.where((txn) => txn.timestamp == timestamp).toList();
-    print(txnListOfDate);
+    var txnListOfDate =
+        txnList.where((txn) => txn.timestamp == timestamp).toList();
+    // print(txnListOfDate);
 
     return Card(
       child: Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(12.0),
           child: Column(
             children: [
               Row(
@@ -175,16 +189,20 @@ class _TransactionsPageState extends State<TransactionsPage> {
                   Expanded(
                       flex: 2,
                       child: Text(timestamp, style: TextStyle(fontSize: 16))),
-                  Expanded(
-                      flex: 1,
-                      child: Text("\$ total", // TODO
-                          style: TextStyle(fontSize: 16, color: Colors.red))),
-                  Expanded(
-                      flex: 1,
-                      child: Text("\$ total", // TODO
-                          style: TextStyle(fontSize: 16, color: Colors.blue))),
+                  // Expanded(
+                  //     flex: 1,
+                  //     child: Text("\$ total", // TODO
+                  //         style: TextStyle(fontSize: 16, color: Colors.red))),
+                  // Expanded(
+                  //     flex: 1,
+                  //     child: Text("\$ total", // TODO
+                  //         style: TextStyle(fontSize: 16, color: Colors.blue))),
+                  Expanded(flex: 2, child: SizedBox.shrink()),
                 ],
               ),
+              // Center(
+              //   child: Text(timestamp, style: TextStyle(fontSize: 16)),
+              // ),
               ListView.builder(
                 // primary: false,
                 physics: NeverScrollableScrollPhysics(),
@@ -203,20 +221,52 @@ class _TransactionsPageState extends State<TransactionsPage> {
   Widget _displayCardItem(Transaction txn) {
     return Row(children: [
       Expanded(
-          flex: 1, child: Text((txn.category??""), style: TextStyle(fontSize: 16))),
-      Expanded(flex: 1, child: Text(txn.name, style: TextStyle(fontSize: 16))),
+          flex: 2,
+          child: Text((txn.category ?? ""), style: TextStyle(fontSize: 16))),
+      Expanded(flex: 2, child: Text(txn.name, style: TextStyle(fontSize: 16))),
       Expanded(
-          flex: 1,
+          flex: 3,
           child: (txn.spendings == 1)
               ? Text("- \$ ${txn.amount}",
+                  textAlign: TextAlign.right,
                   style: TextStyle(fontSize: 16, color: Colors.red))
-              : SizedBox.shrink()),
-      Expanded(
-          flex: 1,
-          child: (txn.spendings == 0)
-              ? Text("+ \$ ${txn.amount}",
-                  style: TextStyle(fontSize: 16, color: Colors.blue))
-              : SizedBox.shrink()),
+              : Text("+ \$ ${txn.amount}",
+                  textAlign: TextAlign.right,
+                  style: TextStyle(fontSize: 16, color: Colors.blue))),
+      Expanded(flex: 1, child: SizedBox.shrink()),
+      IconButton(
+          onPressed: ()async{
+            // print("edit transaction ${txn.id}" );
+            // how to pass the index of id into txn list
+            final edittedresult = await Navigator.push(context,
+                MaterialPageRoute(builder: (context) => editTransactionPage(txn)));;
+            print(edittedresult);
+
+          }, icon: Icon(Icons.edit))
     ]);
   }
+
+  // Expanded(flex: 2, child: SizedBox.shrink())
+  // Expanded(
+  //     flex: 1,
+  //     child: (txn.spendings == 0)
+  //         ? Text("+ \$ ${txn.amount}",
+  //             style: TextStyle(fontSize: 16, color: Colors.blue))
+  //         : SizedBox.shrink()),
+
+  void printObject(Object object) {
+    // Encode your object and then decode your object to Map variable
+    Map jsonMapped = json.decode(json.encode(object));
+
+    // Using JsonEncoder for spacing
+    JsonEncoder encoder = new JsonEncoder.withIndent('  ');
+
+    // encode it to string
+    String prettyPrint = encoder.convert(jsonMapped);
+
+    // print or debugPrint your object
+    print(prettyPrint);
+  }
+
+
 }

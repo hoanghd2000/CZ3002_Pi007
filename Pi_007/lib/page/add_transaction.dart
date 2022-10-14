@@ -1,32 +1,30 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pi_007/databases/db_transactions.dart';
-import 'package:intl/intl.dart';
 import 'package:pi_007/main.dart';
 import 'package:pi_007/page/transactions_page.dart';
+import 'package:intl/intl.dart';
 
-// class addTransaction extends StatelessWidget {
-//   const addTransaction({Key key}) : super(key: key);
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       theme: ThemeData(
-//         primaryColor: Colors.blue,
-//       ),
-//       home: addTransactionPage(),
-//     );
-//   }
-// }
-
-class AddTransactionPage extends StatefulWidget {
-  const AddTransactionPage({Key key}) : super(key: key);
+class addTransaction extends StatelessWidget {
+  const addTransaction({Key key}) : super(key: key);
 
   @override
-  State<AddTransactionPage> createState() => _AddTransactionPageState();
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      theme: ThemeData(
+        primaryColor: Colors.blue,
+      ),
+      home: addTransactionPage(),
+    );
+  }
 }
 
-class _AddTransactionPageState extends State<AddTransactionPage> {
+class addTransactionPage extends StatefulWidget {
+  @override
+  State<addTransactionPage> createState() => _addTransactionPage();
+}
+
+class _addTransactionPage extends State<addTransactionPage> {
   final DbTrans_Manager dbTrans_manager = new DbTrans_Manager();
 
   final _nameController = TextEditingController();
@@ -55,9 +53,15 @@ class _AddTransactionPageState extends State<AddTransactionPage> {
   String spend_list = list_spend.first;
   String earn_list = list_earn.first;
 
-  String _type, _model;
+
+  String _model;
+  String _type = list_type.first;
   List<String> _selectType(String typeName) {
     return typeName == list_type[0] ? list_spend : list_earn;
+  }
+  String _currentType(String type){
+    _model = _selectType(type).first;
+    return _model;
   }
 
   @override
@@ -88,8 +92,9 @@ class _AddTransactionPageState extends State<AddTransactionPage> {
                         // This is called when the user selects an item.
                         setState(() {
                           _type = value;
-                          _model = null;
+                          _model = _selectType(_type).first;
                           print(value);
+                          print(_model);
                         });
                       },
                       items: list_type
@@ -112,7 +117,7 @@ class _AddTransactionPageState extends State<AddTransactionPage> {
                           context: context,
                           initialDate: DateTime.now(),
                           firstDate: DateTime(2021),
-                          lastDate: DateTime(2023),
+                          lastDate: DateTime(2031),
                         );
                         if (pickeddate != null) {
                           setState(() {
@@ -174,18 +179,7 @@ class _AddTransactionPageState extends State<AddTransactionPage> {
                     ),
                     ElevatedButton(
                         onPressed: () {
-                          //insertTransaction
                           _submitTransaction(context);
-                          // navigate back
-                          // ...
-                          // refresh page
-
-                          //Navigator.pop(context);  
-                          //Navigator.pop(context);  
-                          
-                          // Navigator.pushNamed(context, "Transactions");
-                          // Navigator.pushNamed(context, 'Transactions').then((result) => setState(() {}));
-                          // Navigator.of(context).push(MaterialPageRoute(builder: (context) => MyHomePage()));
                           // _navigateBack(context);
                         },
                         child: Text('Save'),
@@ -194,7 +188,7 @@ class _AddTransactionPageState extends State<AddTransactionPage> {
                               borderRadius: BorderRadius.circular(12)),
                           primary: confirm_button, //background
                           onPrimary: Colors.black, //foreground
-                        ))
+                        )),
                   ],
                 ),
               )),
@@ -205,7 +199,7 @@ class _AddTransactionPageState extends State<AddTransactionPage> {
     if (_formKey.currentState.validate()) {
       if (transaction == null) {
         int spendings;
-        if (_type == "spendings") {
+        if (_type == "Spending") {
           spendings = 1;
         } else {
           spendings = 0;
@@ -219,23 +213,25 @@ class _AddTransactionPageState extends State<AddTransactionPage> {
           note: _noteController.text,
         );
         //after transaction is added, clear the textfields
-        dbTrans_manager.insertTransaction(tr).then((id) => {
-              _timeController.clear(),
-              _nameController.clear(),
-              _amountController.clear(),
-              _noteController.clear(),
-              print('Transaction added to Trans_database ${id}')
-            });
-
-        _navigateBack(context);
+        dbTrans_manager.insertTransaction(tr).then(
+              (id) => {
+                _timeController.clear(),
+                _nameController.clear(),
+                _amountController.clear(),
+                _noteController.clear(),
+                print('Transaction added to Trans_database ${id}'),
+                _navigateBack(context)
+              },
+            );
       }
     }
   }
 
   void _navigateBack(BuildContext context) {
-    // Navigator.pop(context);  
-    // Navigator.pop(context);  
-    Navigator.of(context).push(MaterialPageRoute(builder: (context) => TransactionsPage()));
+    // Navigator.pop(context);
+    // Navigator.pop(context);
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (context) => MyApp()));
     // Navigator.pushNamed(
     //   context,
     //   'Transactions',

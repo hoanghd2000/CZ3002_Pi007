@@ -1,7 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-// import 'package:syncfusion_flutter_datepicker/datepicker.dart';
-import 'package:grouped_list/grouped_list.dart';
 import 'package:intl/intl.dart';
 import 'package:pi_007/databases/db_budget.dart';
 import 'package:pi_007/page/add_budget.dart';
@@ -66,7 +64,7 @@ class BudgetPage extends StatelessWidget{
                           left: 15
                       ),
                       child: Column(children: [
-                        Text(DateFormat('yyyy-MM-dd').format(DateTime.parse(budgetList[index].startBudget)) + " to " + DateFormat('yyyy-MM-dd').format(DateTime.parse(budgetList[index].endBudget)) + " (" + budgetList[index].name + ")"),
+                        Text(DateFormat('yyyy-MM-dd').format(DateTime.parse(budgetList[index].startTime)) + " to " + DateFormat('yyyy-MM-dd').format(DateTime.parse(budgetList[index].endTime)) + " (" + budgetList[index].name + ")"),
                       ])
                   ),
                   Padding(
@@ -74,14 +72,25 @@ class BudgetPage extends StatelessWidget{
                         right: 5
                     ),
                     child: Column(children: [
-                      // Icon(create_sharp),
                       IconButton(
                           icon: const Icon(create_sharp),
                           color: Colors.black,
-                          onPressed: (){
-                            Navigator.push(
+                          onPressed: () async {
+                            final edittedresult = await Navigator.push(
                                 context,
                                 MaterialPageRoute(builder: (context) => EditBudget(budgetList[index])));
+                            print(edittedresult);
+
+                            if (edittedresult == "Delete"){
+                              budgetList.remove(budgetList[index]);
+                              print(budgetList);
+                              (context as Element).reassemble();
+                              (context as Element).reassemble();
+                            } else {
+                              budgetList[index] = Budget(edittedresult[3], edittedresult[2], DateTimeRange(start: edittedresult[0], end: edittedresult[1]));
+                              print(budgetList);
+                              (context as Element).reassemble();
+                            }
                           }
                       ),
                     ]),
@@ -95,7 +104,7 @@ class BudgetPage extends StatelessWidget{
                       bottom: 15
                   ),
                   child: Column(children: [
-                    Text("Total budget: \$" + budgetList[index].limitBudget.toString())
+                    Text("Total budget: \$" + budgetList[index].amount.toString())
                   ])
               ),
             ]),
@@ -120,19 +129,18 @@ class BudgetPage extends StatelessWidget{
           child: Icon(Icons.add),
           backgroundColor: action_button,
           foregroundColor: Colors.black,
-          onPressed: (){
-            Navigator.push(
+          onPressed: () async {
+            final result = await Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => AddBudget()));
+                MaterialPageRoute(builder: (context) => AddBudget())
+            );
+            print(result);
+            budgetList.add(Budget(result[3], result[2], DateTimeRange(start: result[0], end: result[1])));
+            print(budgetList);
+            (context as Element).reassemble();
           }
       ),
-      /*floatingActionButton:FloatingActionButton.extended(
-        onPressed: () {},
-        icon: Icon(Icons.save),
-        label: Text("Save"),
-      ), */
     );
-
 }
 
 // class EditScreen extends StatelessWidget {
