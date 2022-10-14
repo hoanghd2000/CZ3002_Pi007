@@ -92,7 +92,7 @@ class BudgetPage extends StatelessWidget{
               // margin: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 16.0),
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(5.0)),
-              color: list_color,
+              color: Color(0xFFF7F7F7),
               margin: const EdgeInsets.only(
                 bottom: 20,
               ));
