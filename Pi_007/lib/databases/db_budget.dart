@@ -7,21 +7,21 @@ import 'package:sqflite/sqflite.dart';
 //budget manager
 class dbBudget_manager {
   Database budgetDB;
-  final budgetFields = [
-    'id',
-    'name',
-    'limitBudget',
-    'remainingBudget',
-    'startBudget',
-    'endBudget'
-  ];
+  // final budgetFields = [
+  //   'id',
+  //   'name',
+  //   'limitBudget',
+  //   'remainingBudget',
+  //   'startBudget',
+  //   'endBudget'
+  // ];
   //open/create budgetDB on page open
   Future openDb() async {
     budgetDB ??= await openDatabase(
         join(await getDatabasesPath(), "budgets.db"),
         version: 1, onCreate: (Database db, int version) async {
       await db.execute(
-          'CREATE TABLE budgets(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, limitBudget TEXT, remainingBudget TEXT, startBudget TEXT, endBudget TEXT)');
+          'CREATE TABLE budgets(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, amount REAL, startTime TEXT, endTime TEXT)');
       } );
   }
 
@@ -32,10 +32,10 @@ class dbBudget_manager {
       return Budget(
           id: maps[i]['id'],
           name: maps[i]['name'],
-          limitBudget:maps[i]['limitBudget'],
-          remainingBudget:maps[i]['remainingBudget'],
-          startBudget:maps[i]['startBudget'],
-          endBudget: maps[i]['endBudget']);
+          // limitBudget:maps[i]['limitBudget'],
+          amount:maps[i]['amount'],
+          startTime:maps[i]['startTime'],
+          endTime: maps[i]['endTime']);
     });
   }
 
@@ -55,27 +55,27 @@ class dbBudget_manager {
 class Budget {
   int id;
   String name;
-  double limitBudget;
-  double remainingBudget;
-  String startBudget;
-  String endBudget;
+  double amount;
+  // double remainingBudget;
+  String startTime;
+  String endTime;
 
   Budget({ this.id,
     @required this.name,
-    @required this.limitBudget,
-              this.remainingBudget,
-    @required this.startBudget,
-    @required this.endBudget
+    @required this.amount,
+              // this.remainingBudget,
+    @required this.startTime,
+    @required this.endTime
   });
 
   Map<String, dynamic> toJson() {
     return {
       'id': id,
       'name' : name,
-      'limitBudget': limitBudget,
-      'remainingBudget': remainingBudget,
-      'startBudget' : startBudget,
-      'endBudget': endBudget
+      'amount': amount,
+      // 'remainingBudget': remainingBudget,
+      'startTime' : startTime,
+      'endTime': endTime
     };
   }
 }
