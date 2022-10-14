@@ -15,8 +15,8 @@ Transaction t2 = Transaction(
     timestamp: "2022-12-31");
 
 final _spendingBool = [0, 1];
-
-final _categoryList = ["Food", "Allowance", "Transport", ""];
+final _earningList = ["Allowance", "Stock", "Work",""];
+final _categoryList = ["Food", "Transport", "Shopping",""];
 
 final _timestamp2022List = [
     "2022-01-01", "2022-02-01", "2022-03-01", "2022-04-01", "2022-05-01", "2022-06-01", "2022-07-01", "2022-08-01", "2022-09-01", "2022-10-01", "2022-11-01", "2022-12-01"
@@ -34,18 +34,43 @@ List<Transaction> get2022data() {
   List<Transaction> data = [];
   var rng = Random();
 
+  String _currentType(int typeName){
+    String _type2;
+    if(typeName==1){
+      _type2=_categoryList[rng.nextInt(3)];
+    }
+    else{
+      _type2 = _earningList[rng.nextInt(3)];
+    }
+    return _type2;
+  }
+
   for (var i=0; i<12; i++) {
-    var temp = List.generate(5, (index) {
+    int _type1 = 1;
+    var temp = List.generate(2, (index) {
       return Transaction(
-          spendings: rng.nextInt(2),
+          spendings: _type1,
           timestamp:_timestamp2022List[i],
           name: "Txn" + (rng.nextInt(60)).toString(),
           amount: num.parse((rng.nextDouble() * 100).toStringAsFixed(2)),
-          category: _categoryList[rng.nextInt(3)],
+          category: _currentType(_type1),
           note: "",
         );
     });
+    int _type3 = rng.nextInt(2);
+    var temp2 = List.generate(2, (index) {
+      return Transaction(
+        spendings: _type3,
+        timestamp:_timestamp2022List[i],
+        name: "Txn" + (rng.nextInt(60)).toString(),
+        amount: num.parse((rng.nextDouble() * 100).toStringAsFixed(2)),
+        category: _currentType(_type3),
+        note: "",
+      );
+    });
     data.addAll(temp);
+    data.addAll(temp2);
+
   }
   return data;
 }
