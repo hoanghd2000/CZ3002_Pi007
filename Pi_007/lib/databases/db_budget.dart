@@ -18,16 +18,16 @@ class dbBudget_manager {
   //open/create budgetDB on page open
   Future openDb() async {
     budgetDB ??= await openDatabase(
-        join(await getDatabasesPath(), "budgets.db"),
+        join(await getDatabasesPath(), "budget.db"),
         version: 1, onCreate: (Database db, int version) async {
       await db.execute(
-          'CREATE TABLE budgets(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, amount REAL, startTime TEXT, endTime TEXT)');
+          'CREATE TABLE budget(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, amount REAL, startTime TEXT, endTime TEXT)');
       } );
   }
 
   Future<List<Budget>> getBudgetList() async {
     await openDb();
-    final List<Map<String, dynamic>> maps = await budgetDB.query('budgets');
+    final List<Map<String, dynamic>> maps = await budgetDB.query('budget');
     return List.generate(maps.length, (i) {
       return Budget(
           id: maps[i]['id'],
@@ -42,13 +42,18 @@ class dbBudget_manager {
   //insert budget
   Future<int> insertBudget(Budget budget) async {
     await openDb();
-    return await budgetDB.insert('budgets', budget.toJson());
+    return await budgetDB.insert('budget', budget.toJson());
   }
 
   Future<int> updateBudgetDB(Budget budget) async {
     await openDb();
-    return await budgetDB.update('budgets', budget.toJson(),
+    return await budgetDB.update('budget', budget.toJson(),
         where: "id = ?", whereArgs: [budget.id]);
+  }
+
+  Future<void> drop() async {
+    await budgetDB.rawQuery('DELETE FROM budget');
+    await budgetDB.rawQuery('DROP TABLE IF EXISTS budget');
   }
 }
 
@@ -70,7 +75,7 @@ class Budget {
 
   Map<String, dynamic> toJson() {
     return {
-      'id': id,
+      // 'id': id,
       'name' : name,
       'amount': amount,
       // 'remainingBudget': remainingBudget,

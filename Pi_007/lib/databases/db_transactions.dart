@@ -70,11 +70,11 @@ class DbTrans_Manager {
     });
   }
 
-  Future<List<Transaction>> test() async {
-    await openDb();
-    final List<Map<String, dynamic>> maps =
-        await _database.rawQuery('SELECT * FROM ');
-  }
+  // Future<List<Transaction>> test() async {
+  //   await openDb();
+  //   final List<Map<String, dynamic>> maps =
+  //       await _database.rawQuery('SELECT * FROM ');
+  // }
 
   Future<int> updateTransaction(Transaction transaction) async {
     await openDb();

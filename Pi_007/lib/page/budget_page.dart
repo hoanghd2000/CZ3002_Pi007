@@ -20,22 +20,30 @@ import 'package:pi_007/page/edit_budget.dart';
 
 }*/
 
-class BudgetPage extends StatelessWidget{
+class BudgetPage extends StatefulWidget {
+  const BudgetPage({Key key}) : super(key: key);
 
+  @override
+  State<BudgetPage> createState() => _BudgetPageState();
+}
+
+class _BudgetPageState extends State<BudgetPage> {
   // colors
-  static const navigation_bar =  Color(0xFFFFEAD1);  //beige
-  static const main_section =  Color(0xFFC9C5F9);   //purple
-  static const action_button =  Color(0xFFF8C8DC);  //pink
-  static const confirm_button =  Color(0xFFB4ECB4); //green
-  static const secondary_section =  Color(0xFFC5E0F9); //blue
-  static const list_color =  Color(0xFFECECEC);  //grey
+  static const navigation_bar = Color(0xFFFFEAD1); //beige
+  static const main_section = Color(0xFFC9C5F9); //purple
+  static const action_button = Color(0xFFF8C8DC); //pink
+  static const confirm_button = Color(0xFFB4ECB4); //green
+  static const secondary_section = Color(0xFFC5E0F9); //blue
+  static const list_color = Color(0xFFECECEC); //grey
 
   static const IconData pencil = IconData(0xf37e);
-  static const IconData create_sharp = IconData(0xe89b, fontFamily: 'MaterialIcons');
+  static const IconData create_sharp =
+      IconData(0xe89b, fontFamily: 'MaterialIcons');
 
   dbBudget_manager budgetDBM = dbBudget_manager();
   Budget budget;
   List<Budget> budgetList;
+  // List<Budget> budgetList = [Budget(name: 'test1', amount: 12.0, startTime: '2022-12-01', endTime: '2022-12-31')];
   // sample hard coded data - to be extracted from database
   // idk what format it will be extracted as though - json / string / ???
   // currently this sample is a class
@@ -51,96 +59,141 @@ class BudgetPage extends StatelessWidget{
 
   @override
   Widget build(BuildContext context) => Scaffold(
-    body:
-      ListView.builder(
-        itemCount: budgetList.length,
-        itemBuilder: (context, index) {
-          return  Card(child: Column(children: [
-            Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Padding(
-                      padding: EdgeInsets.only(
-                          left: 15
-                      ),
-                      child: Column(children: [
-                        Text(DateFormat('yyyy-MM-dd').format(DateTime.parse(budgetList[index].startTime)) + " to " + DateFormat('yyyy-MM-dd').format(DateTime.parse(budgetList[index].endTime)) + " (" + budgetList[index].name + ")"),
-                      ])
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(
-                        right: 5
-                    ),
-                    child: Column(children: [
-                      IconButton(
-                          icon: const Icon(create_sharp),
-                          color: Colors.black,
-                          onPressed: () async {
-                            final edittedresult = await Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (context) => EditBudget(budgetList[index])));
-                            print(edittedresult);
+        body: ListView(
+          children: <Widget>[
+            Text("Budget list here", style: TextStyle(fontSize: 40)),
 
-                            if (edittedresult == "Delete"){
-                              budgetList.remove(budgetList[index]);
-                              print(budgetList);
-                              (context as Element).reassemble();
-                              (context as Element).reassemble();
-                            } else {
-                              budgetList[index] = Budget(edittedresult[3], edittedresult[2], DateTimeRange(start: edittedresult[0], end: edittedresult[1]));
-                              print(budgetList);
-                              (context as Element).reassemble();
-                            }
-                          }
-                      ),
-                    ]),
-                  ),
-                ]),
-            Row(children: [
-              Padding(
-                  padding: EdgeInsets.only(
-                      left: 15,
-                      right: 15,
-                      bottom: 15
-                  ),
-                  child: Column(children: [
-                    Text("Total budget: \$" + budgetList[index].amount.toString())
-                  ])
-              ),
-            ]),
-          ]),
-              elevation:5,
-              // margin: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 16.0),
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(5.0)),
-              color: Color(0xFFF7F7F7),
-              margin: const EdgeInsets.only(
-                bottom: 20,
-              ));
-        },
-        padding: const EdgeInsets.only(
-            top: 15,
-            bottom: 15,
-            left: 10,
-            right: 10
+            /************* debug code BEGIN ************/
+            // TextButton(
+            //   onPressed: () {
+            //     dbmanager.deleteAllTransaction('transactions');
+            //     _navigateBack(context);
+            //   },
+            //   child: Text("delete all txn"),
+            // ),
+            TextButton(
+              onPressed: () => budgetDBM.openDb(),
+              child: Text("create table"),
+            ),
+            TextButton(
+              onPressed: () => budgetDBM.insertBudget(Budget(
+                  name: 'test1',
+                  amount: 12.0,
+                  startTime: '2022-12-01',
+                  endTime: '2022-12-31')),
+              child: Text("add budget"),
+            ),
+            TextButton(
+              onPressed: () => budgetDBM.drop(),
+              child: Text("drop table"),
+            ),
+
+            FutureBuilder(
+              future: budgetDBM.getBudgetList(),
+              // future: dbmanager.getTransactionByYear(),
+              builder:
+                  (BuildContext context, AsyncSnapshot<List<Budget>> snapshot) {
+                if (snapshot.hasData) {
+                  budgetList = snapshot.data;
+                  return ListView.builder(
+                    primary: false,
+                    shrinkWrap: true,
+                    itemCount: budgetList.length,
+                    itemBuilder: (context, index) {
+                      return Card(
+                          child: Column(children: [
+                            Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Padding(
+                                      padding: EdgeInsets.only(left: 15),
+                                      child: Column(children: [
+                                        Text(DateFormat('yyyy-MM-dd').format(
+                                                DateTime.parse(budgetList[index]
+                                                    .startTime)) +
+                                            " to " +
+                                            DateFormat('yyyy-MM-dd').format(
+                                                DateTime.parse(budgetList[index]
+                                                    .endTime)) +
+                                            " (" +
+                                            budgetList[index].name +
+                                            ")"),
+                                      ])),
+                                  Padding(
+                                    padding: EdgeInsets.only(right: 5),
+                                    child: Column(children: [
+                                      IconButton(
+                                          icon: const Icon(create_sharp),
+                                          color: Colors.black,
+                                          onPressed: () async {
+                                            final edittedresult =
+                                                await Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            EditBudget(
+                                                                budgetList[
+                                                                    index])));
+                                            print(edittedresult);
+
+                                            if (edittedresult == "Delete") {
+                                              budgetList
+                                                  .remove(budgetList[index]);
+                                              print(budgetList);
+                                              (context as Element).reassemble();
+                                              (context as Element).reassemble();
+                                            } else {
+                                              // budgetList[index] = Budget(edittedresult[3], edittedresult[2], DateTimeRange(start: edittedresult[0], end: edittedresult[1]));
+                                              print(budgetList);
+                                              (context as Element).reassemble();
+                                            }
+                                          }),
+                                    ]),
+                                  ),
+                                ]),
+                            Row(children: [
+                              Padding(
+                                  padding: EdgeInsets.only(
+                                      left: 15, right: 15, bottom: 15),
+                                  child: Column(children: [
+                                    Text("Total budget: \$" +
+                                        budgetList[index].amount.toString())
+                                  ])),
+                            ]),
+                          ]),
+                          elevation: 5,
+                          // margin: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 16.0),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(5.0)),
+                          color: Color(0xFFF7F7F7),
+                          margin: const EdgeInsets.only(
+                            bottom: 20,
+                          ));
+                    },
+                  );
+                } else {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+              },
+            )
+          ],
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-          child: Icon(Icons.add),
-          backgroundColor: action_button,
-          foregroundColor: Colors.black,
-          onPressed: () async {
-            final result = await Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => AddBudget())
-            );
-            print(result);
-            budgetList.add(Budget(result[3], result[2], DateTimeRange(start: result[0], end: result[1])));
-            print(budgetList);
-            (context as Element).reassemble();
-          }
-      ),
-    );
+        floatingActionButton: FloatingActionButton(
+            child: Icon(Icons.add),
+            backgroundColor: action_button,
+            foregroundColor: Colors.black,
+            onPressed: () async {
+              final result = await Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => AddBudget()));
+              print(result);
+              // budgetList.add(Budget(result[3], result[2], DateTimeRange(start: result[0], end: result[1])));
+              print(budgetList);
+              (context as Element).reassemble();
+            }),
+      );
 }
 
 // class EditScreen extends StatelessWidget {

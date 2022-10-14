@@ -27,7 +27,7 @@ class addBudgetPage extends StatefulWidget {
 
 
 class _addBudgetPage extends State<addBudgetPage>{
-
+  final dbBudget_manager budgetDBM = dbBudget_manager();
   // colors
   static const confirm_button =  Color(0xFFB4ECB4); //green
 
