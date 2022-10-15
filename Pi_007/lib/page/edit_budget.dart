@@ -108,16 +108,6 @@ class _editBudgetPage extends State<EditBudget> {
               Padding(
                 padding: const EdgeInsets.all(15.0),
                 child: TextFormField(
-                  decoration: InputDecoration(labelText: "Amount"),
-                  // initialValue: budget.amount.toString(),
-                  controller: _budgetController,
-                  validator: (val) =>
-                      val.isNotEmpty ? null : 'Amount should not be empty',
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(15.0),
-                child: TextFormField(
                   decoration: InputDecoration(
                     labelText: "Name",
                   ),
@@ -125,6 +115,16 @@ class _editBudgetPage extends State<EditBudget> {
                   controller: _nameController,
                   validator: (val) =>
                       val.isNotEmpty ? null : 'Name should not be empty',
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(15.0),
+                child: TextFormField(
+                  decoration: InputDecoration(labelText: "Amount"),
+                  // initialValue: budget.amount.toString(),
+                  controller: _budgetController,
+                  validator: (val) =>
+                      val.isNotEmpty ? null : 'Amount should not be empty',
                 ),
               ),
               Row(

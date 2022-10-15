@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:pi_007/databases/db_budget.dart';
 import 'package:pi_007/page/add_budget.dart';
 import 'package:pi_007/page/edit_budget.dart';
+import 'package:pi_007/static_data/budget.dart';
 
 /*class Budget extends StatelessWidget {
   const Budget({Key key}) : super(key: key);
@@ -64,17 +65,21 @@ class _BudgetPageState extends State<BudgetPage> {
             // Text("Budget list here", style: TextStyle(fontSize: 40)),
 
             /************* debug code BEGIN ************/
-            TextButton(
-              onPressed: () => budgetDBM.insertBudget(Budget(
-                  name: 'test1',
-                  amount: 12.0,
-                  startTime: '2022-12-01',
-                  endTime: '2022-12-31')),
-              child: Text("add budget"),
-            ),
+            // TextButton(
+            //   onPressed: () => budgetDBM.insertBudget(Budget(
+            //       name: 'test1',
+            //       amount: 12.0,
+            //       startTime: '2022-12-01',
+            //       endTime: '2022-12-31')),
+            //   child: Text("add budget"),
+            // ),
             TextButton(
               onPressed: () => budgetDBM.deleteAllBudget(),
-              child: Text("delete all txn"),
+              child: Text("delete all budget"),
+            ),
+            TextButton(
+              onPressed: () => _generate2022data(),
+              child: Text("generate data"),
             ),
             /************* debug code END ************/
 
@@ -85,15 +90,14 @@ class _BudgetPageState extends State<BudgetPage> {
                   (BuildContext context, AsyncSnapshot<List<Budget>> snapshot) {
                 if (snapshot.hasData) {
                   budgetList = snapshot.data;
-                  budgetList.forEach((e) {
-                    print("budget page");
-
-                    print(e.id);
-                    print(e.name);
-                    print(e.amount);
-                    print(e.startTime);
-                    print(e.endTime);
-                  });
+                  // budgetList.forEach((e) {
+                  //   print("budget page");
+                  //   print(e.id);
+                  //   print(e.name);
+                  //   print(e.amount);
+                  //   print(e.startTime);
+                  //   print(e.endTime);
+                  // });
                   return ListView.builder(
                     primary: false,
                     shrinkWrap: true,
@@ -127,12 +131,11 @@ class _BudgetPageState extends State<BudgetPage> {
                                                     context,
                                                     MaterialPageRoute(
                                                         builder: (context) =>
-                                                            EditBudget(
-                                                                budgetList[
-                                                                    index]))).then((value) =>
-                                            (context as Element).reassemble()
-                                                                    
-                                                                    );
+                                                            EditBudget(budgetList[
+                                                                index]))).then(
+                                                    (value) =>
+                                                        (context as Element)
+                                                            .reassemble());
                                             // print(edittedresult);
 
                                             // if (edittedresult == "Delete") {
@@ -171,8 +174,8 @@ class _BudgetPageState extends State<BudgetPage> {
                     },
                   );
                 } else {
-                  return const Center( child:
-                    Text("No data found"),
+                  return const Center(
+                    child: Text("No data found"),
                   );
                 }
               },
@@ -188,10 +191,17 @@ class _BudgetPageState extends State<BudgetPage> {
                   MaterialPageRoute(builder: (context) => AddBudget()));
               print(result);
               // budgetList.add(Budget(result[3], result[2], DateTimeRange(start: result[0], end: result[1])));
-              print(budgetList);
+              // print(budgetList);
               (context as Element).reassemble();
             }),
       );
+
+  void _generate2022data() {
+    var data = get2022data();
+    for (var i = 0; i < data.length; i++) {
+      budgetDBM.insertBudget(data[i]);
+    }
+  }
 }
 
 // class EditScreen extends StatelessWidget {

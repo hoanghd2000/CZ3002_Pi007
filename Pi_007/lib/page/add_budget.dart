@@ -31,7 +31,7 @@ class _addBudgetPage extends State<addBudgetPage> {
   final _formKey = GlobalKey<FormState>();
 
   final _timeController = TextEditingController();
-  final _budgetController = TextEditingController();
+  final _amountController = TextEditingController();
   final _nameController = TextEditingController();
   
   final dbBudget_manager budgetDBM = dbBudget_manager();
@@ -79,18 +79,18 @@ class _addBudgetPage extends State<addBudgetPage> {
                   Padding(
                     padding: const EdgeInsets.all(15.0),
                     child: TextFormField(
-                      decoration: InputDecoration(labelText: "Budget"),
-                      controller: _budgetController,
+                      decoration: InputDecoration(labelText: "Name"),
+                      controller: _nameController,
                     ),
                   ),
                   Padding(
                     padding: const EdgeInsets.all(15.0),
                     child: TextFormField(
-                      decoration: InputDecoration(labelText: "Name"),
-                      controller: _nameController,
+                      decoration: InputDecoration(labelText: "Amount"),
+                      controller: _amountController,
                     ),
                   ),
-                  // TextButton(onPressed: (){Navigator.pop(context, [_startTime, _endTime, _budgetController.text, _nameController.text]);}, child: Text("Done"), style: TextButton.styleFrom(
+                  // TextButton(onPressed: (){Navigator.pop(context, [_startTime, _endTime, _amountController.text, _nameController.text]);}, child: Text("Done"), style: TextButton.styleFrom(
                   TextButton(
                     onPressed: () => _submitBudget(context),
                     child: Text("Done"),
@@ -109,14 +109,14 @@ class _addBudgetPage extends State<addBudgetPage> {
     if (_formKey.currentState.validate()) {
       if (budget == null) {
 
-        Budget b = Budget(name: _nameController.text, amount: double.parse(_budgetController.text), startTime: _timeController.text.substring(0, 10)
+        Budget b = Budget(name: _nameController.text, amount: double.parse(_amountController.text), startTime: _timeController.text.substring(0, 10)
         , endTime: _timeController.text.substring(14));
 
         //after transaction is added, clear the textfields
         budgetDBM.insertBudget(b).then(
               (id) => {
                 _timeController.clear(),
-                _budgetController.clear(),
+                _amountController.clear(),
                 _nameController.clear(),
                 print('Budget added to budget database ${id}'),
                 Navigator.pop(context)
