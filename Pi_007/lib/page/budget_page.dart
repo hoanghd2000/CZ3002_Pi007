@@ -61,7 +61,7 @@ class _BudgetPageState extends State<BudgetPage> {
   Widget build(BuildContext context) => Scaffold(
         body: ListView(
           children: <Widget>[
-            Text("Budget list here", style: TextStyle(fontSize: 40)),
+            // Text("Budget list here", style: TextStyle(fontSize: 40)),
 
             /************* debug code BEGIN ************/
             TextButton(
@@ -76,6 +76,8 @@ class _BudgetPageState extends State<BudgetPage> {
               onPressed: () => budgetDBM.deleteAllBudget(),
               child: Text("delete all txn"),
             ),
+            /************* debug code END ************/
+
             FutureBuilder(
               future: budgetDBM.getBudgetList(),
               // future: dbmanager.getTransactionByYear(),
@@ -83,6 +85,15 @@ class _BudgetPageState extends State<BudgetPage> {
                   (BuildContext context, AsyncSnapshot<List<Budget>> snapshot) {
                 if (snapshot.hasData) {
                   budgetList = snapshot.data;
+                  budgetList.forEach((e) {
+                    print("budget page");
+
+                    print(e.id);
+                    print(e.name);
+                    print(e.amount);
+                    print(e.startTime);
+                    print(e.endTime);
+                  });
                   return ListView.builder(
                     primary: false,
                     shrinkWrap: true,
@@ -97,13 +108,9 @@ class _BudgetPageState extends State<BudgetPage> {
                                   Padding(
                                       padding: EdgeInsets.only(left: 15),
                                       child: Column(children: [
-                                        Text(DateFormat('yyyy-MM-dd').format(
-                                                DateTime.parse(budgetList[index]
-                                                    .startTime)) +
+                                        Text(budgetList[index].startTime +
                                             " to " +
-                                            DateFormat('yyyy-MM-dd').format(
-                                                DateTime.parse(budgetList[index]
-                                                    .endTime)) +
+                                            budgetList[index].endTime +
                                             " (" +
                                             budgetList[index].name +
                                             ")"),
@@ -122,20 +129,23 @@ class _BudgetPageState extends State<BudgetPage> {
                                                         builder: (context) =>
                                                             EditBudget(
                                                                 budgetList[
-                                                                    index])));
-                                            print(edittedresult);
+                                                                    index]))).then((value) =>
+                                            (context as Element).reassemble()
+                                                                    
+                                                                    );
+                                            // print(edittedresult);
 
-                                            if (edittedresult == "Delete") {
-                                              budgetList
-                                                  .remove(budgetList[index]);
-                                              print(budgetList);
-                                              (context as Element).reassemble();
-                                              (context as Element).reassemble();
-                                            } else {
-                                              // budgetList[index] = Budget(edittedresult[3], edittedresult[2], DateTimeRange(start: edittedresult[0], end: edittedresult[1]));
-                                              print(budgetList);
-                                              (context as Element).reassemble();
-                                            }
+                                            // if (edittedresult == "Delete") {
+                                            //   budgetList
+                                            //       .remove(budgetList[index]);
+                                            //   print(budgetList);
+                                            //   (context as Element).reassemble();
+                                            //   (context as Element).reassemble();
+                                            // } else {
+                                            //   // budgetList[index] = Budget(edittedresult[3], edittedresult[2], DateTimeRange(start: edittedresult[0], end: edittedresult[1]));
+                                            //   print(budgetList);
+                                            //   (context as Element).reassemble();
+                                            // }
                                           }),
                                     ]),
                                   ),
@@ -161,8 +171,8 @@ class _BudgetPageState extends State<BudgetPage> {
                     },
                   );
                 } else {
-                  return const Center(
-                    child: CircularProgressIndicator(),
+                  return const Center( child:
+                    Text("No data found"),
                   );
                 }
               },

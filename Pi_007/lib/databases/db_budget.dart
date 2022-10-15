@@ -7,7 +7,7 @@ import 'package:sqflite/sqflite.dart';
 //import 'package:pi_007/databases/db_budget.dart';
 //budget manager
 class dbBudget_manager {
-  Database budgetDB;
+  Database _database;
   // final budgetFields = [
   //   'id',
   //   'name',
@@ -16,9 +16,9 @@ class dbBudget_manager {
   //   'startBudget',
   //   'endBudget'
   // ];
-  //open/create budgetDB on page open
+  //open/create _database on page open
   Future openDb() async {
-    budgetDB ??= await openDatabase(join(await getDatabasesPath(), "budget.db"),
+    _database ??= await openDatabase(join(await getDatabasesPath(), "budget.db"),
         version: 1, onCreate: (Database db, int version) async {
       await db.execute(
           'CREATE TABLE budget(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, amount REAL, startTime TEXT, endTime TEXT)');
@@ -27,7 +27,7 @@ class dbBudget_manager {
 
   Future<List<Budget>> getBudgetList() async {
     await openDb();
-    final List<Map<String, dynamic>> maps = await budgetDB.query('budget');
+    final List<Map<String, dynamic>> maps = await _database.query('budget');
     return List.generate(maps.length, (i) {
       return Budget(
           id: maps[i]['id'],
@@ -42,24 +42,29 @@ class dbBudget_manager {
   //insert budget
   Future<int> insertBudget(Budget budget) async {
     await openDb();
-    return await budgetDB.insert('budget', budget.toJson());
+    return await _database.insert('budget', budget.toJson());
   }
 
-  Future<int> updateBudgetDB(Budget budget) async {
+  Future<int> updateBudget(Budget budget) async {
     await openDb();
-    return await budgetDB.update('budget', budget.toJson(),
+    return await _database.update('budget', budget.toJson(),
         where: "id = ?", whereArgs: [budget.id]);
   }
 
   Future<void> deleteAllBudget() async {
     await openDb();
-    await budgetDB.rawDelete('DELETE FROM budget');
+    await _database.rawDelete('DELETE FROM budget');
     print("Deleted all records from budget table");
   }
 
+  Future<void> deleteBudget(int id) async {
+    await openDb();
+    await _database.delete('budget', where: "id = ?", whereArgs: [id]);
+  }
+
   // Future<void> drop() async {
-  //   await budgetDB.rawQuery('DELETE FROM budget');
-  //   await budgetDB.rawQuery('DROP TABLE IF EXISTS budget');
+  //   await _database.rawQuery('DELETE FROM budget');
+  //   await _database.rawQuery('DROP TABLE IF EXISTS budget');
   // }
 }
 
