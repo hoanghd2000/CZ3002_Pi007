@@ -20,7 +20,7 @@ class SplitBillPage extends StatelessWidget{
     8,
         (i) => Bill(
         'Bill $i',
-        '50',
+        50.00,
         DateTime.parse("2022-10-0${i+1}")),
   );
 
@@ -52,7 +52,7 @@ class SplitBillPage extends StatelessWidget{
 
 class Bill {
   final String name;
-  final String amount;
+  final double amount;
   final DateTime date;
 
   const Bill(this.name, this.amount, this.date);
@@ -70,7 +70,7 @@ Widget _displayCard(Bill bill) {
           children: [
             Text(DateFormat('yyyy-MM-dd').format(bill.date), style: TextStyle(fontSize: 16)),
             Text(bill.name, style: TextStyle(fontSize: 16)),
-            Text("\$" + bill.amount, style: TextStyle(fontSize: 16, color: Colors.red)),
+            Text("\$" + (bill.amount).toStringAsFixed(2), style: TextStyle(fontSize: 16, color: Colors.red)),
             IconButton(
                 icon: const Icon(create_sharp),
                 color: Colors.black,
