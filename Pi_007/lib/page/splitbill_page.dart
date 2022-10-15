@@ -12,17 +12,14 @@ class SplitBillPage extends StatelessWidget{
   static const secondary_section =  Color(0xFFC5E0F9); //blue
   static const list_color =  Color(0xFFECECEC);  //grey
 
-  // Bill bill;
-  // List<Bill> billList;
+  List<Bill> billList = [
+    Bill(
+      "Hot pot with JC friends",
+      103.50,
+      DateTime.parse("2022-09-04")
+    ),
+  ];
 
-  // sample hard coded data
-  final billList = List.generate(
-    8,
-        (i) => Bill(
-        'Bill $i',
-        50.00,
-        DateTime.parse("2022-10-0${i+1}")),
-  );
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -59,25 +56,21 @@ class Bill {
 }
 
 Widget _displayCard(Bill bill) {
-  const IconData create_sharp = IconData(0xe89b, fontFamily: 'MaterialIcons');
-
   return Card(
     child:
       Padding(
-        padding: const EdgeInsets.all(15.0),
+        padding: const EdgeInsets.only(
+          left: 15.0,
+          right: 15.0,
+          top: 20.0,
+          bottom: 20.0
+        ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(DateFormat('yyyy-MM-dd').format(bill.date), style: TextStyle(fontSize: 16)),
             Text(bill.name, style: TextStyle(fontSize: 16)),
             Text("\$" + (bill.amount).toStringAsFixed(2), style: TextStyle(fontSize: 16, color: Colors.red)),
-            IconButton(
-                icon: const Icon(create_sharp),
-                color: Colors.black,
-                onPressed: () async {
-
-                }
-            ),
           ]
         ),
       ),
