@@ -189,7 +189,7 @@ class _BudgetPageState extends State<BudgetPage> {
             onPressed: () async {
               final result = await Navigator.push(context,
                   MaterialPageRoute(builder: (context) => AddBudget()));
-              print(result);
+              // print(result);
               // budgetList.add(Budget(result[3], result[2], DateTimeRange(start: result[0], end: result[1])));
               // print(budgetList);
               (context as Element).reassemble();

@@ -33,7 +33,7 @@ class _addBudgetPage extends State<addBudgetPage> {
   final _timeController = TextEditingController();
   final _amountController = TextEditingController();
   final _nameController = TextEditingController();
-  
+
   final dbBudget_manager budgetDBM = dbBudget_manager();
 
   DateTime _startTime = null;
@@ -81,6 +81,8 @@ class _addBudgetPage extends State<addBudgetPage> {
                     child: TextFormField(
                       decoration: InputDecoration(labelText: "Name"),
                       controller: _nameController,
+                      validator: (val) =>
+                          val.isNotEmpty ? null : 'Name should not be empty',
                     ),
                   ),
                   Padding(
@@ -88,7 +90,8 @@ class _addBudgetPage extends State<addBudgetPage> {
                     child: TextFormField(
                       decoration: InputDecoration(labelText: "Amount"),
                       controller: _amountController,
-                    ),
+                                          validator: (val) =>
+                          val.isNotEmpty ? null : 'Amount should not be empty',),
                   ),
                   // TextButton(onPressed: (){Navigator.pop(context, [_startTime, _endTime, _amountController.text, _nameController.text]);}, child: Text("Done"), style: TextButton.styleFrom(
                   TextButton(
@@ -108,9 +111,11 @@ class _addBudgetPage extends State<addBudgetPage> {
   void _submitBudget(BuildContext context) {
     if (_formKey.currentState.validate()) {
       if (budget == null) {
-
-        Budget b = Budget(name: _nameController.text, amount: double.parse(_amountController.text), startTime: _timeController.text.substring(0, 10)
-        , endTime: _timeController.text.substring(14));
+        Budget b = Budget(
+            name: _nameController.text,
+            amount: double.parse(_amountController.text),
+            startTime: _timeController.text.substring(0, 10),
+            endTime: _timeController.text.substring(14));
 
         //after transaction is added, clear the textfields
         budgetDBM.insertBudget(b).then(

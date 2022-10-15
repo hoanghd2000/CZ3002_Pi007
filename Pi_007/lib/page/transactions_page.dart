@@ -244,7 +244,7 @@ class _TransactionsPageState extends State<TransactionsPage> {
             // how to pass the index of id into txn list
             final edittedresult = await Navigator.push(context,
                 MaterialPageRoute(builder: (context) => editTransactionPage(txn)));;
-            print(edittedresult);
+            // print(edittedresult);
 
           }, icon: Icon(Icons.edit))
     ]);
@@ -258,19 +258,19 @@ class _TransactionsPageState extends State<TransactionsPage> {
   //             style: TextStyle(fontSize: 16, color: Colors.blue))
   //         : SizedBox.shrink()),
 
-  void printObject(Object object) {
-    // Encode your object and then decode your object to Map variable
-    Map jsonMapped = json.decode(json.encode(object));
+  // void printObject(Object object) {
+  //   // Encode your object and then decode your object to Map variable
+  //   Map jsonMapped = json.decode(json.encode(object));
 
-    // Using JsonEncoder for spacing
-    JsonEncoder encoder = new JsonEncoder.withIndent('  ');
+  //   // Using JsonEncoder for spacing
+  //   JsonEncoder encoder = new JsonEncoder.withIndent('  ');
 
-    // encode it to string
-    String prettyPrint = encoder.convert(jsonMapped);
+  //   // encode it to string
+  //   String prettyPrint = encoder.convert(jsonMapped);
 
-    // print or debugPrint your object
-    print(prettyPrint);
-  }
+  //   // print or debugPrint your object
+  //   print(prettyPrint);
+  // }
 
 
 }
