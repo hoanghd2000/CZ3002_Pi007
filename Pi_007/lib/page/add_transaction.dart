@@ -30,7 +30,7 @@ class _addTransactionPage extends State<addTransactionPage> {
   final _nameController = TextEditingController();
   final _amountController = TextEditingController();
   final _noteController = TextEditingController();
-  final _timeController = TextEditingController();
+  final _timeController = TextEditingController(text: DateFormat('yyyy-MM-dd').format(DateTime.now()));
 
   final _formKey = new GlobalKey<FormState>();
 

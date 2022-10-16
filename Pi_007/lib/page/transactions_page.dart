@@ -131,9 +131,26 @@ class _TransactionsPageState extends State<TransactionsPage> {
                             ),
                             ElevatedButton(
                               onPressed: () {
-                                //add page for image recognition here
+                                // result = navigator.push ... (open camera, and to model)
+                                // for each item, open the add page and autofill entries (_addMultipleTxn())
                               },
-                              child: Text('Add image of receipt'),
+                              child: Text('Add from camera'),
+                              style: ElevatedButton.styleFrom(
+                                side: BorderSide(
+                                  color: Colors.black,
+                                ),
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(12)),
+                                primary: action_button, //background
+                                onPrimary: Colors.black, //foreground
+                              ),
+                            ),
+                            ElevatedButton(
+                              onPressed: () {
+                                // result = navigator.push ... (open gallery, and to model)
+                                // for each item, open the add page and autofill entries (_addMultipleTxn())
+                              },
+                              child: Text('Add from gallery'),
                               style: ElevatedButton.styleFrom(
                                 side: BorderSide(
                                   color: Colors.black,
@@ -206,7 +223,8 @@ class _TransactionsPageState extends State<TransactionsPage> {
                   Expanded(
                       flex: 3,
                       child: Text(
-                          (overallAmount >= 0 ? "+" : "-") + " \$ ${absAmount.toStringAsFixed(2)}",
+                          (overallAmount >= 0 ? "+" : "-") +
+                              " \$ ${absAmount.toStringAsFixed(2)}",
                           textAlign: TextAlign.right,
                           style: TextStyle(
                               fontSize: 17, fontWeight: FontWeight.bold))),
@@ -262,6 +280,14 @@ class _TransactionsPageState extends State<TransactionsPage> {
               icon: Icon(Icons.edit))),
     ]);
   }
+
+  // Processing script: return a object with 2 attributes:
+  // price_list for list of objects and their price,
+  // total for total amt of receipt
+
+  // jsonResult = {"price_list" : {"item1" : "10.00", "ITEM2" : "13.00"}, "totalAmt" : "100.00"}
+
+  
 
   // Expanded(flex: 2, child: SizedBox.shrink())
   // Expanded(
