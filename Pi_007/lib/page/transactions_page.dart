@@ -173,14 +173,16 @@ class _TransactionsPageState extends State<TransactionsPage> {
   Widget _displayCard(String timestamp) {
     // filter out txn of that date
     int numTxn = timestampMap[timestamp];
-    print(timestamp);
-    // List txnListOfDate = txnList.map((txn) {
-    //   if (txn.timestamp == timestamp) return txn;
-    // });
-
-    var txnListOfDate =
+    var dailyTxnList =
         txnList.where((txn) => txn.timestamp == timestamp).toList();
     // print(txnListOfDate);
+
+    // get total spending in a day
+    double overallAmount = 0.0;
+    dailyTxnList.forEach((txn) =>
+        overallAmount += txn.spendings == 1 ? -1 * txn.amount : txn.amount);
+
+    double absAmount = overallAmount >= 0 ? overallAmount : -1 * overallAmount;
 
     return Card(
       child: Padding(
@@ -191,7 +193,7 @@ class _TransactionsPageState extends State<TransactionsPage> {
                 // header
                 children: [
                   Expanded(
-                      flex: 2,
+                      flex: 4,
                       child: Text(timestamp, style: TextStyle(fontSize: 16))),
                   // Expanded(
                   //     flex: 1,
@@ -201,6 +203,13 @@ class _TransactionsPageState extends State<TransactionsPage> {
                   //     flex: 1,
                   //     child: Text("\$ total", // TODO
                   //         style: TextStyle(fontSize: 16, color: Colors.blue))),
+                  Expanded(
+                      flex: 3,
+                      child: Text(
+                          (overallAmount >= 0 ? "+" : "-") + " \$ ${absAmount.toStringAsFixed(2)}",
+                          textAlign: TextAlign.right,
+                          style: TextStyle(
+                              fontSize: 17, fontWeight: FontWeight.bold))),
                   Expanded(flex: 2, child: SizedBox.shrink()),
                 ],
               ),
@@ -214,7 +223,7 @@ class _TransactionsPageState extends State<TransactionsPage> {
                 itemCount: numTxn,
                 itemBuilder: (context, index) {
                   // sort here, or in SQL
-                  return _displayCardItem(txnListOfDate[index]);
+                  return _displayCardItem(dailyTxnList[index]);
                 },
               )
             ],
@@ -238,15 +247,19 @@ class _TransactionsPageState extends State<TransactionsPage> {
                   textAlign: TextAlign.right,
                   style: TextStyle(fontSize: 16, color: Colors.blue))),
       Expanded(flex: 1, child: SizedBox.shrink()),
-      IconButton(
-          onPressed: ()async{
-            // print("edit transaction ${txn.id}" );
-            // how to pass the index of id into txn list
-            final edittedresult = await Navigator.push(context,
-                MaterialPageRoute(builder: (context) => editTransactionPage(txn)));;
-            // print(edittedresult);
-
-          }, icon: Icon(Icons.edit))
+      Expanded(
+          flex: 1,
+          child: IconButton(
+              onPressed: () async {
+                // print("edit transaction ${txn.id}" );
+                // how to pass the index of id into txn list
+                final edittedresult = await Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => editTransactionPage(txn)));
+                // print(edittedresult);
+              },
+              icon: Icon(Icons.edit))),
     ]);
   }
 
@@ -272,13 +285,12 @@ class _TransactionsPageState extends State<TransactionsPage> {
   //   print(prettyPrint);
   // }
 
-
 }
+
 void _navigateBack(BuildContext context) {
   // Navigator.pop(context);
   // Navigator.pop(context);
-  Navigator.of(context)
-      .push(MaterialPageRoute(builder: (context) => MyApp()));
+  Navigator.of(context).push(MaterialPageRoute(builder: (context) => MyApp()));
   // Navigator.pushNamed(
   //   context,
   //   'Transactions',
