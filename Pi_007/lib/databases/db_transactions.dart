@@ -23,11 +23,11 @@ class DbTrans_Manager {
     //     await db.execute(
     //       'DROP TABLE IF EXISTS trans');
     _database ??= await openDatabase(
-          join(await getDatabasesPath(), "transactions.db"),
-          version: 1, onCreate: (Database db, int version) async {
-        await db.execute(
-            'CREATE TABLE transactions(id INTEGER PRIMARY KEY AUTOINCREMENT, spendings INTEGER, category TEXT, name TEXT, amount REAL, note TEXT, timestamp TEXT)');
-      });
+        join(await getDatabasesPath(), "transactions.db"),
+        version: 1, onCreate: (Database db, int version) async {
+      await db.execute(
+          'CREATE TABLE transactions(id INTEGER PRIMARY KEY AUTOINCREMENT, spendings INTEGER, category TEXT, name TEXT, amount REAL, note TEXT, timestamp TEXT)');
+    });
   }
 
   Future<int> insertTransaction(Transaction transaction) async {
@@ -108,7 +108,8 @@ class DbTrans_Manager {
   }
 
   //view monthly: filter year
-  Future<List<Transaction>> getSpendingCurrentYearOrderBy(String sqlOrderBy) async {
+  Future<List<Transaction>> getSpendingCurrentYearOrderBy(
+      String sqlOrderBy) async {
     DateFormat formater = DateFormat('yyyy-MM-dd');
     String today = formater.format(DateTime.now());
     String thisYear = today.substring(0, 4);
@@ -118,14 +119,11 @@ class DbTrans_Manager {
     //     .rawQuery("SELECT * FROM transactions WHERE ");
     // WHERE strftime('%y', timestamp) = strftime('%y', $today)
 
-    final monthlyResult = await _database.query(
-      'transactions',
-      columns: null,
-      where: "timestamp LIKE ? AND spendings = 1",
-      whereArgs: ['$thisYear%'], // string matching
-      orderBy: sqlOrderBy
-    );
-
+    final monthlyResult = await _database.query('transactions',
+        columns: null,
+        where: "timestamp LIKE ? AND spendings = 1",
+        whereArgs: ['$thisYear%'], // string matching
+        orderBy: sqlOrderBy);
     //convert json to transaction object in a list
     return List.generate(monthlyResult.length, (i) {
       return Transaction(
@@ -139,18 +137,30 @@ class DbTrans_Manager {
     });
   }
 
-  //view yearly: everything in database
-  // Future<List<Transaction>> getTransactionByYear(currentYear) async {
-  //     await openDb();
-  //     var yearlyResult = await db.rawQuery(
-  //         'SELECT * FROM transactions WHERE strftime('%y', timestamp) = $currentYear',
-  //     );
-  //     print(yearlyResult.length);
-  //     List<Transaction> list =
-  //         yearlyResult.isNotEmpty ? yearlyResult.map((c) => Transaction.fromMap(c)).toList() : [];
-  //     return list;
-  // }
+  //view yearly: query the whole database
+  Future<List<Transaction>> getAllSpendingOrderBy(String sqlOrderBy) async {
+    await openDb();
+    // final monthlyResult = await _database
+    //     .rawQuery("SELECT * FROM transactions WHERE ");
+    // WHERE strftime('%y', timestamp) = strftime('%y', $today)
 
+    final yearlyResult = await _database.query('transactions',
+        columns: null,
+        where: "spendings = 1",
+        // whereArgs: ['$thisYear%'], // string matching
+        orderBy: sqlOrderBy);
+    //convert json to transaction object in a list
+    return List.generate(yearlyResult.length, (i) {
+      return Transaction(
+          id: yearlyResult[i]['id'],
+          spendings: yearlyResult[i]['spendings'],
+          category: yearlyResult[i]['category'],
+          name: yearlyResult[i]['name'],
+          amount: yearlyResult[i]['amount'],
+          note: yearlyResult[i]['note'],
+          timestamp: yearlyResult[i]['timestamp']);
+    });
+  }
 }
 
 class Transaction {
