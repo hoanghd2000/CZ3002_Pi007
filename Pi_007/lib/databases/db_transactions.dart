@@ -22,14 +22,12 @@ class DbTrans_Manager {
     //     version: 1, onCreate: (Database db, int version) async {
     //     await db.execute(
     //       'DROP TABLE IF EXISTS trans');
-    if (_database == null) {
-      _database = await openDatabase(
+    _database ??= await openDatabase(
           join(await getDatabasesPath(), "transactions.db"),
           version: 1, onCreate: (Database db, int version) async {
         await db.execute(
             'CREATE TABLE transactions(id INTEGER PRIMARY KEY AUTOINCREMENT, spendings INTEGER, category TEXT, name TEXT, amount REAL, note TEXT, timestamp TEXT)');
       });
-    }
   }
 
   Future<int> insertTransaction(Transaction transaction) async {
@@ -72,11 +70,11 @@ class DbTrans_Manager {
     });
   }
 
-  Future<List<Transaction>> test() async {
-    await openDb();
-    final List<Map<String, dynamic>> maps =
-        await _database.rawQuery('SELECT * FROM ');
-  }
+  // Future<List<Transaction>> test() async {
+  //   await openDb();
+  //   final List<Map<String, dynamic>> maps =
+  //       await _database.rawQuery('SELECT * FROM ');
+  // }
 
   Future<int> updateTransaction(Transaction transaction) async {
     await openDb();
@@ -89,7 +87,7 @@ class DbTrans_Manager {
     await _database.delete('transactions', where: "id = ?", whereArgs: [id]);
   }
 
-  Future<void> deleteAllTransaction(String table) async {
+  Future<void> deleteAllTransaction() async {
     await openDb();
     await _database.rawDelete('DELETE FROM transactions');
     print("Deleted all records from transactions table");

@@ -1,7 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-
 import 'package:pi_007/page/category_page.dart';
 
 class MorePage extends StatelessWidget {
@@ -18,8 +16,7 @@ class MorePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-          body: Column(children: <Widget>[
-        //all the children widgets that you need
+      body: Column(children: <Widget>[
         Align(
           alignment: Alignment.centerLeft,
           child: Padding(
@@ -30,69 +27,79 @@ class MorePage extends StatelessWidget {
         Card(
           elevation: 0,
           child:
-              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-            Padding(
-                padding: EdgeInsets.only(left: 15),
-                child: Column(children: [
-                  Text("Back up", style: TextStyle(fontSize: 20)),
-                ])),
-            Padding(
-              padding: EdgeInsets.only(right: 5),
-              child: Column(children: [
-                // Icon(create_sharp),
-                IconButton(
-                  icon: const Icon(arrow_forward_ios, color: Colors.black),
-                ),
-              ]),
-            ),
-          ]),
+              Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Padding(
+                        padding: EdgeInsets.only(left: 15),
+                        child: Column(children: [
+                          Text("Back up", style: TextStyle(fontSize: 20)),
+                        ])),
+                    Padding(
+                      padding: EdgeInsets.only(right: 5),
+                      child: Column(children: [
+                        // Icon(create_sharp),
+                        IconButton(
+                          icon: const Icon(arrow_forward_ios, color: Colors.black),
+                        ),
+                      ]),
+                    ),
+                  ]
+              ),
           color: Colors.grey[50],
         ),
         Card(
           elevation: 0,
           child:
-              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-            Padding(
-                padding: EdgeInsets.only(left: 15),
-                child: Column(children: [
-                  Text("Add Category", style: TextStyle(fontSize: 20)),
-                ])),
-            Padding(
-              padding: EdgeInsets.only(right: 5),
-              child: Column(children: [
-                IconButton(
-                  icon: const Icon(arrow_forward_ios, color: Colors.black),
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => CategoryPage()));
-                  },
-                ),
-              ]),
+            Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Padding(
+                      padding: EdgeInsets.only(left: 15),
+                      child: Column(children: [
+                        Text("Add Category", style: TextStyle(fontSize: 20)),
+                      ])),
+                  Padding(
+                    padding: EdgeInsets.only(right: 5),
+                    child: Column(children: [
+                      IconButton(
+                        icon: const Icon(arrow_forward_ios, color: Colors.black),
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => CategoryPage()));
+                        },
+                      ),
+                    ]),
+                  ),
+                ]
             ),
-          ]),
           color: Colors.grey[50],
         ),
         Card(
           elevation: 0,
           child:
-              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-            Padding(
-                padding: EdgeInsets.only(left: 15),
-                child: Column(children: [
-                  Text("Add Friends", style: TextStyle(fontSize: 20)),
-                ])),
-            Padding(
-              padding: EdgeInsets.only(right: 5),
-              child: Column(children: [
-                IconButton(
-                  icon: const Icon(arrow_forward_ios, color: Colors.black),
-                ),
-              ]),
-            ),
-          ]),
+              Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Padding(
+                        padding: EdgeInsets.only(left: 15),
+                        child: Column(children: [
+                          Text("Add Friends", style: TextStyle(fontSize: 20)),
+                        ])),
+                    Padding(
+                      padding: EdgeInsets.only(right: 5),
+                      child: Column(children: [
+                        IconButton(
+                          icon: const Icon(arrow_forward_ios, color: Colors.black),
+                        ),
+                      ]),
+                    ),
+                  ]
+              ),
           color: Colors.grey[50],
         )
-      ]));
+      ])
+  );
 }

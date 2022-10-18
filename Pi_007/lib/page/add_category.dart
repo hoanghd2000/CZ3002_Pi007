@@ -1,7 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:pi_007/databases/db_transactions.dart';
-import 'package:intl/intl.dart';
 
 class AddCategory extends StatelessWidget {
   // colors
@@ -51,7 +49,7 @@ class _addCategoryPage extends State<addCategoryPage>{
     Icons.edit,
     Icons.sunny,
     Icons.radar,
-    Icons.wallet
+    // Icons.wallet
     // all the icons you want to include
   ];
   Icon _categoryController = null;

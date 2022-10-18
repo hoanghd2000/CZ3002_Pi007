@@ -30,13 +30,13 @@ class _addTransactionPage extends State<addTransactionPage> {
   final _nameController = TextEditingController();
   final _amountController = TextEditingController();
   final _noteController = TextEditingController();
-  final _timeController = TextEditingController();
+  final _timeController = TextEditingController(text: DateFormat('yyyy-MM-dd').format(DateTime.now()));
 
   final _formKey = new GlobalKey<FormState>();
 
   Transaction transaction;
-  List<Transaction> translist;
-  int updateIndex;
+  // List<Transaction> translist;
+  // int updateIndex;
 
   static const confirm_button = Color(0xFFB4ECB4); //green
   static const navigation_bar = Color(0xFFFFEAD1); //beige
@@ -57,6 +57,11 @@ class _addTransactionPage extends State<addTransactionPage> {
   String _type = list_type.first;
   List<String> _selectType(String typeName) {
     return typeName == list_type[0] ? list_spend : list_earn;
+  }
+
+  String _currentType(String type) {
+    _model = _selectType(type).first;
+    return _model;
   }
 
   @override
@@ -112,7 +117,7 @@ class _addTransactionPage extends State<addTransactionPage> {
                           context: context,
                           initialDate: DateTime.now(),
                           firstDate: DateTime(2021),
-                          lastDate: DateTime(2023),
+                          lastDate: DateTime(2031),
                         );
                         if (pickeddate != null) {
                           setState(() {
@@ -144,7 +149,7 @@ class _addTransactionPage extends State<addTransactionPage> {
                             ),
                             padding: EdgeInsets.only(right: 15.0)),
                         DropdownButton<String>(
-                          value: _model = _selectType(_type).first,
+                          value: _model,
                           dropdownColor: list_color,
                           icon: const Icon(Icons.expand_more),
                           elevation: 16,
@@ -173,10 +178,7 @@ class _addTransactionPage extends State<addTransactionPage> {
                       controller: _noteController,
                     ),
                     ElevatedButton(
-                        onPressed: () {
-                          _submitTransaction(context);
-                          // _navigateBack(context);
-                        },
+                        onPressed: () => _submitTransaction(context),
                         child: Text('Save'),
                         style: ElevatedButton.styleFrom(
                           shape: RoundedRectangleBorder(
@@ -215,23 +217,11 @@ class _addTransactionPage extends State<addTransactionPage> {
                 _amountController.clear(),
                 _noteController.clear(),
                 print('Transaction added to Trans_database ${id}'),
-                _navigateBack(context)
+                Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (context) => MyApp()))
               },
             );
       }
     }
-  }
-
-  void _navigateBack(BuildContext context) {
-    // Navigator.pop(context);
-    // Navigator.pop(context);
-    Navigator.of(context)
-        .push(MaterialPageRoute(builder: (context) => MyApp()));
-    // Navigator.pushNamed(
-    //   context,
-    //   'Transactions',
-    //   // arguments: noteId,
-    // );
-    // // _refreshData();
   }
 }

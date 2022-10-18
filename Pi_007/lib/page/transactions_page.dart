@@ -5,6 +5,9 @@ import 'package:pi_007/databases/db_transactions.dart';
 import 'package:pi_007/static_data/txn.dart';
 import 'dart:convert';
 
+import '../main.dart';
+import 'edit_transaction.dart';
+
 class TransactionsPage extends StatefulWidget {
   const TransactionsPage({Key key}) : super(key: key);
 
@@ -26,15 +29,17 @@ class _TransactionsPageState extends State<TransactionsPage> {
 
   @override
   Widget build(BuildContext context) {
-    double width = MediaQuery.of(context).size.width;
     return Scaffold(
       body: ListView(
         children: <Widget>[
-          Text("Transactions list here", style: TextStyle(fontSize: 40)),
+          // Text("Transactions list here", style: TextStyle(fontSize: 40)),
 
           /************* debug code BEGIN ************/
           TextButton(
-            onPressed: () => dbmanager.deleteAllTransaction('transactions'),
+            onPressed: () {
+              dbmanager.deleteAllTransaction();
+              _navigateBack(context);
+            },
             child: Text("delete all txn"),
           ),
           TextButton(
@@ -89,7 +94,7 @@ class _TransactionsPageState extends State<TransactionsPage> {
                 );
               } else {
                 return const Center(
-                  child: Text("No data found."),
+                  child: CircularProgressIndicator(),
                 );
               }
             },
@@ -126,9 +131,26 @@ class _TransactionsPageState extends State<TransactionsPage> {
                             ),
                             ElevatedButton(
                               onPressed: () {
-                                //add page for image recognition here
+                                // result = navigator.push ... (open camera, and to model)
+                                // for each item, open the add page and autofill entries (_addMultipleTxn())
                               },
-                              child: Text('Add image of receipt'),
+                              child: Text('Add from camera'),
+                              style: ElevatedButton.styleFrom(
+                                side: BorderSide(
+                                  color: Colors.black,
+                                ),
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(12)),
+                                primary: action_button, //background
+                                onPrimary: Colors.black, //foreground
+                              ),
+                            ),
+                            ElevatedButton(
+                              onPressed: () {
+                                // result = navigator.push ... (open gallery, and to model)
+                                // for each item, open the add page and autofill entries (_addMultipleTxn())
+                              },
+                              child: Text('Add from gallery'),
                               style: ElevatedButton.styleFrom(
                                 side: BorderSide(
                                   color: Colors.black,
@@ -162,19 +184,22 @@ class _TransactionsPageState extends State<TransactionsPage> {
     for (var i = 0; i < data.length; i++) {
       dbmanager.insertTransaction(data[i]);
     }
+    _navigateBack(context);
   }
 
   Widget _displayCard(String timestamp) {
     // filter out txn of that date
     int numTxn = timestampMap[timestamp];
-    print(timestamp);
-    // List txnListOfDate = txnList.map((txn) {
-    //   if (txn.timestamp == timestamp) return txn;
-    // });
-
-    var txnListOfDate =
+    var dailyTxnList =
         txnList.where((txn) => txn.timestamp == timestamp).toList();
     // print(txnListOfDate);
+
+    // get total spending in a day
+    double overallAmount = 0.0;
+    dailyTxnList.forEach((txn) =>
+        overallAmount += txn.spendings == 1 ? -1 * txn.amount : txn.amount);
+
+    double absAmount = overallAmount >= 0 ? overallAmount : -1 * overallAmount;
 
     return Card(
       child: Padding(
@@ -185,7 +210,7 @@ class _TransactionsPageState extends State<TransactionsPage> {
                 // header
                 children: [
                   Expanded(
-                      flex: 2,
+                      flex: 4,
                       child: Text(timestamp, style: TextStyle(fontSize: 16))),
                   // Expanded(
                   //     flex: 1,
@@ -195,6 +220,14 @@ class _TransactionsPageState extends State<TransactionsPage> {
                   //     flex: 1,
                   //     child: Text("\$ total", // TODO
                   //         style: TextStyle(fontSize: 16, color: Colors.blue))),
+                  Expanded(
+                      flex: 3,
+                      child: Text(
+                          (overallAmount >= 0 ? "+" : "-") +
+                              " \$ ${absAmount.toStringAsFixed(2)}",
+                          textAlign: TextAlign.right,
+                          style: TextStyle(
+                              fontSize: 17, fontWeight: FontWeight.bold))),
                   Expanded(flex: 2, child: SizedBox.shrink()),
                 ],
               ),
@@ -208,7 +241,7 @@ class _TransactionsPageState extends State<TransactionsPage> {
                 itemCount: numTxn,
                 itemBuilder: (context, index) {
                   // sort here, or in SQL
-                  return _displayCardItem(txnListOfDate[index]);
+                  return _displayCardItem(dailyTxnList[index]);
                 },
               )
             ],
@@ -231,9 +264,30 @@ class _TransactionsPageState extends State<TransactionsPage> {
               : Text("+ \$ ${txn.amount}",
                   textAlign: TextAlign.right,
                   style: TextStyle(fontSize: 16, color: Colors.blue))),
-      Expanded(flex: 1, child: SizedBox.shrink())
+      Expanded(flex: 1, child: SizedBox.shrink()),
+      Expanded(
+          flex: 1,
+          child: IconButton(
+              onPressed: () async {
+                // print("edit transaction ${txn.id}" );
+                // how to pass the index of id into txn list
+                final edittedresult = await Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => editTransactionPage(txn)));
+                // print(edittedresult);
+              },
+              icon: Icon(Icons.edit))),
     ]);
   }
+
+  // Processing script: return a object with 2 attributes:
+  // price_list for list of objects and their price,
+  // total for total amt of receipt
+
+  // jsonResult = {"price_list" : {"item1" : "10.00", "ITEM2" : "13.00"}, "totalAmt" : "100.00"}
+
+  
 
   // Expanded(flex: 2, child: SizedBox.shrink())
   // Expanded(
@@ -243,17 +297,30 @@ class _TransactionsPageState extends State<TransactionsPage> {
   //             style: TextStyle(fontSize: 16, color: Colors.blue))
   //         : SizedBox.shrink()),
 
-  void printObject(Object object) {
-    // Encode your object and then decode your object to Map variable
-    Map jsonMapped = json.decode(json.encode(object));
+  // void printObject(Object object) {
+  //   // Encode your object and then decode your object to Map variable
+  //   Map jsonMapped = json.decode(json.encode(object));
 
-    // Using JsonEncoder for spacing
-    JsonEncoder encoder = new JsonEncoder.withIndent('  ');
+  //   // Using JsonEncoder for spacing
+  //   JsonEncoder encoder = new JsonEncoder.withIndent('  ');
 
-    // encode it to string
-    String prettyPrint = encoder.convert(jsonMapped);
+  //   // encode it to string
+  //   String prettyPrint = encoder.convert(jsonMapped);
 
-    // print or debugPrint your object
-    print(prettyPrint);
-  }
+  //   // print or debugPrint your object
+  //   print(prettyPrint);
+  // }
+
+}
+
+void _navigateBack(BuildContext context) {
+  // Navigator.pop(context);
+  // Navigator.pop(context);
+  Navigator.of(context).push(MaterialPageRoute(builder: (context) => MyApp()));
+  // Navigator.pushNamed(
+  //   context,
+  //   'Transactions',
+  //   // arguments: noteId,
+  // );
+  // // _refreshData();
 }
