@@ -143,7 +143,7 @@ class _TransactionsPageState extends State<TransactionsPage> {
                                 if (image != null) {
                                   var request = http.MultipartRequest(
                                     'POST',
-                                    Uri.parse('http://192.168.0.102/textrec'),
+                                    Uri.parse('http://34.173.115.34/textrec'),
                                   );
                                   request.files.add(await http.MultipartFile.fromPath('image', image.path));
                                   request.headers.addAll(
@@ -179,7 +179,7 @@ class _TransactionsPageState extends State<TransactionsPage> {
                                 if (image != null) {
                                   var request = http.MultipartRequest( 
                                       'POST',
-                                      Uri.parse('http://192.168.0.102/textrec'),
+                                      Uri.parse('http://34.173.115.34/textrec'),
                                   );
                                   request.files.add(await http.MultipartFile.fromPath('image', image.path));
                                   request.headers.addAll(
