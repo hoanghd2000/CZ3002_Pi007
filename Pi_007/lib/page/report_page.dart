@@ -1,8 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pi_007/databases/db_transactions.dart';
-import 'package:pi_007/page/spendings_chart.dart';
+import 'package:pi_007/page/monthly_spendings.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
+import 'package:percent_indicator/percent_indicator.dart' as indicator;
 
 class ReportPage extends StatelessWidget {
   static const action_button = Color(0xFFF8C8DC); //pink
@@ -107,7 +108,7 @@ class ReportPage extends StatelessWidget {
         // SizedBox(height:240),
 
         //add chart here
-        spendingsChart(),
+        monthlySpendingsChart(),
 
         Text('   Budget for the month:',
             style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
@@ -115,13 +116,16 @@ class ReportPage extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.all(12.0),
           child: new LinearProgressIndicator(
-            minHeight: 14.0,
-            value: 0.6, //TO DO: dynamic
-            backgroundColor: Colors.indigo[100],
-            valueColor: AlwaysStoppedAnimation<Color>(
-              Colors.indigo[300],
-            ),
-          ),
+              // minHeight: 14.0,
+              // value: 0.6, //TO DO: dynamic
+              // backgroundColor: Colors.indigo[100],
+              // valueColor: AlwaysStoppedAnimation<Color>(
+              //   Colors.indigo[300],
+              // ),
+
+              // //percentage indicator
+              // new LinearPercent
+              ),
         ),
         Text('    350 dollars of 500 dollars used',
             style: TextStyle(fontSize: 15, color: Colors.grey)),
