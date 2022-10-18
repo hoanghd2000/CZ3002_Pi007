@@ -62,7 +62,7 @@ class _TransactionsPageState extends State<TransactionsPage> {
 
           FutureBuilder(
             future: dbmanager.getAllTransactionOrderBy('timestamp DESC'),
-            // future: dbmanager.getTransactionByYear(),
+            // future: dbmanager.getAllSpendingOrderBy('timestamp ASC'),
             builder: (BuildContext context,
                 AsyncSnapshot<List<Transaction>> snapshot) {
               if (snapshot.hasData) {
@@ -286,8 +286,6 @@ class _TransactionsPageState extends State<TransactionsPage> {
   // total for total amt of receipt
 
   // jsonResult = {"price_list" : {"item1" : "10.00", "ITEM2" : "13.00"}, "totalAmt" : "100.00"}
-
-  
 
   // Expanded(flex: 2, child: SizedBox.shrink())
   // Expanded(

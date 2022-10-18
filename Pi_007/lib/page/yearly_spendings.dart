@@ -19,10 +19,10 @@ class yearlySpendingsChart extends StatelessWidget {
 
           // find total spending amount for every year as a mapping
           txnData.forEach((txn) =>
-              totalSpendingMap[txn.timestamp.substring(0, 3)] =
-                  !totalSpendingMap.containsKey(txn.timestamp.substring(0, 3))
+              totalSpendingMap[txn.timestamp.substring(0, 4)] =
+                  !totalSpendingMap.containsKey(txn.timestamp.substring(0, 4))
                       ? (txn.amount)
-                      : (totalSpendingMap[txn.timestamp.substring(0, 3)] +
+                      : (totalSpendingMap[txn.timestamp.substring(0, 4)] +
                           txn.amount));
 
           // convert mapping into a list of TS instances
@@ -38,7 +38,7 @@ class yearlySpendingsChart extends StatelessWidget {
                       padding: const EdgeInsets.all(8.0),
                       child: Column(children: <Widget>[
                         Text(
-                          "Monthly Spending Report",
+                          "Yearly Spending Report",
                           style: Theme.of(context).textTheme.bodyText1,
                         ), //to change
                         Expanded(

@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pi_007/databases/db_transactions.dart';
 import 'package:pi_007/page/monthly_spendings.dart';
+import 'package:pi_007/page/yearly_spendings.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:percent_indicator/percent_indicator.dart' as indicator;
 
@@ -108,7 +109,7 @@ class ReportPage extends StatelessWidget {
         // SizedBox(height:240),
 
         //add chart here
-        monthlySpendingsChart(),
+        yearlySpendingsChart(),
 
         Text('   Budget for the month:',
             style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),

@@ -23,11 +23,11 @@ class DbTrans_Manager {
     //     await db.execute(
     //       'DROP TABLE IF EXISTS trans');
     _database ??= await openDatabase(
-          join(await getDatabasesPath(), "transactions.db"),
-          version: 1, onCreate: (Database db, int version) async {
-        await db.execute(
-            'CREATE TABLE transactions(id INTEGER PRIMARY KEY AUTOINCREMENT, spendings INTEGER, category TEXT, name TEXT, amount REAL, note TEXT, timestamp TEXT)');
-      });
+        join(await getDatabasesPath(), "transactions.db"),
+        version: 1, onCreate: (Database db, int version) async {
+      await db.execute(
+          'CREATE TABLE transactions(id INTEGER PRIMARY KEY AUTOINCREMENT, spendings INTEGER, category TEXT, name TEXT, amount REAL, note TEXT, timestamp TEXT)');
+    });
   }
 
   Future<int> insertTransaction(Transaction transaction) async {
@@ -146,7 +146,7 @@ class DbTrans_Manager {
 
     final yearlyResult = await _database.query('transactions',
         columns: null,
-        where: "timestamp LIKE ? AND spendings = 1",
+        where: "spendings = 1",
         // whereArgs: ['$thisYear%'], // string matching
         orderBy: sqlOrderBy);
     //convert json to transaction object in a list
