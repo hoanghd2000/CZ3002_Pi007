@@ -1,9 +1,14 @@
+import 'package:camera/camera.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:pi_007/page/add_transaction.dart';
 import 'package:pi_007/databases/db_transactions.dart';
+import 'package:pi_007/page/camera.dart';
 import 'package:pi_007/static_data/txn.dart';
 import 'dart:convert';
+import 'dart:io';
+import 'package:http/http.dart' as http;
 
 import '../main.dart';
 import 'edit_transaction.dart';
@@ -130,8 +135,28 @@ class _TransactionsPageState extends State<TransactionsPage> {
                               ),
                             ),
                             ElevatedButton(
-                              onPressed: () {
-                                // result = navigator.push ... (open camera, and to model)
+                              onPressed: () async {
+                                // Initialize an ImagePicker
+                                final ImagePicker _picker = ImagePicker();
+                                // Pick an image from Gallery
+                                final XFile image = await _picker.pickImage(source: ImageSource.camera);
+                                if (image != null) {
+                                  var request = http.MultipartRequest(
+                                    'POST',
+                                    Uri.parse('http://192.168.0.102/textrec'),
+                                  );
+                                  request.files.add(await http.MultipartFile.fromPath('image', image.path));
+                                  request.headers.addAll(
+                                      <String, String>{
+                                        "Accept": "application/json"
+                                      });
+                                  // Send the request to the text rec server
+                                  var response = await request.send();
+                                  var res = await http.Response.fromStream(response);
+                                  await Navigator.of(context).push(
+                                      MaterialPageRoute(builder: (context) => Scaffold(body: Text(res.body)))
+                                  );
+                                }
                                 // for each item, open the add page and autofill entries (_addMultipleTxn())
                               },
                               child: Text('Add from camera'),
@@ -146,8 +171,28 @@ class _TransactionsPageState extends State<TransactionsPage> {
                               ),
                             ),
                             ElevatedButton(
-                              onPressed: () {
-                                // result = navigator.push ... (open gallery, and to model)
+                              onPressed: () async {
+                                // Initialize an ImagePicker
+                                final ImagePicker _picker = ImagePicker();
+                                // Pick an image from Gallery
+                                final XFile image = await _picker.pickImage(source: ImageSource.gallery);
+                                if (image != null) {
+                                  var request = http.MultipartRequest( 
+                                      'POST',
+                                      Uri.parse('http://192.168.0.102/textrec'),
+                                  );
+                                  request.files.add(await http.MultipartFile.fromPath('image', image.path));
+                                  request.headers.addAll(
+                                    <String, String>{
+                                      "Accept": "application/json"
+                                    });
+                                  // Send the request to the text rec server
+                                  var response = await request.send();
+                                  var res = await http.Response.fromStream(response);
+                                  await Navigator.of(context).push(
+                                    MaterialPageRoute(builder: (context) => Scaffold(body: Text(res.body)))
+                                  );
+                                }
                                 // for each item, open the add page and autofill entries (_addMultipleTxn())
                               },
                               child: Text('Add from gallery'),

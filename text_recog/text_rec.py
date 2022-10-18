@@ -1,5 +1,5 @@
 from PIL import Image
-import pytesseract, re
+import pytesseract, re, os
 from collections import OrderedDict
 
 
@@ -59,17 +59,19 @@ def find_prices_all_items(text, check_total):
     }
 
 
-
-if __name__ == '__main__':
+def predict_text(image_name):
     # Image resizing
-    # img = Image.open('sample13.jpg')
+    # img = Image.open(os.path.join('FromAndroid', image_name))
     # img = img.resize((int(img.size[0]*1.5), int(img.size[1]*1.5)))
 
     # Read the text in the image
-    text = pytesseract.image_to_string('sample15.jpg') # tessaract image to string
+    text = pytesseract.image_to_string(os.path.join('FromAndroid', image_name)) # tessaract image to string
 
     # Since tessaract might mistake a '.' for a ',', we convert all ',' in the returned string to '.'
     text = text.replace(',', '.')
     # print(text)
     
-    print(find_prices_all_items(text, False))
+    return find_prices_all_items(text, False)
+
+if __name__ == '__main__':
+    print(predict_text('sample15.jpg'))

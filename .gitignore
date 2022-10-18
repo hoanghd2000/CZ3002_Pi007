@@ -83,3 +83,9 @@ lint/generated/
 lint/outputs/
 lint/tmp/
 # lint/reports/
+
+# Image Uploaded to TextRec Server
+text_recog/FromAndroid/
+
+# Python cache
+__pycache__
