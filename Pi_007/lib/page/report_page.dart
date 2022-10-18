@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:path/path.dart';
 import 'package:pi_007/databases/db_transactions.dart';
+import 'package:pi_007/databases/db_budget.dart';
 import 'package:pi_007/page/monthly_spendings.dart';
 import 'package:pi_007/page/yearly_spendings.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
@@ -21,6 +22,7 @@ class _ReportPageState extends State<ReportPage> {
   static const confirm_button = Color(0xFFB4ECB4); //green
   bool viewType = false;
   final DbTrans_Manager dbmanager = new DbTrans_Manager();
+  final dbBudget_manager budgetDBM = new dbBudget_manager();
 
   @override
   Widget build(BuildContext context) {
@@ -111,12 +113,8 @@ class _ReportPageState extends State<ReportPage> {
 
       //add chart here
       viewType ? yearlySpendingsChart() : monthlySpendingsChart(),
-      TextButton(
-          onPressed: () => dbmanager.getSpendingCurrentMonth('timestamp'),
-          child: Text('bla')),
-      // Text(_getValue()),
 
-      Text('   Budget for the month:',
+          Text('   Budget for the month:',
           style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
       SizedBox(height: 10),
       Padding(
@@ -151,7 +149,20 @@ class _ReportPageState extends State<ReportPage> {
               Text('no data');
             }
           }),
-      Text('    350 dollars of 500 dollars used',
+
+          FutureBuilder(
+              future: budgetDBM.getCurrentMonthBudget(),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  final currentMonthBudget = snapshot.data;
+                  return Text(currentMonthBudget.toString());
+                }
+                else{
+                  Text('no data');
+                }
+              }),
+
+          Text('    350 dollars of 500 dollars used',
           style: TextStyle(fontSize: 15, color: Colors.grey)),
       SizedBox(height: 15),
 

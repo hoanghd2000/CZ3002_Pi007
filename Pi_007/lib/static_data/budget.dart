@@ -36,10 +36,10 @@ List<Budget> get2022data() {
   List<Budget> data = [];
   var rng = Random();
 
-  for (var i = 0; i < 6; i++) {
+  for (var i = 0; i < 12; i++) {
     data.add(Budget(
         name: "Budget ${i+1}",
-        amount: double.parse((rng.nextInt(100) * 10).toString()),
+        amount: double.parse(((rng.nextInt(100)+1) * 10).toString()),
         startTime: _startMonth2022List[i],
         endTime: _endMonth2022List[i]));
   }

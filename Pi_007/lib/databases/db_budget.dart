@@ -55,7 +55,8 @@ class dbBudget_manager {
         where: "startTime LIKE ? AND endTime LIKE ?",
         whereArgs: ['%$thisMonth%', '%$thisMonth%'] // string matching
         );
-    budgetList = List.generate(currentMonthBudget.length, (i) {
+    print("length is " + currentMonthBudget.length.toString());
+    print((List.generate(currentMonthBudget.length, (i) {
       return Budget(
           id: currentMonthBudget[i]['id'],
           name: currentMonthBudget[i]['name'],
@@ -63,8 +64,16 @@ class dbBudget_manager {
           amount: currentMonthBudget[i]['amount'],
           startTime: currentMonthBudget[i]['startTime'],
           endTime: currentMonthBudget[i]['endTime']);
-    });
-  
+    }))[0].amount);
+    return List.generate(currentMonthBudget.length, (i) {
+      return Budget(
+          id: currentMonthBudget[i]['id'],
+          name: currentMonthBudget[i]['name'],
+          // limitBudget:maps[i]['limitBudget'],
+          amount: currentMonthBudget[i]['amount'],
+          startTime: currentMonthBudget[i]['startTime'],
+          endTime: currentMonthBudget[i]['endTime']);
+    })[0].amount;
     return budgetList[0].amount;
   }
 
