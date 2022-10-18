@@ -15,6 +15,29 @@ class SplitBillPage extends StatelessWidget {
     Bill("Hot pot with JC friends", 103.50, DateTime.parse("2022-09-04")),
   ];
 
+  Map<String, dynamic> modelOutput = {
+    'price_list': {
+      'Prawns': '20.00',
+      'Chicken': '15.50',
+      'Mushroom': '12.00',
+      'Potato': '8.50',
+      'Tofu': '4.00',
+    },
+    'total': '50.00'
+  };
+
+  Map<String, List<String>> itemPayerMap = {
+    'Prawns': ['Me', 'John', 'Jimmy', 'Jackson'], // 5 each
+    'Chicken': ['Me', 'Jimmy', 'Jackson'], // 5.17 each (round up)
+    'Mushroom': ['John', 'Jimmy'], // 6 each
+    'Potato': ['Me', 'John'], // 4.25 each
+    'Tofu': ['Jackson'], // 4
+  };
+
+  // Me = 14.42, john = 15.25, jimmy = 16.17, jackson = 14.17
+
+  Map<String, double> payerAmountMap = {};
+
   @override
   Widget build(BuildContext context) => Scaffold(
       body: ListView(children: <Widget>[
@@ -32,14 +55,39 @@ class SplitBillPage extends StatelessWidget {
         // TODO: TEXT REC (in splitbill page)
         // (1) after text tec, convert json mapping to list of Bill instances
         // (2) [edit_group_spending_page] fire up edit_transaction page as many times as no. of items + assign payers
+        // OR splitbill_spendings.dart, to show temp list of transaction saved in a temp db
         // (3) get mapping of spending_item to list of payers
         // (4) calculate amt owed for each payer (convert to mapping of payer to list of spending_item & amount owed)
         // (5) display UI
         // (6) opt: have a button to auto-add your own "ME" spendings to transaction page
 
+        Padding(
+          padding: const EdgeInsets.all(22.0),
+          child: Text(
+            modelOutput.toString(),
+            textAlign: TextAlign.center,
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(22.0),
+          child: Text(
+            itemPayerMap.toString(),
+            textAlign: TextAlign.center,
+          ),
+        ),
         TextButton(
-          onPressed: () => {},
-          child: Text("hey there"),
+          onPressed: () {
+            payerAmountMap = {};
+            _calcPayerAmt();
+          },
+          child: Text("calculate amount spent by each payer"),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(22.0),
+          child: Text(
+            payerAmountMap.toString(),
+            textAlign: TextAlign.center,
+          ),
         ),
       ]),
       floatingActionButton: FloatingActionButton(
@@ -47,6 +95,49 @@ class SplitBillPage extends StatelessWidget {
           backgroundColor: action_button,
           foregroundColor: Colors.black,
           onPressed: () async {}));
+
+  void _calcPayerAmt() {
+    // Map<String, dynamic> modelOutput = {
+    //   'price_list': {
+    //     'Prawns': '20.00',
+    //     'Chicken': '15.50',
+    //     'Mushroom': '12.00',
+    //     'Potato': '8.50',
+    //     'Tofu': '4.00',
+    //   },
+    //   'total': '50.00'
+    // };
+
+    // Map<String, List<String>> itemPayerMap = {
+    //   'Prawns': ['Me', 'John', 'Jimmy', 'Jackson'],
+    //   'Chicken': ['Me', 'Jimmy', 'Jackson'],
+    //   'Mushroom': ['John', 'Jimmy'],
+    //   'Potato': ['Me', 'John'],
+    //   'Tofu': ['Jackson'],
+    // };
+
+    // List<String> allPayerList = ['Me', 'John', 'Jimmy', 'Jackson'];
+
+    Map<String, String> itemAmtMap = modelOutput['price_list'];
+
+    // calculate the split amount for each item = item price / no. of payer for that item
+    // {'Prawns': 4.00, 'Chicken': 5.17, ...}
+    Map<String, double> itemSplitAmtMap = {};
+    itemAmtMap.forEach((item, amt) => itemSplitAmtMap[item] = double.parse(
+        (double.parse(amt) / itemPayerMap[item].length).toStringAsFixed(2)));
+
+    // Map<String, double> payerAmountMap = {};
+
+    // for each item, then for each payer, accumulate the amount owed
+    itemPayerMap.forEach((item, payerList) => payerList.forEach((payer) =>
+        payerAmountMap[payer] = payerAmountMap.containsKey(payer)
+            ? payerAmountMap[payer] += itemSplitAmtMap[item]
+            : itemSplitAmtMap[item]));
+
+    // format the doubles nicely
+    payerAmountMap.forEach((payer, amt) =>
+        payerAmountMap[payer] = double.parse(amt.toStringAsFixed(2)));
+  }
 }
 
 class Bill {
