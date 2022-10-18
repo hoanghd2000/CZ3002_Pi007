@@ -46,7 +46,8 @@ class _addTransactionPage extends State<addTransactionPage> {
   static const List<String> list_spend = <String>[
     'Food',
     'Transport',
-    'Shopping'
+    'Shopping',
+    ''
   ];
   static const List<String> list_earn = <String>['Allowance', 'Stock', 'Work'];
   String type_list = list_type.first;

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:pi_007/page/add_transaction.dart';
 import 'package:pi_007/databases/db_transactions.dart';
 import 'package:pi_007/static_data/txn.dart';
+import 'package:intl/intl.dart';
 import 'dart:convert';
 
 import '../main.dart';
@@ -25,6 +26,22 @@ class _TransactionsPageState extends State<TransactionsPage> {
   Map<String, int> timestampMap;
   int updateIndex;
 
+  // Processing script: return a object with 2 attributes:
+  // price_list for list of objects and their price,
+  // total for total amt of receipt
+
+  // jsonResult = {"price_list" : {"item1" : "10.00", "ITEM2" : "13.00"}, "totalAmt" : "100.00"}
+
+  Map<String, dynamic> modelOutput = {
+    'price_list': {
+      'CARRIER BAG': '0.20',
+      'TOP CONC LIQ DIG ANTI-BA': '7.45',
+      'SOUTH AFRICA HONEY NADO': '3.15',
+      'ORION CHOCOLATE PIE': '14.30'
+    },
+    'total': '14.30'
+  };
+
   static const action_button = Color(0xFFF8C8DC); //pink
 
   @override
@@ -46,6 +63,33 @@ class _TransactionsPageState extends State<TransactionsPage> {
             onPressed: () => _generate2022data(),
             child: Text("generate data"),
           ),
+
+          // TODO: TEXT REC (in txn page)
+          // (1) convert json mapping to list of Bill instances
+          // (2) fire up edit_transaction page as many times as no. of items (nah)
+          // (3) insert into database
+          Padding(
+            padding: const EdgeInsets.all(22.0),
+            child: Text(
+              modelOutput.toString(),
+              textAlign: TextAlign.center,
+            ),
+          ),
+          TextButton(
+            onPressed: () => _convertModelResult(context), 
+            // {
+              // await _convertModelResult(context).then((Future<List<Transaction>> tList) {
+              // Navigator.push(
+              //     context,
+              //     MaterialPageRoute(
+              //         builder: (context) => editTransactionPage(tList[0])));
+              // });
+              // await dbmanager.insertTransaction(first);
+            //   _convertModelResult(context);              
+            // },
+            child: Text("edit & add into db"),
+          ),
+
           // TextButton(
           //   onPressed: () => _addTransaction(true),
           //   child: Text("add dummy spending"),
@@ -129,6 +173,12 @@ class _TransactionsPageState extends State<TransactionsPage> {
                                 onPrimary: Colors.black, //foreground
                               ),
                             ),
+
+                            // TODO: TEXT REC (in txn page)
+                            // (1) convert json mapping to list of Bill instances
+                            // (2) fire up edit_transaction page as many times as no. of items
+                            // (3) insert into database
+
                             ElevatedButton(
                               onPressed: () {
                                 // result = navigator.push ... (open camera, and to model)
@@ -169,15 +219,46 @@ class _TransactionsPageState extends State<TransactionsPage> {
     );
   }
 
+  void _convertModelResult(BuildContext context) {
+    // Map<String, String> priceMap = modelOutput['price_list'];
+    // List total = modelOutput['total'];
+    // List<String> itemList = priceMap.keys;
+
+    // List<Transaction> newTxnList = [];
+
+    // method 1: insert into db prematurely, then call edit query, and delete query if needed
+    // method 2: dynamically store into the var in edit page for each Transaction instance, then insert
+
+    // method 0.5
+    Map<String, String> priceMap = modelOutput['price_list'];
+    List<Transaction> newTxnList = [];
+
+    // create txn instances
+    priceMap.forEach((item, amt) => newTxnList.add(Transaction(
+        spendings: 1,
+        category: "",
+        name: item,
+        amount: double.parse(amt),
+        timestamp: DateFormat('yyyy-MM-dd').format(DateTime.now()))));
+
+    // // repeat edit_transaction page for no. of times as no. of items
+    newTxnList.forEach((txn) {
+      dbmanager.insertTransaction(txn);
+    });
+
+    _navigateBack(context);
+
+    // return newTxnList;
+
+    // newTxnList.forEach((txn) => dbmanager.insertTransaction(txn));
+    // newTxnList.forEach((txn) => Navigator.push(context,
+    //     MaterialPageRoute(builder: (context) => editTransactionPage(txn))));
+  }
+
   void _navigateToNextScreen(BuildContext context) {
     Navigator.of(context)
         .push(MaterialPageRoute(builder: (context) => addTransactionPage()));
   }
-
-  // void _addTransaction(bool spendings) {
-
-  //   dbmanager.insertTransaction(spendings ? t1 : t2);
-  // }
 
   void _generate2022data() {
     var data = get2022data();
@@ -214,11 +295,11 @@ class _TransactionsPageState extends State<TransactionsPage> {
                       child: Text(timestamp, style: TextStyle(fontSize: 16))),
                   // Expanded(
                   //     flex: 1,
-                  //     child: Text("\$ total", // TODO
+                  //     child: Text("\$ total",
                   //         style: TextStyle(fontSize: 16, color: Colors.red))),
                   // Expanded(
                   //     flex: 1,
-                  //     child: Text("\$ total", // TODO
+                  //     child: Text("\$ total",
                   //         style: TextStyle(fontSize: 16, color: Colors.blue))),
                   Expanded(
                       flex: 3,
@@ -280,14 +361,6 @@ class _TransactionsPageState extends State<TransactionsPage> {
               icon: Icon(Icons.edit))),
     ]);
   }
-
-  // Processing script: return a object with 2 attributes:
-  // price_list for list of objects and their price,
-  // total for total amt of receipt
-
-  // jsonResult = {"price_list" : {"item1" : "10.00", "ITEM2" : "13.00"}, "totalAmt" : "100.00"}
-
-  
 
   // Expanded(flex: 2, child: SizedBox.shrink())
   // Expanded(
