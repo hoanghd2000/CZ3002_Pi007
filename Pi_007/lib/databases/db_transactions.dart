@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart';
 import 'package:path/path.dart';
@@ -160,6 +161,44 @@ class DbTrans_Manager {
           note: yearlyResult[i]['note'],
           timestamp: yearlyResult[i]['timestamp']);
     });
+  }
+
+  //extract spendings for current month
+  Future<double> getSpendingCurrentMonth(String sqlOrderBy) async {
+    DateFormat formater = DateFormat('yyyy-MM-dd');
+    String today = formater.format(DateTime.now()); //today's date
+    String thisMonth = today.substring(5, 7); //extract current month
+    List currentMonthSpendingList;
+    double currentMonthTotalSpending = 0;
+
+    await openDb();
+
+    //return json objects
+    final currentMonthResult = await _database.query('transactions',
+        columns: null,
+        where: "timestamp LIKE ? AND spendings = 1",
+        whereArgs: ['%$thisMonth%'], // string matching
+        orderBy: sqlOrderBy);
+
+    currentMonthSpendingList = List.generate(currentMonthResult.length, (i) {
+      return Transaction(
+          id: currentMonthResult[i]['id'],
+          spendings: currentMonthResult[i]['spendings'],
+          category: currentMonthResult[i]['category'],
+          name: currentMonthResult[i]['name'],
+          amount: currentMonthResult[i]['amount'],
+          note: currentMonthResult[i]['note'],
+          timestamp: currentMonthResult[i]['timestamp']);
+    });
+
+    //add all the spendings in current month
+    currentMonthSpendingList.forEach((txn) {
+      currentMonthTotalSpending += txn.amount;
+    });
+
+    print(currentMonthTotalSpending);
+
+    return currentMonthTotalSpending;
   }
 }
 
