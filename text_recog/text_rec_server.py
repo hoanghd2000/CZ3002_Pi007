@@ -20,7 +20,7 @@ def text_rec():
     image_name = image.filename
     image.save(os.path.join('FromAndroid', image_name))
 
-    # Image Rec
+    # Text Rec
     result = predict_text(image_name)
     return flask.jsonify(result)
 

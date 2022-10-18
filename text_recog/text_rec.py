@@ -61,7 +61,7 @@ def find_prices_all_items(text, check_total):
 
 def predict_text(image_name):
     # Image resizing
-    # img = Image.open(image_name)
+    # img = Image.open(os.path.join('FromAndroid', image_name))
     # img = img.resize((int(img.size[0]*1.5), int(img.size[1]*1.5)))
 
     # Read the text in the image
