@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:pi_007/page/splitbill_page2.dart';
 
 class SplitBillPage extends StatelessWidget{
 
@@ -42,6 +43,7 @@ class SplitBillPage extends StatelessWidget{
           foregroundColor: Colors.black,
           onPressed: () async {
             // add route here
+            Navigator.of(context).push(MaterialPageRoute(builder: (context) => SplitBillPage2()));
           }
       ),
   );
