@@ -126,7 +126,7 @@ class _ReportPageState extends State<ReportPage> {
           builder:
               (BuildContext context, AsyncSnapshot<List<dynamic>> snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return CircularProgressIndicator();
+                    return LinearProgressIndicator();
                   } else if (snapshot.connectionState == ConnectionState.done) {
                       if (snapshot.hasData) {
                         List<Widget> children;
@@ -174,7 +174,7 @@ class _ReportPageState extends State<ReportPage> {
               }
             } else {
               // Text('no data');
-              return null;
+              return Text("   There are no transactions found.");
             }
           }}),
 
