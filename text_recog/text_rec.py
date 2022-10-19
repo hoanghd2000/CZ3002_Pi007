@@ -73,5 +73,19 @@ def predict_text(image_name):
     
     return find_prices_all_items(text, False)
 
+def predict_text_raw(image_name):
+    # Image resizing
+    # img = Image.open(os.path.join('FromAndroid', image_name))
+    # img = img.resize((int(img.size[0]*1.5), int(img.size[1]*1.5)))
+
+    # Read the text in the image
+    text = pytesseract.image_to_string(os.path.join('FromAndroid', image_name)) # tessaract image to string
+
+    # Since tessaract might mistake a '.' for a ',', we convert all ',' in the returned string to '.'
+    text = text.replace(',', '.')
+    # print(text)
+    
+    return text
+
 if __name__ == '__main__':
     print(predict_text('sample15.jpg'))

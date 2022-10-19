@@ -1,6 +1,6 @@
 import flask, os
 from flask_cors import CORS
-from text_rec import predict_text
+from text_rec import predict_text, predict_text_raw
 
 
 app = flask.Flask(__name__)
@@ -22,6 +22,17 @@ def text_rec():
 
     # Text Rec
     result = predict_text(image_name)
+    return flask.jsonify(result)
+
+@app.route('/textrecraw', methods=['POST'])
+def text_rec_raw():
+    # Save the uploaded image to the FromAndroid folder
+    image = flask.request.files['image']
+    image_name = image.filename
+    image.save(os.path.join('FromAndroid', image_name))
+
+    # Text Rec
+    result = predict_text_raw(image_name)
     return flask.jsonify(result)
 
 if __name__ == '__main__':
