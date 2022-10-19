@@ -76,7 +76,7 @@ class _MyHomePageState extends State<MyHomePage> {
               NavigationDestination(
                   icon: Icon(Icons.article_outlined),
                   selectedIcon: Icon(Icons.article),
-                  label: 'Transactions'),
+                  label: 'Transaction'),
               NavigationDestination(
                   icon: Icon(Icons.insights_outlined),
                   selectedIcon: Icon(Icons.insights),

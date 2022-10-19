@@ -6,6 +6,7 @@ import 'package:pi_007/page/add_transaction.dart';
 import 'package:pi_007/databases/db_transactions.dart';
 import 'package:pi_007/page/camera.dart';
 import 'package:pi_007/static_data/txn.dart';
+import 'package:intl/intl.dart';
 import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
@@ -121,7 +122,7 @@ class _TransactionsPageState extends State<TransactionsPage> {
                           children: <Widget>[
                             ElevatedButton(
                               onPressed: () {
-                                _navigateToNextScreen(context);
+                                _navigateToAddPage(context);
                               },
                               child: Text('Add Manually'),
                               style: ElevatedButton.styleFrom(
@@ -136,28 +137,7 @@ class _TransactionsPageState extends State<TransactionsPage> {
                             ),
                             ElevatedButton(
                               onPressed: () async {
-                                // Initialize an ImagePicker
-                                final ImagePicker _picker = ImagePicker();
-                                // Pick an image from Gallery
-                                final XFile image = await _picker.pickImage(source: ImageSource.camera);
-                                if (image != null) {
-                                  var request = http.MultipartRequest(
-                                    'POST',
-                                    Uri.parse('http://34.173.115.34/textrec'),
-                                  );
-                                  request.files.add(await http.MultipartFile.fromPath('image', image.path));
-                                  request.headers.addAll(
-                                      <String, String>{
-                                        "Accept": "application/json"
-                                      });
-                                  // Send the request to the text rec server
-                                  var response = await request.send();
-                                  var res = await http.Response.fromStream(response);
-                                  await Navigator.of(context).push(
-                                      MaterialPageRoute(builder: (context) => Scaffold(body: Text(res.body)))
-                                  );
-                                }
-                                // for each item, open the add page and autofill entries (_addMultipleTxn())
+                                _addImage(context, ImageSource.camera);
                               },
                               child: Text('Add from camera'),
                               style: ElevatedButton.styleFrom(
@@ -172,28 +152,7 @@ class _TransactionsPageState extends State<TransactionsPage> {
                             ),
                             ElevatedButton(
                               onPressed: () async {
-                                // Initialize an ImagePicker
-                                final ImagePicker _picker = ImagePicker();
-                                // Pick an image from Gallery
-                                final XFile image = await _picker.pickImage(source: ImageSource.gallery);
-                                if (image != null) {
-                                  var request = http.MultipartRequest( 
-                                      'POST',
-                                      Uri.parse('http://34.173.115.34/textrec'),
-                                  );
-                                  request.files.add(await http.MultipartFile.fromPath('image', image.path));
-                                  request.headers.addAll(
-                                    <String, String>{
-                                      "Accept": "application/json"
-                                    });
-                                  // Send the request to the text rec server
-                                  var response = await request.send();
-                                  var res = await http.Response.fromStream(response);
-                                  await Navigator.of(context).push(
-                                    MaterialPageRoute(builder: (context) => Scaffold(body: Text(res.body)))
-                                  );
-                                }
-                                // for each item, open the add page and autofill entries (_addMultipleTxn())
+                                _addImage(context, ImageSource.gallery);
                               },
                               child: Text('Add from gallery'),
                               style: ElevatedButton.styleFrom(
@@ -214,15 +173,10 @@ class _TransactionsPageState extends State<TransactionsPage> {
     );
   }
 
-  void _navigateToNextScreen(BuildContext context) {
+  void _navigateToAddPage(BuildContext context) {
     Navigator.of(context)
         .push(MaterialPageRoute(builder: (context) => addTransactionPage()));
   }
-
-  // void _addTransaction(bool spendings) {
-
-  //   dbmanager.insertTransaction(spendings ? t1 : t2);
-  // }
 
   void _generateData() {
     var data = getRandomTxn();
@@ -232,13 +186,53 @@ class _TransactionsPageState extends State<TransactionsPage> {
     _navigateBack(context);
   }
 
-  // void _generate2021data() {
-  //   var data = get2021data();
-  //   for (var i = 0; i < data.length; i++) {
-  //     dbmanager.insertTransaction(data[i]);
-  //   }
-  //   _navigateBack(context);
-  // }
+  void _addImage(BuildContext context, ImageSource imgSrc) async {
+    // Initialize an ImagePicker
+    final ImagePicker _picker = ImagePicker();
+    // Pick an image from Gallery
+    final XFile image = await _picker.pickImage(source: imgSrc);
+    if (image != null) {
+      var request = http.MultipartRequest( 
+          'POST',
+          Uri.parse('http://34.173.115.34/textrec'),
+      );
+      request.files.add(await http.MultipartFile.fromPath('image', image.path));
+      request.headers.addAll(
+        <String, String>{
+          "Accept": "application/json"
+        });
+      // Send the request to the text rec server
+      var response = await request.send();
+      var res = await http.Response.fromStream(response);
+      // await Navigator.of(context).push(
+      //   MaterialPageRoute(builder: (context) => Scaffold(body: Text(res.body)))
+      // );
+
+      // extract output from response
+      Map decodedOutput = await jsonDecode(res.body);
+      Map priceMap = await decodedOutput['price_list'];
+
+      // example of decodedOutput
+      // {"price_list" : {"item1" : "10.00", "ITEM2" : "13.00"}, "totalAmt" : "100.00"}
+
+      // create txn instances
+      List<Transaction> newTxnList = [];
+      priceMap.forEach((item, amt) => newTxnList.add(Transaction(
+          spendings: 1,
+          category: "",
+          name: item,
+          amount: double.parse(double.parse(amt).toStringAsFixed(2)),
+          timestamp: DateFormat('yyyy-MM-dd').format(DateTime.now()))));
+
+      // repeat edit_transaction page for no. of times as no. of items
+      // nah
+
+      // insert each txn into db
+      newTxnList.forEach((txn) => dbmanager.insertTransaction(txn));
+
+      _navigateBack(context);
+    }
+  }
 
   Widget _displayCard(String timestamp) {
     // filter out txn of that date
@@ -299,6 +293,13 @@ class _TransactionsPageState extends State<TransactionsPage> {
               )
             ],
           )),
+      elevation: 5,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(5.0)),
+      color: Color(0xFFF7F7F7),
+      margin: const EdgeInsets.only(
+        bottom: 8,
+      )
     );
   }
 
@@ -311,10 +312,10 @@ class _TransactionsPageState extends State<TransactionsPage> {
       Expanded(
           flex: 3,
           child: (txn.spendings == 1)
-              ? Text("- \$ ${txn.amount}",
+              ? Text("- \$ ${txn.amount.toStringAsFixed(2)}",
                   textAlign: TextAlign.right,
                   style: TextStyle(fontSize: 16, color: Colors.red))
-              : Text("+ \$ ${txn.amount}",
+              : Text("+ \$ ${txn.amount.toStringAsFixed(2)}",
                   textAlign: TextAlign.right,
                   style: TextStyle(fontSize: 16, color: Colors.blue))),
       Expanded(flex: 1, child: SizedBox.shrink()),
@@ -333,45 +334,10 @@ class _TransactionsPageState extends State<TransactionsPage> {
               icon: Icon(Icons.edit))),
     ]);
   }
-
-  // Processing script: return a object with 2 attributes:
-  // price_list for list of objects and their price,
-  // total for total amt of receipt
-
-  // jsonResult = {"price_list" : {"item1" : "10.00", "ITEM2" : "13.00"}, "totalAmt" : "100.00"}
-
-  // Expanded(flex: 2, child: SizedBox.shrink())
-  // Expanded(
-  //     flex: 1,
-  //     child: (txn.spendings == 0)
-  //         ? Text("+ \$ ${txn.amount}",
-  //             style: TextStyle(fontSize: 16, color: Colors.blue))
-  //         : SizedBox.shrink()),
-
-  // void printObject(Object object) {
-  //   // Encode your object and then decode your object to Map variable
-  //   Map jsonMapped = json.decode(json.encode(object));
-
-  //   // Using JsonEncoder for spacing
-  //   JsonEncoder encoder = new JsonEncoder.withIndent('  ');
-
-  //   // encode it to string
-  //   String prettyPrint = encoder.convert(jsonMapped);
-
-  //   // print or debugPrint your object
-  //   print(prettyPrint);
-  // }
-
 }
 
 void _navigateBack(BuildContext context) {
   // Navigator.pop(context);
   // Navigator.pop(context);
   Navigator.of(context).push(MaterialPageRoute(builder: (context) => MyApp()));
-  // Navigator.pushNamed(
-  //   context,
-  //   'Transactions',
-  //   // arguments: noteId,
-  // );
-  // // _refreshData();
 }

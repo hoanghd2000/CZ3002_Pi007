@@ -49,7 +49,7 @@ class _editTransactionPage extends State<editTransactionPage>{
   static const action_button =  Color(0xFFF8C8DC);  //pink
 
   static const List<String> list_type = <String>['Spending', 'Earning'];
-  final List<String> list_spend = <String>['Food', 'Transport','Shopping'];
+  final List<String> list_spend = <String>['Food', 'Transport','Shopping', ''];
   final List<String> list_earn = <String>['Allowance', 'Stock','Work'];
   String type_list = list_type.first;
 
