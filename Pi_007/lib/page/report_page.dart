@@ -28,7 +28,7 @@ class _ReportPageState extends State<ReportPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         body: ListView(children: <Widget>[
-      Text('Report Page', style: TextStyle(fontSize: 40)),
+      Text('Report', style: TextStyle(fontSize: 40)),
       SizedBox(height: 15),
       Text('   Select Time Interval:',
           style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
@@ -125,58 +125,58 @@ class _ReportPageState extends State<ReportPage> {
           ]),
           builder:
               (BuildContext context, AsyncSnapshot<List<dynamic>> snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return LinearProgressIndicator();
-                  } else if (snapshot.connectionState == ConnectionState.done) {
-                      if (snapshot.hasData) {
-                        List<Widget> children;
-                        final currentMonthTotalSpending = snapshot.data[0];
-                        final currentMonthTotalSpendingWhole =
-                            snapshot.data[0].toStringAsFixed(0);
-                        final currentMonthBudget = snapshot.data[1];
-                        final currentMonthBudgetWhole =
-                            snapshot.data[1].toStringAsFixed(0);
-                        final percentage =
-                            (currentMonthTotalSpending / currentMonthBudget)
-                                .toStringAsFixed(1);
-                        final percent100 =
-                            (currentMonthTotalSpending / currentMonthBudget * 100)
-                                .toStringAsFixed(1);
-                        final exceededBudgetWhole =
-                            (currentMonthTotalSpending - currentMonthBudget)
-                                .toStringAsFixed(0);
-                        if (currentMonthTotalSpending > currentMonthBudget) {
-                          return Text(
-                              "   Budget exceeded by \$$exceededBudgetWhole for this month.",
-                              style: TextStyle(
-                                  color: Colors.red,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold));
-                        
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return LinearProgressIndicator();
+            } else if (snapshot.connectionState == ConnectionState.done) {
+              if (snapshot.hasData) {
+                List<Widget> children;
+                final currentMonthTotalSpending = snapshot.data[0];
+                final currentMonthTotalSpendingWhole =
+                    snapshot.data[0].toStringAsFixed(0);
+                final currentMonthBudget = snapshot.data[1];
+                final currentMonthBudgetWhole =
+                    snapshot.data[1].toStringAsFixed(0);
+                final percentage =
+                    (currentMonthTotalSpending / currentMonthBudget)
+                        .toStringAsFixed(1);
+                final percent100 =
+                    (currentMonthTotalSpending / currentMonthBudget * 100)
+                        .toStringAsFixed(1);
+                final exceededBudgetWhole =
+                    (currentMonthTotalSpending - currentMonthBudget)
+                        .toStringAsFixed(0);
+                if (currentMonthTotalSpending > currentMonthBudget) {
+                  return Text(
+                      "   Budget exceeded by \$$exceededBudgetWhole for this month.",
+                      style: TextStyle(
+                          color: Colors.red,
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold));
+                } else {
+                  return new LinearPercentIndicator(
+                    width: 260.0,
+                    lineHeight: 25.0,
+                    animation: true,
+                    animationDuration: 1000,
+                    trailing: new Text(
+                        "\$$currentMonthTotalSpendingWhole of \$$currentMonthBudgetWhole used."),
+                    percent: double.parse(percentage),
+                    center: Text(
+                      "$percent100%",
+                      style: new TextStyle(
+                          fontSize: 16.0, fontWeight: FontWeight.bold),
+                    ),
+                    linearStrokeCap: LinearStrokeCap.roundAll,
+                    backgroundColor: Colors.grey,
+                    progressColor: Color.fromARGB(255, 155, 205, 225),
+                  );
+                }
               } else {
-                return new LinearPercentIndicator(
-                  width: 260.0,
-                  lineHeight: 25.0,
-                  animation: true,
-                  animationDuration: 1000,
-                  trailing: new Text(
-                      "\$$currentMonthTotalSpendingWhole of \$$currentMonthBudgetWhole used."),
-                  percent: double.parse(percentage),
-                  center: Text(
-                    "$percent100%",
-                    style: new TextStyle(
-                        fontSize: 16.0, fontWeight: FontWeight.bold),
-                  ),
-                  linearStrokeCap: LinearStrokeCap.roundAll,
-                  backgroundColor: Colors.grey,
-                  progressColor: Color.fromARGB(255, 155, 205, 225),
-                );
+                // Text('no data');
+                return Text("   There are no transactions found.");
               }
-            } else {
-              // Text('no data');
-              return Text("   There are no transactions found.");
             }
-          }}),
+          }),
 
       // Text('   Budget by category:',
       //     style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
