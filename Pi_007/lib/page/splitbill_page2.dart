@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:multiselect/multiselect.dart';
+import 'package:pi_007/page/splitbill_page3.dart';
 
 
 class SplitBillPage2 extends StatefulWidget {
@@ -21,6 +22,17 @@ class _SplitBillPage2 extends State<SplitBillPage2> {
   static const List<String> item_list = <String>['Prawns', 'Chicken','Mushroom','Potato','Tofu'];
   static const List<String> amt_list = <String>['20.00', '15.50','12.00','8.50','4.00'];
 
+  static const Map<String, dynamic> modelOutput = {
+    'price_list': {
+      'Prawns': '20.00',
+      'Chicken': '15.50',
+      'Mushroom': '12.00',
+      'Potato': '8.50',
+      'Tofu': '4.00',
+    },
+    'total': '50.00'
+  };
+
   Rx<List<String>> selectedOptionList = Rx<List<String>>([]);
   var selectedOption = ''.obs;
   List<String> selected_prawn = [];
@@ -30,7 +42,8 @@ class _SplitBillPage2 extends State<SplitBillPage2> {
   List<String> selected_tofu = [];
 
   @override
-  Widget build(BuildContext context) => Scaffold(
+  Widget build(BuildContext context) {
+    return Scaffold(
     appBar: AppBar(
       title: Text('Create Group Receipt'),
       backgroundColor: navigation_bar,
@@ -232,10 +245,12 @@ class _SplitBillPage2 extends State<SplitBillPage2> {
                       'Potato': potato,
                       'Tofu': tofu,
                     };
-                    for (final e in itemPayerMap.entries) {
-                      print('${e.key} : ${e.value}');
-                    }
+                    // for (final e in itemPayerMap.entries) {
+                    //   print('${e.key} : ${e.value}');
+                    // }
+                    print(itemPayerMap);
                     print("Confirm button pressed");
+                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => SplitBillPage3(_convert(itemPayerMap))));
                   },
                   child: Text('Confirm'),
                   style: ElevatedButton.styleFrom(
@@ -253,5 +268,45 @@ class _SplitBillPage2 extends State<SplitBillPage2> {
     ]
     )
     );
+    
 }
+Map _convert(Map itemPayerMap) {
+  // we need to get
+  // Map<String, double> payerAmountMap = {};
+  // Map<String, dynamic> payerItemMap = {};
+  Map<String, double> payerAmountMap = {};
+  Map<String, dynamic> payerItemMap = {};
 
+  Map<String, String> itemAmtMap = modelOutput['price_list'];
+
+  // calculate the split amount for each item = item price / no. of payer for that item
+  // {'Prawns': 4.00, 'Chicken': 5.17, ...}
+  Map<String, double> itemSplitAmtMap = {};
+  itemAmtMap.forEach((item, amt) => itemSplitAmtMap[item] = double.parse(
+      (double.parse(amt) / itemPayerMap[item].length)
+          .toStringAsFixed(2)));
+
+  // for each item, then for each payer, accumulate the amount owed
+  itemPayerMap.forEach((item, payerList) => payerList.forEach(
+      (payer) => payerAmountMap[payer] = payerAmountMap.containsKey(payer)
+          ? payerAmountMap[payer] += itemSplitAmtMap[item]
+          : itemSplitAmtMap[item]));
+
+  // format the doubles nicely
+  payerAmountMap.forEach((payer, amt) =>
+      payerAmountMap[payer] = double.parse(amt.toStringAsFixed(2)));
+
+  // for each item, then for each payer, accumulate the item they paid for
+  itemPayerMap.forEach((item, payerList) => payerList.forEach(
+      (payer) => payerItemMap.containsKey(payer)
+          ? payerItemMap[payer].add(item)
+          : payerItemMap[payer] = [item]));
+
+  print(payerAmountMap);
+  print(payerItemMap);
+
+  var a = {'payerAmountMap': payerAmountMap, 'payerItemMap': payerItemMap};
+  print(a);
+  return {'payerAmountMap': payerAmountMap, 'payerItemMap': payerItemMap};
+}
+}

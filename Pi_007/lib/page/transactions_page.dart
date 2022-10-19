@@ -192,15 +192,12 @@ class _TransactionsPageState extends State<TransactionsPage> {
     // Pick an image from Gallery
     final XFile image = await _picker.pickImage(source: imgSrc);
     if (image != null) {
-      var request = http.MultipartRequest( 
-          'POST',
-          Uri.parse('http://34.173.115.34/textrec'),
+      var request = http.MultipartRequest(
+        'POST',
+        Uri.parse('http://34.173.115.34/textrec'),
       );
       request.files.add(await http.MultipartFile.fromPath('image', image.path));
-      request.headers.addAll(
-        <String, String>{
-          "Accept": "application/json"
-        });
+      request.headers.addAll(<String, String>{"Accept": "application/json"});
       // Send the request to the text rec server
       var response = await request.send();
       var res = await http.Response.fromStream(response);
@@ -249,58 +246,56 @@ class _TransactionsPageState extends State<TransactionsPage> {
     double absAmount = overallAmount >= 0 ? overallAmount : -1 * overallAmount;
 
     return Card(
-      child: Padding(
-          padding: const EdgeInsets.all(12.0),
-          child: Column(
-            children: [
-              Row(
-                // header
-                children: [
-                  Expanded(
-                      flex: 4,
-                      child: Text(timestamp, style: TextStyle(fontSize: 16))),
-                  // Expanded(
-                  //     flex: 1,
-                  //     child: Text("\$ total", // TODO
-                  //         style: TextStyle(fontSize: 16, color: Colors.red))),
-                  // Expanded(
-                  //     flex: 1,
-                  //     child: Text("\$ total", // TODO
-                  //         style: TextStyle(fontSize: 16, color: Colors.blue))),
-                  Expanded(
-                      flex: 3,
-                      child: Text(
-                          (overallAmount >= 0 ? "+" : "-") +
-                              " \$ ${absAmount.toStringAsFixed(2)}",
-                          textAlign: TextAlign.right,
-                          style: TextStyle(
-                              fontSize: 17, fontWeight: FontWeight.bold))),
-                  Expanded(flex: 2, child: SizedBox.shrink()),
-                ],
-              ),
-              // Center(
-              //   child: Text(timestamp, style: TextStyle(fontSize: 16)),
-              // ),
-              ListView.builder(
-                // primary: false,
-                physics: NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                itemCount: numTxn,
-                itemBuilder: (context, index) {
-                  // sort here, or in SQL
-                  return _displayCardItem(dailyTxnList[index]);
-                },
-              )
-            ],
-          )),
-      elevation: 5,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(5.0)),
-      color: Color(0xFFF7F7F7),
-      margin: const EdgeInsets.only(
-        bottom: 8,
-      )
-    );
+        child: Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: Column(
+              children: [
+                Row(
+                  // header
+                  children: [
+                    Expanded(
+                        flex: 4,
+                        child: Text(timestamp, style: TextStyle(fontSize: 16))),
+                    // Expanded(
+                    //     flex: 1,
+                    //     child: Text("\$ total", // TODO
+                    //         style: TextStyle(fontSize: 16, color: Colors.red))),
+                    // Expanded(
+                    //     flex: 1,
+                    //     child: Text("\$ total", // TODO
+                    //         style: TextStyle(fontSize: 16, color: Colors.blue))),
+                    Expanded(
+                        flex: 3,
+                        child: Text(
+                            (overallAmount >= 0 ? "+" : "-") +
+                                " \$ ${absAmount.toStringAsFixed(2)}",
+                            textAlign: TextAlign.right,
+                            style: TextStyle(
+                                fontSize: 17, fontWeight: FontWeight.bold))),
+                    Expanded(flex: 2, child: SizedBox.shrink()),
+                  ],
+                ),
+                // Center(
+                //   child: Text(timestamp, style: TextStyle(fontSize: 16)),
+                // ),
+                ListView.builder(
+                  // primary: false,
+                  physics: NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  itemCount: numTxn,
+                  itemBuilder: (context, index) {
+                    // sort here, or in SQL
+                    return _displayCardItem(dailyTxnList[index]);
+                  },
+                )
+              ],
+            )),
+        elevation: 5,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
+        color: Color(0xFFF7F7F7),
+        margin: const EdgeInsets.only(
+          bottom: 8,
+        ));
   }
 
   Widget _displayCardItem(Transaction txn) {
