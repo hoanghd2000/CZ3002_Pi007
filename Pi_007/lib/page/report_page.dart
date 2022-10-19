@@ -28,7 +28,7 @@ class _ReportPageState extends State<ReportPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         body: ListView(children: <Widget>[
-      Text('Report', style: TextStyle(fontSize: 40)),
+      // Text('Report', style: TextStyle(fontSize: 40)),
       SizedBox(height: 15),
       Text('   Select Time Interval:',
           style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),

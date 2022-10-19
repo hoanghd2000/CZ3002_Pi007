@@ -48,7 +48,7 @@ class _TransactionsPageState extends State<TransactionsPage> {
             child: Text("delete all txn"),
           ),
           TextButton(
-            onPressed: () => _generate2022data(),
+            onPressed: () => _generateData(),
             child: Text("generate data"),
           ),
           // TextButton(
@@ -224,8 +224,8 @@ class _TransactionsPageState extends State<TransactionsPage> {
   //   dbmanager.insertTransaction(spendings ? t1 : t2);
   // }
 
-  void _generate2022data() {
-    var data = get2022data();
+  void _generateData() {
+    var data = getRandomTxn();
     for (var i = 0; i < data.length; i++) {
       dbmanager.insertTransaction(data[i]);
     }
