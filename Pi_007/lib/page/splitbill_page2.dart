@@ -74,7 +74,7 @@ class _SplitBillPage2 extends State<SplitBillPage2> {
                 Padding(
                   padding: const EdgeInsets.fromLTRB(8,8,0,0),
                   child: Container(
-                    width: 190,
+                    width: 160,
                     height: 50,
                     child: DropDownMultiSelect(
                       onChanged: (List<String> x) {
@@ -103,7 +103,7 @@ class _SplitBillPage2 extends State<SplitBillPage2> {
               Padding(
                 padding: const EdgeInsets.fromLTRB(8,8,0,0),
                 child: Container(
-                  width: 190,
+                  width: 160,
                   height: 50,
                   child: DropDownMultiSelect(
                     onChanged: (List<String> x) {
@@ -132,7 +132,7 @@ class _SplitBillPage2 extends State<SplitBillPage2> {
               Padding(
                 padding: const EdgeInsets.fromLTRB(8,8,0,0),
                 child: Container(
-                  width: 190,
+                  width: 160,
                   height: 50,
                   child: DropDownMultiSelect(
                     onChanged: (List<String> x) {
@@ -161,7 +161,7 @@ class _SplitBillPage2 extends State<SplitBillPage2> {
               Padding(
                 padding: const EdgeInsets.fromLTRB(8,8,0,0),
                 child: Container(
-                  width: 190,
+                  width: 160,
                   height: 50,
                   child: DropDownMultiSelect(
                     onChanged: (List<String> x) {
@@ -190,7 +190,7 @@ class _SplitBillPage2 extends State<SplitBillPage2> {
               Padding(
                 padding: const EdgeInsets.fromLTRB(8,8,0,0),
                 child: Container(
-                  width: 190,
+                  width: 160,
                   height: 50,
                   child: DropDownMultiSelect(
                     onChanged: (List<String> x) {
