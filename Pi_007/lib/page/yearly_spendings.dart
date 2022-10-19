@@ -46,10 +46,13 @@ class yearlySpendingsChart extends StatelessWidget {
                             charts.Series<TotalSpending, String>(
                                 id: "Spendings",
                                 data: yearlySpendingList,
+                                 fillColorFn: (TotalSpending ts,_)=> charts.ColorUtil.fromDartColor(Color.fromARGB(255, 203, 114, 219)),
                                 domainFn: (TotalSpending ts, _) => ts.year,
                                 measureFn: (TotalSpending ts, _) =>
-                                    ts.totalAmount)
-                          ], animate: true),
+                                    ts.totalAmount),
+                                
+                          ], animate: true,
+                          ),
                         )
                       ]))));
         } else {

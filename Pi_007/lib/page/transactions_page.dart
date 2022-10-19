@@ -232,6 +232,14 @@ class _TransactionsPageState extends State<TransactionsPage> {
     _navigateBack(context);
   }
 
+  // void _generate2021data() {
+  //   var data = get2021data();
+  //   for (var i = 0; i < data.length; i++) {
+  //     dbmanager.insertTransaction(data[i]);
+  //   }
+  //   _navigateBack(context);
+  // }
+
   Widget _displayCard(String timestamp) {
     // filter out txn of that date
     int numTxn = timestampMap[timestamp];
