@@ -70,7 +70,8 @@ class CategoryPage extends StatelessWidget {
 
   DbCats_Manager categoriesDBM = DbCats_Manager();
   Category category;
-  List<Category> categoryList;
+  List<Category> earningCategoryList;
+  List<Category> spendingCategoryList;
 
   @override
   Widget build(BuildContext context) {
@@ -111,38 +112,37 @@ class CategoryPage extends StatelessWidget {
                 )
               ]),
             ),
-            // Padding(
-            //   padding: const EdgeInsets.all(15.0),
-            //   child: Row(
-            //     children: [
-            //       Text("Earning Categories: ", style: TextStyle(fontSize: 20))
-            //     ],
-            //   ),
-            // ),
+            Padding(
+              padding: const EdgeInsets.all(15.0),
+              child: Row(
+                children: [
+                  Text("Earning Categories: ", style: TextStyle(fontSize: 20))
+                ],
+              ),
+            ),
             FutureBuilder(
               future: categoriesDBM.getAllCategory(),
               builder:
                   (BuildContext context, AsyncSnapshot<List<Category>> snapshot) {
                 if (snapshot.hasData) {
                   int numEarningCategory = 0;
-                  categoryList = snapshot.data;
-                  for (var i = 0; i < categoryList.length; i++) {
-                    if (categoryList[i].isSpending == 0){
-                      numEarningCategory++;
-                      print("increment");
-                    }
-                  }
-                  print("numEarningCat: " + numEarningCategory.toString());
+                  earningCategoryList = snapshot.data.where((element) => element.isSpending == 0).toList();
+                  // for (var i = 0; i < categoryList.length; i++) {
+                  //   if (categoryList[i].isSpending == 0){
+                  //     numEarningCategory++;
+                  //     print("increment");
+                  //   }
+                  // }
+                  // print("numEarningCat: " + numEarningCategory.toString());
                   return ListView.builder(
                     primary: false,
                     shrinkWrap: true,
-                    itemCount: categoryList.length,
+                    itemCount: earningCategoryList.length,
                     itemBuilder: (context, index) {
-                      // print(categoryList[index]);
-                      // print(categoryList[index].id);
+                      print("id:");
+                      print(earningCategoryList[index].id);
+                      print(earningCategoryList[index].isSpending);
                       // if (categoryList[index].isSpending == 0){
-                        print("Check1 id");
-                        print(categoryList[index].id);
                         return Container(
                           child: Row(
                             children: [
@@ -164,14 +164,14 @@ class CategoryPage extends StatelessWidget {
                                                 width: 50,
                                                 child: Column(children: [
                                                   IconButton(
-                                                    icon: Icon(myIconCollection[categoryList[index].icon], color: Colors.black),
+                                                    icon: Icon(myIconCollection[earningCategoryList[index].icon], color: Colors.black),
                                                   ),
                                                 ]),
                                               ),
                                               SizedBox(
                                                 width: 100,
                                                 child: Column(children: [
-                                                  Text(categoryList[index].name, style: TextStyle(fontSize: 20)),
+                                                  Text(earningCategoryList[index].name, style: TextStyle(fontSize: 20)),
                                                 ]),
                                               ),
                                               // Spacer(),
@@ -186,7 +186,7 @@ class CategoryPage extends StatelessWidget {
                                                         await Navigator.push(
                                                             context,
                                                             MaterialPageRoute(
-                                                                builder: (context) => EditCategory(categoryList[index])
+                                                                builder: (context) => EditCategory(earningCategoryList[index])
                                                             )
                                                         );
                                                         // .then(
@@ -224,118 +224,105 @@ class CategoryPage extends StatelessWidget {
                 }
               },
             ),
-            // Padding(
-            //   padding: const EdgeInsets.all(15.0),
-            //   child: Row(
-            //     children: [
-            //       Text("Spending Categories: ", style: TextStyle(fontSize: 20))
-            //     ],
-            //   ),
-            // ),
-            // FutureBuilder(
-            //   future: categoriesDBM.getAllCategory(),
-            //   builder:
-            //       (BuildContext context, AsyncSnapshot<List<Category>> snapshot) {
-            //     if (snapshot.hasData) {
-            //       int numSpendingCategory = 0;
-            //       categoryList = snapshot.data;
-            //       for (var i = 0; i < categoryList.length; i++) {
-            //         if (categoryList[i].isSpending == 1){
-            //           numSpendingCategory++;
-            //           print("test: " + numSpendingCategory.toString());
-            //         }
-            //       }
-            //       categoryList = snapshot.data;
-            //       return ListView.builder(
-            //         primary: false,
-            //         shrinkWrap: true,
-            //         itemCount: numSpendingCategory,
-            //         itemBuilder: (context, index) {
-            //           if (categoryList[index].isSpending == 1){
-            //             print("Check2");
-            //             return Container(
-            //               child: Row(
-            //                 children: [
-            //                   Padding(
-            //                     padding: const EdgeInsets.all(15.0),
-            //                     child: Row(
-            //                       children: [
-            //                         // Text("Earning Categories: ", style: TextStyle(fontSize: 20)),
-            //                         Padding(
-            //                           padding: const EdgeInsets.all(0.0),
-            //                           child: Card(
-            //                             elevation: 0,
-            //                             shape: Border(bottom: BorderSide(color: Colors.black)),
-            //                             child: Row(
-            //                                 children: [
-            //                                   Column(children: [
-            //                                     IconButton(
-            //                                       icon: Icon(myIconCollection[categoryList[index].icon], color: Colors.black),
-            //                                     ),
-            //                                   ]),
-            //                                   Column(children: [
-            //                                     Text(categoryList[index].name, style: TextStyle(fontSize: 20)),
-            //                                   ]),
-            //                                   // Spacer(),
-            //                                   SizedBox(width: 150),
-            //                                   Column(children: [
-            //                                     Row(
-            //                                       children: [
-            //                                         IconButton(
-            //                                           icon: Icon(Icons.create_sharp, color: Colors.black),
-            //                                           onPressed: () async {
-            //                                             final edittedresult =
-            //                                             await Navigator.push(
-            //                                                 context,
-            //                                                 MaterialPageRoute(
-            //                                                     builder: (context) => EditCategory(categoryList[index])
-            //                                                 )
-            //                                             );
-            //                                             // .then(
-            //                                             //   (value) => (context as Element).reassemble()
-            //                                             // );
-            //                                             // print(edittedresult);
-            //                                           },
-            //                                         ),
-            //                                         IconButton(
-            //                                           icon: Icon(Icons.delete, color: Colors.black),
-            //                                           onPressed: () {},
-            //                                         ),
-            //                                       ],
-            //                                     )
-            //                                   ]),
-            //                                 ]),
-            //                             color: Colors.grey[50],
-            //                           ),
-            //                         ),
-            //                       ],
-            //                     ),
-            //
-            //                   ),
-            //                 ],
-            //               ),
-            //             );
-            //           }
-            //         },
-            //       );
-            //
-            //     } else {
-            //       return const Center(
-            //         child: Text("No data found"),
-            //       );
-            //     }
-            //   },
-            // ),
+            Padding(
+              padding: const EdgeInsets.all(15.0),
+              child: Row(
+                children: [
+                  Text("Spending Categories: ", style: TextStyle(fontSize: 20))
+                ],
+              ),
+            ),
+            FutureBuilder(
+              future: categoriesDBM.getAllCategory(),
+              builder:
+                  (BuildContext context, AsyncSnapshot<List<Category>> snapshot) {
+                if (snapshot.hasData) {
+                  spendingCategoryList = snapshot.data.where((element) => element.isSpending == 1).toList();
+                  return ListView.builder(
+                    primary: false,
+                    shrinkWrap: true,
+                    itemCount: spendingCategoryList.length,
+                    itemBuilder: (context, index) {
+                        return Container(
+                          child: Row(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(15.0),
+                                child: Row(
+                                  children: [
+                                    // Text("Earning Categories: ", style: TextStyle(fontSize: 20)),
+                                    Padding(
+                                      padding: const EdgeInsets.all(0.0),
+                                      child: Card(
+                                        elevation: 0,
+                                        shape: Border(bottom: BorderSide(color: Colors.black)),
+                                        child: Row(
+                                            children: [
+                                              SizedBox(
+                                                width: 50,
+                                                child: Column(children: [
+                                                  IconButton(
+                                                    icon: Icon(myIconCollection[spendingCategoryList[index].icon], color: Colors.black),
+                                                  ),
+                                                ]),
+                                              ),
+                                              SizedBox(
+                                                width: 100,
+                                                child: Column(children: [
+                                                  Text(spendingCategoryList[index].name, style: TextStyle(fontSize: 20)),
+                                                ]),
+                                              ),
+                                              // Spacer(),
+                                              SizedBox(width: 120),
+                                              Column(children: [
+                                                Row(
+                                                  children: [
+                                                    IconButton(
+                                                      icon: Icon(Icons.create_sharp, color: Colors.black),
+                                                      onPressed: () async {
+                                                        final edittedresult =
+                                                        await Navigator.push(
+                                                            context,
+                                                            MaterialPageRoute(
+                                                                builder: (context) => EditCategory(spendingCategoryList[index])
+                                                            )
+                                                        );
+                                                        // .then(
+                                                        //   (value) => (context as Element).reassemble()
+                                                        // );
+                                                        // print(edittedresult);
+                                                      },
+                                                    ),
+                                                    IconButton(
+                                                      icon: Icon(Icons.delete, color: Colors.black),
+                                                      onPressed: () {},
+                                                    ),
+                                                  ],
+                                                )
+                                              ]),
+                                            ]),
+                                        color: Colors.grey[50],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+
+                              ),
+                            ],
+                          ),
+                        );
+                    },
+                  );
+
+                } else {
+                  return const Center(
+                    child: Text("No data found"),
+                  );
+                }
+              },
+            ),
           ],
         ),
     );
   }
-}
-
-class Categories {
-  final String title;
-  final String icon;
-  final int isSpending;
-
-  const Categories({this.title, this.icon, this.isSpending});
 }

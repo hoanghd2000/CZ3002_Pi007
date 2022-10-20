@@ -70,6 +70,8 @@ class _editCategoryPage extends State<EditCategory> {
     category = widget.category; //here var is call and set to
     _categoryIconController = TextEditingController(text: category.icon.toString());
     _categoryNameController = TextEditingController(text: category.name);
+    print("edit cat:");
+    print(category.isSpending);
     _categoryTypeController = category.isSpending == 1 ? "Spending" : "Earning";
   }
 
