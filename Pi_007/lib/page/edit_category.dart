@@ -58,10 +58,9 @@ class _editCategoryPage extends State<EditCategory> {
   final _formKey = GlobalKey<FormState>();
   var _categoryNameController = TextEditingController();
   var _categoryIconController = TextEditingController();
+  String _categoryTypeController;
 
   static const List<String> list_type = <String>['Spending', 'Earning'];
-  String _model;
-  String _type = list_type.first;
 
   @override
   void initState() {
@@ -69,6 +68,7 @@ class _editCategoryPage extends State<EditCategory> {
     category = widget.category; //here var is call and set to
     _categoryIconController = TextEditingController(text: category.icon.toString());
     _categoryNameController = TextEditingController(text: category.title);
+    _categoryTypeController = category.type;
   }
 
   @override
@@ -114,10 +114,10 @@ class _editCategoryPage extends State<EditCategory> {
                   ),
                   child: DropdownButtonFormField(
                     decoration: new InputDecoration(labelText: 'Category Type'),
-                    // value: _type,
+                    value: _categoryTypeController,
                     onChanged: (val) {
                       setState(() {
-                        _model = val;
+                        _categoryTypeController = val;
                       });
                     },
                     validator: (val) {

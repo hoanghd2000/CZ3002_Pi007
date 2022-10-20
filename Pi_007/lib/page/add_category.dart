@@ -71,10 +71,9 @@ class _addCategoryPage extends State<addCategoryPage>{
   final _formKey = GlobalKey<FormState>();
   final _categoryNameController = TextEditingController();
   final _categoryIconController = TextEditingController();
+  String _categoryTypeController;
 
   static const List<String> list_type = <String>['Spending', 'Earning'];
-  String _model;
-  String _type = list_type.first;
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -117,7 +116,7 @@ class _addCategoryPage extends State<addCategoryPage>{
                   // value: _type,
                   onChanged: (val) {
                     setState(() {
-                      _model = val;
+                      _categoryTypeController = val;
                     });
                   },
                   validator: (val) {
@@ -162,6 +161,7 @@ class _addCategoryPage extends State<addCategoryPage>{
       Navigator.pop(context);
       print(_categoryIconController.text);
       print(_categoryNameController.text);
+      print(_categoryTypeController);
     }
   }
 

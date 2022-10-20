@@ -43,6 +43,14 @@ class CategoryPage extends StatelessWidget {
     Categories(title: 'Investment', icon: "bitcoin"),
   ];
 
+  List<Categories> categoryList = [
+    Categories(title: 'Salary', icon: "work", type: "Earning"),
+    Categories(title: 'Allowance', icon: "savings", type: "Earning"),
+    Categories(title: 'Investment', icon: "bitcoin", type: "Earning"),
+    Categories(title: 'Food', icon: "food", type: "Spending"),
+    Categories(title: 'Transport', icon: "car", type: "Spending"),
+    Categories(title: 'Shopping', icon: "shopping", type: "Spending"),
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -52,177 +60,163 @@ class CategoryPage extends StatelessWidget {
           backgroundColor: navigation_bar,
           foregroundColor: Colors.black,
         ),
-        body: Column(children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.all(15.0),
-            child: Row(children: [
-              Icon(category, size: 35),
-              Padding(
-                padding: const EdgeInsets.only(left: 10.0),
-                child: Text("Category", style: TextStyle(fontSize: 35)),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 10.0),
-                child: OutlinedButton(
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const AddCategory())
-                        );
-                  },
-                  child: Text("+ Add Category", style: TextStyle(fontSize: 12)),
-                  style: TextButton.styleFrom(
-                    side: BorderSide(color: Colors.black),
-                    backgroundColor: action_button,
-                    primary: Colors.black,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
+        body: ListView(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(15.0),
+              child: Row(children: [
+                Icon(category, size: 35),
+                Padding(
+                  padding: const EdgeInsets.only(left: 10.0),
+                  child: Text("Category", style: TextStyle(fontSize: 35)),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 10.0),
+                  child: OutlinedButton(
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const AddCategory())
+                      );
+                    },
+                    child: Text("+ Add Category", style: TextStyle(fontSize: 12)),
+                    style: TextButton.styleFrom(
+                      side: BorderSide(color: Colors.black),
+                      backgroundColor: action_button,
+                      primary: Colors.black,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
                     ),
                   ),
-                ),
-              )
-            ]),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(15.0),
-            child: Row(
-              children: [
-                Text("Earning Categories: ", style: TextStyle(fontSize: 20))
-              ],
+                )
+              ]),
             ),
-          ),
-          const Divider(
-            height: 3,
-            thickness: 1,
-            indent: 5,
-            endIndent: 5,
-            color: Colors.black,
-          ),
-          ...earningCategoryList
-              .map(
-                (item) => Padding(
-                  padding: const EdgeInsets.all(0.0),
-                  child: Card(
-                    elevation: 0,
-                    shape: Border(bottom: BorderSide(color: Colors.black)),
-                    child: Row(
-                        // mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Column(children: [
-                            IconButton(
-                              icon: Icon(myIconCollection[item.icon], color: Colors.black),
-                            ),
-                          ]),
-                          Column(children: [
-                            Text(item.title, style: TextStyle(fontSize: 20)),
-                          ]),
-                          Spacer(),
-                          Column(children: [
-                            Row(
-                              children: [
-                                IconButton(
-                                  icon: Icon(Icons.create_sharp, color: Colors.black),
-                                  onPressed: () async {
-                                    final edittedresult =
-                                    await Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => EditCategory(item)
-                                      )
-                                    );
-                                    // .then(
-                                    //   (value) => (context as Element).reassemble()
-                                    // );
-                                    // print(edittedresult);
-                                    },
-                                ),
-                                IconButton(
-                                  icon: Icon(Icons.delete, color: Colors.black),
-                                  onPressed: () {},
-                                ),
-                              ],
-                            )
-                          ]),
-                        ]),
-                    color: Colors.grey[50],
-                  ),
-                ),
-              )
-              .toList(),
-          Padding(
-            padding: const EdgeInsets.all(15.0),
-            child: Row(
-              children: [
-                Text("Spending Categories: ", style: TextStyle(fontSize: 20))
-              ],
-            ),
-          ),
-          const Divider(
-            height: 3,
-            thickness: 1,
-            indent: 5,
-            endIndent: 5,
-            color: Colors.black,
-          ),
-          ...spendingCategoryList
-              .map(
-                (item) => Padding(
-              padding: const EdgeInsets.all(0.0),
-              child: Card(
-                elevation: 0,
-                shape: Border(bottom: BorderSide(color: Colors.black)),
-                child: Row(
-                  // mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Column(children: [
-                        IconButton(
-                          icon: Icon(myIconCollection[item.icon], color: Colors.black),
-                        ),
-                      ]),
-                      Column(children: [
-                        Text(item.title, style: TextStyle(fontSize: 20)),
-                      ]),
-                      Spacer(),
-                      Column(children: [
-                        Row(
-                          children: [
-                            IconButton(
-                              icon: Icon(Icons.create_sharp, color: Colors.black),
-                              onPressed: () async {
-                                final edittedresult =
-                                await Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => EditCategory(item)
-                                    )
-                                );
-                                // .then(
-                                //   (value) => (context as Element).reassemble()
-                                // );
-                                // print(edittedresult);
-                              },
-                            ),
-                            IconButton(
-                              icon: Icon(Icons.delete, color: Colors.black),
-                              onPressed: () {},
-                            ),
-                          ],
-                        )
-                      ]),
-                    ]),
-                color: Colors.grey[50],
+            Padding(
+              padding: const EdgeInsets.all(15.0),
+              child: Row(
+                children: [
+                  Text("Earning Categories: ", style: TextStyle(fontSize: 20))
+                ],
               ),
             ),
-          )
-              .toList(),
-        ]));
+            ...categoryList.where((element) => element.type == "Earning").map(
+                  (item) => Padding(
+                padding: const EdgeInsets.all(0.0),
+                child: Card(
+                  elevation: 0,
+                  shape: Border(bottom: BorderSide(color: Colors.black)),
+                  child: Row(
+                    // mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Column(children: [
+                          IconButton(
+                            icon: Icon(myIconCollection[item.icon], color: Colors.black),
+                          ),
+                        ]),
+                        Column(children: [
+                          Text(item.title, style: TextStyle(fontSize: 20)),
+                        ]),
+                        Spacer(),
+                        Column(children: [
+                          Row(
+                            children: [
+                              IconButton(
+                                icon: Icon(Icons.create_sharp, color: Colors.black),
+                                onPressed: () async {
+                                  final edittedresult =
+                                  await Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => EditCategory(item)
+                                      )
+                                  );
+                                  // .then(
+                                  //   (value) => (context as Element).reassemble()
+                                  // );
+                                  // print(edittedresult);
+                                },
+                              ),
+                              IconButton(
+                                icon: Icon(Icons.delete, color: Colors.black),
+                                onPressed: () {},
+                              ),
+                            ],
+                          )
+                        ]),
+                      ]),
+                  color: Colors.grey[50],
+                ),
+              ),
+           ).toList(),
+            Padding(
+              padding: const EdgeInsets.all(15.0),
+              child: Row(
+                children: [
+                  Text("Spending Categories: ", style: TextStyle(fontSize: 20))
+                ],
+              ),
+            ),
+            ...categoryList.where((element) => element.type == "Spending").map(
+                  (item) => Padding(
+                padding: const EdgeInsets.all(0.0),
+                child: Card(
+                  elevation: 0,
+                  shape: Border(bottom: BorderSide(color: Colors.black)),
+                  child: Row(
+                    // mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Column(children: [
+                          IconButton(
+                            icon: Icon(myIconCollection[item.icon], color: Colors.black),
+                          ),
+                        ]),
+                        Column(children: [
+                          Text(item.title, style: TextStyle(fontSize: 20)),
+                        ]),
+                        Spacer(),
+                        Column(children: [
+                          Row(
+                            children: [
+                              IconButton(
+                                icon: Icon(Icons.create_sharp, color: Colors.black),
+                                onPressed: () async {
+                                  final edittedresult =
+                                  await Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => EditCategory(item)
+                                      )
+                                  );
+                                  // .then(
+                                  //   (value) => (context as Element).reassemble()
+                                  // );
+                                  // print(edittedresult);
+                                },
+                              ),
+                              IconButton(
+                                icon: Icon(Icons.delete, color: Colors.black),
+                                onPressed: () {},
+                              ),
+                            ],
+                          )
+                        ]),
+                      ]),
+                  color: Colors.grey[50],
+                ),
+              ),
+            ).toList(),
+          ],
+        ),
+    );
   }
 }
 
 class Categories {
   final String title;
   final String icon;
+  final String type;
 
-  const Categories({this.title, this.icon});
+  const Categories({this.title, this.icon, this.type});
 }
