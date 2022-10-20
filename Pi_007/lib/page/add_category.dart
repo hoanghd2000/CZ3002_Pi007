@@ -63,6 +63,7 @@ class _addCategoryPage extends State<addCategoryPage>{
 
   final _formKey = GlobalKey<FormState>();
   final _categoryNameController = TextEditingController();
+  final _categoryIconController = TextEditingController();
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -83,6 +84,7 @@ class _addCategoryPage extends State<addCategoryPage>{
                 iconCollection: myIconCollection,
                 onChanged: (val) => print(val),
                 onSaved: (val) => print(val),
+                controller: _categoryIconController
               ),
               Padding(
                 padding: const EdgeInsets.only(
@@ -120,6 +122,8 @@ class _addCategoryPage extends State<addCategoryPage>{
   void _submitBudget(BuildContext context) {
     if (_formKey.currentState.validate()) {
       Navigator.pop(context);
+      print(_categoryIconController.text);
+      print(_categoryNameController.text);
     }
   }
 
