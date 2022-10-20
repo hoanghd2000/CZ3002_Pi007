@@ -31,25 +31,13 @@ class CategoryPage extends StatelessWidget {
   static const list_color = Color(0xFFECECEC); //grey
   static const cancel_button = Color(0xFFFA7979);
 
-  List<Categories> spendingCategoryList = [
-    Categories(title: 'Food', icon: "food"),
-    Categories(title: 'Transport', icon: "car"),
-    Categories(title: 'Shopping', icon: "shopping"),
-  ];
-
-  List<Categories> earningCategoryList = [
-    Categories(title: 'Salary', icon: "work"),
-    Categories(title: 'Allowance', icon: "savings"),
-    Categories(title: 'Investment', icon: "bitcoin"),
-  ];
-
   List<Categories> categoryList = [
-    Categories(title: 'Salary', icon: "work", type: "Earning"),
-    Categories(title: 'Allowance', icon: "savings", type: "Earning"),
-    Categories(title: 'Investment', icon: "bitcoin", type: "Earning"),
-    Categories(title: 'Food', icon: "food", type: "Spending"),
-    Categories(title: 'Transport', icon: "car", type: "Spending"),
-    Categories(title: 'Shopping', icon: "shopping", type: "Spending"),
+    Categories(title: 'Salary', icon: "work", isSpending: 0),
+    Categories(title: 'Allowance', icon: "savings", isSpending: 0),
+    Categories(title: 'Investment', icon: "bitcoin", isSpending: 0),
+    Categories(title: 'Food', icon: "food", isSpending: 1),
+    Categories(title: 'Transport', icon: "car", isSpending: 1),
+    Categories(title: 'Shopping', icon: "shopping", isSpending: 1),
   ];
 
   @override
@@ -101,7 +89,7 @@ class CategoryPage extends StatelessWidget {
                 ],
               ),
             ),
-            ...categoryList.where((element) => element.type == "Earning").map(
+            ...categoryList.where((element) => element.isSpending == 0).map(
                   (item) => Padding(
                 padding: const EdgeInsets.all(0.0),
                 child: Card(
@@ -158,7 +146,7 @@ class CategoryPage extends StatelessWidget {
                 ],
               ),
             ),
-            ...categoryList.where((element) => element.type == "Spending").map(
+            ...categoryList.where((element) => element.isSpending == 1).map(
                   (item) => Padding(
                 padding: const EdgeInsets.all(0.0),
                 child: Card(
@@ -216,7 +204,7 @@ class CategoryPage extends StatelessWidget {
 class Categories {
   final String title;
   final String icon;
-  final String type;
+  final int isSpending;
 
-  const Categories({this.title, this.icon, this.type});
+  const Categories({this.title, this.icon, this.isSpending});
 }
