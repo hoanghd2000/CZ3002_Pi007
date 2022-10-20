@@ -150,6 +150,7 @@ class CategoryPage extends StatelessWidget {
                                 padding: const EdgeInsets.all(15.0),
                                 child: Row(
                                   // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisSize: MainAxisSize.max,
                                   children: [
                                     // Text("Earning Categories: ", style: TextStyle(fontSize: 20)),
                                     Padding(
@@ -159,16 +160,22 @@ class CategoryPage extends StatelessWidget {
                                         shape: Border(bottom: BorderSide(color: Colors.black)),
                                         child: Row(
                                             children: [
-                                              Column(children: [
-                                                IconButton(
-                                                  icon: Icon(myIconCollection[categoryList[index].icon], color: Colors.black),
-                                                ),
-                                              ]),
-                                              Column(children: [
-                                                Text(categoryList[index].name, style: TextStyle(fontSize: 20)),
-                                              ]),
+                                              SizedBox(
+                                                width: 50,
+                                                child: Column(children: [
+                                                  IconButton(
+                                                    icon: Icon(myIconCollection[categoryList[index].icon], color: Colors.black),
+                                                  ),
+                                                ]),
+                                              ),
+                                              SizedBox(
+                                                width: 100,
+                                                child: Column(children: [
+                                                  Text(categoryList[index].name, style: TextStyle(fontSize: 20)),
+                                                ]),
+                                              ),
                                               // Spacer(),
-                                              SizedBox(width: 150),
+                                              SizedBox(width: 120),
                                               Column(children: [
                                                 Row(
                                                   children: [
