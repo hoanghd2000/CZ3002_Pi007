@@ -225,7 +225,7 @@ class _SplitBillPage2 extends State<SplitBillPage2> {
           ),
           Padding(
            padding: const EdgeInsets.fromLTRB(160, 0, 12, 12),
-           child: Text('50.00',style:TextStyle(fontSize: 15)),
+           child: Text('60.00',style:TextStyle(fontSize: 15)),
          ),
           Padding(
             padding: const EdgeInsets.fromLTRB(0,20,0,0),
