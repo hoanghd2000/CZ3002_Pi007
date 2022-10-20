@@ -46,7 +46,7 @@ class _addBudgetPage extends State<addBudgetPage> {
         body: Form(
             key: _formKey,
             child: Padding(
-                padding: const EdgeInsets.fromLTRB(10.0, 0, 80, 0),
+                padding: const EdgeInsets.fromLTRB(10.0, 0, 10.0, 0),
                 child: Column(children: <Widget>[
                   Padding(
                     padding: const EdgeInsets.all(15.0),

@@ -29,6 +29,7 @@ class _addCategoryPage extends State<addCategoryPage>{
 
   // colors
   static const confirm_button = Color(0xFFB4ECB4); //green
+  static const list_color = Color(0xFFECECEC); //grey
 
   final Map<String, IconData> myIconCollection = {
     'favorite': Icons.favorite,
@@ -59,18 +60,28 @@ class _addCategoryPage extends State<addCategoryPage>{
     'food': Icons.fastfood,
     'shopping': Icons.shopping_bag,
     'car': Icons.directions_car,
+    'work': Icons.work,
+    'dollar_sign': Icons.attach_money,
+    'dollar_bill': Icons.money_sharp,
+    'savings': Icons.savings,
+    'bitcoin': Icons.currency_bitcoin,
+    'currency_exchange': Icons.currency_exchange,
   };
 
   final _formKey = GlobalKey<FormState>();
   final _categoryNameController = TextEditingController();
   final _categoryIconController = TextEditingController();
 
+  static const List<String> list_type = <String>['Spending', 'Earning'];
+  String _model;
+  String _type = list_type.first;
+
   @override
   Widget build(BuildContext context) => Scaffold(
       body: Form(
         key: _formKey,
         child: Padding(
-          padding: const EdgeInsets.all(10.0),
+          padding: const EdgeInsets.all(15.0),
           child: Column(
             children: [
               IconPicker(
@@ -95,6 +106,33 @@ class _addCategoryPage extends State<addCategoryPage>{
                   controller: _categoryNameController,
                   validator: (val) =>
                     val.isNotEmpty ? null : 'Name should not be empty',
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(
+                  left: 40.0,
+                ),
+                child: DropdownButtonFormField(
+                  decoration: new InputDecoration(labelText: 'Category Type'),
+                  // value: _type,
+                  onChanged: (val) {
+                    setState(() {
+                      _model = val;
+                    });
+                  },
+                  validator: (val) {
+                    if (val?.isEmpty ?? true) {
+                      return 'Type should not be empty';
+                    }
+                  },
+                  items: list_type.map<DropdownMenuItem<String>>((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(
+                        value,
+                      ),
+                    );
+                  }).toList(),
                 ),
               ),
               Padding(

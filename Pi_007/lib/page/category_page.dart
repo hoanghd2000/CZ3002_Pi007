@@ -9,11 +9,6 @@ class CategoryPage extends StatelessWidget {
       IconData(0xe148, fontFamily: 'MaterialIcons');
   static const IconData grid_view_sharp =
       IconData(0xe9e5, fontFamily: 'MaterialIcons');
-  static const IconData fastfood =
-      IconData(0xe25a, fontFamily: 'MaterialIcons');
-  static const IconData car = IconData(0xe1d7, fontFamily: 'MaterialIcons');
-  static const IconData shopping_bag =
-      IconData(0xe59a, fontFamily: 'MaterialIcons');
   static const IconData create_sharp =
     IconData(0xe89b, fontFamily: 'MaterialIcons');
 
@@ -21,7 +16,10 @@ class CategoryPage extends StatelessWidget {
     'food': Icons.fastfood,
     'shopping': Icons.shopping_bag,
     'car': Icons.directions_car,
-    'create_sharp': Icons.create_sharp
+    'work': Icons.work,
+    'savings': Icons.savings,
+    'bitcoin': Icons.currency_bitcoin,
+    'create_sharp': Icons.create_sharp,
   };
 
   // colors
@@ -33,11 +31,18 @@ class CategoryPage extends StatelessWidget {
   static const list_color = Color(0xFFECECEC); //grey
   static const cancel_button = Color(0xFFFA7979);
 
-  List<Categories> categoryList = [
+  List<Categories> spendingCategoryList = [
     Categories(title: 'Food', icon: "food"),
     Categories(title: 'Transport', icon: "car"),
     Categories(title: 'Shopping', icon: "shopping"),
   ];
+
+  List<Categories> earningCategoryList = [
+    Categories(title: 'Salary', icon: "work"),
+    Categories(title: 'Allowance', icon: "savings"),
+    Categories(title: 'Investment', icon: "bitcoin"),
+  ];
+
 
   @override
   Widget build(BuildContext context) {
@@ -79,14 +84,22 @@ class CategoryPage extends StatelessWidget {
               )
             ]),
           ),
+          Padding(
+            padding: const EdgeInsets.all(15.0),
+            child: Row(
+              children: [
+                Text("Earning Categories: ", style: TextStyle(fontSize: 20))
+              ],
+            ),
+          ),
           const Divider(
-            height: 10,
+            height: 3,
             thickness: 1,
             indent: 5,
             endIndent: 5,
             color: Colors.black,
           ),
-          ...categoryList
+          ...earningCategoryList
               .map(
                 (item) => Padding(
                   padding: const EdgeInsets.all(0.0),
@@ -136,6 +149,72 @@ class CategoryPage extends StatelessWidget {
                   ),
                 ),
               )
+              .toList(),
+          Padding(
+            padding: const EdgeInsets.all(15.0),
+            child: Row(
+              children: [
+                Text("Spending Categories: ", style: TextStyle(fontSize: 20))
+              ],
+            ),
+          ),
+          const Divider(
+            height: 3,
+            thickness: 1,
+            indent: 5,
+            endIndent: 5,
+            color: Colors.black,
+          ),
+          ...spendingCategoryList
+              .map(
+                (item) => Padding(
+              padding: const EdgeInsets.all(0.0),
+              child: Card(
+                elevation: 0,
+                shape: Border(bottom: BorderSide(color: Colors.black)),
+                child: Row(
+                  // mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Column(children: [
+                        IconButton(
+                          icon: Icon(myIconCollection[item.icon], color: Colors.black),
+                        ),
+                      ]),
+                      Column(children: [
+                        Text(item.title, style: TextStyle(fontSize: 20)),
+                      ]),
+                      Spacer(),
+                      Column(children: [
+                        Row(
+                          children: [
+                            IconButton(
+                              icon: Icon(Icons.create_sharp, color: Colors.black),
+                              onPressed: () async {
+                                final edittedresult =
+                                await Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => EditCategory(item)
+                                    )
+                                );
+                                // .then(
+                                //   (value) => (context as Element).reassemble()
+                                // );
+                                // print(edittedresult);
+                              },
+                            ),
+                            IconButton(
+                              icon: Icon(Icons.delete, color: Colors.black),
+                              onPressed: () {},
+                            ),
+                          ],
+                        )
+                      ]),
+                    ]),
+                color: Colors.grey[50],
+              ),
+            ),
+          )
               .toList(),
         ]));
   }

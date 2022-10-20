@@ -47,11 +47,21 @@ class _editCategoryPage extends State<EditCategory> {
     'food': Icons.fastfood,
     'shopping': Icons.shopping_bag,
     'car': Icons.directions_car,
+    'work': Icons.work,
+    'dollar_sign': Icons.attach_money,
+    'dollar_bill': Icons.money_sharp,
+    'savings': Icons.savings,
+    'bitcoin': Icons.currency_bitcoin,
+    'currency_exchange': Icons.currency_exchange,
   };
 
   final _formKey = GlobalKey<FormState>();
   var _categoryNameController = TextEditingController();
   var _categoryIconController = TextEditingController();
+
+  static const List<String> list_type = <String>['Spending', 'Earning'];
+  String _model;
+  String _type = list_type.first;
 
   @override
   void initState() {
@@ -71,7 +81,7 @@ class _editCategoryPage extends State<EditCategory> {
       body: Form(
           key: _formKey,
           child: Padding(
-            padding: const EdgeInsets.all(10.0),
+            padding: const EdgeInsets.all(15.0),
             child: Column(
               children: [
                 IconPicker(
@@ -96,6 +106,33 @@ class _editCategoryPage extends State<EditCategory> {
                     controller: _categoryNameController,
                     validator: (val) =>
                     val.isNotEmpty ? null : 'Name should not be empty',
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(
+                    left: 40.0,
+                  ),
+                  child: DropdownButtonFormField(
+                    decoration: new InputDecoration(labelText: 'Category Type'),
+                    // value: _type,
+                    onChanged: (val) {
+                      setState(() {
+                        _model = val;
+                      });
+                    },
+                    validator: (val) {
+                      if (val?.isEmpty ?? true) {
+                        return 'Type should not be empty';
+                      }
+                    },
+                    items: list_type.map<DropdownMenuItem<String>>((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(
+                          value,
+                        ),
+                      );
+                    }).toList(),
                   ),
                 ),
                 Padding(
