@@ -12,6 +12,8 @@ class CategoryPage extends StatelessWidget {
   static const IconData car = IconData(0xe1d7, fontFamily: 'MaterialIcons');
   static const IconData shopping_bag =
       IconData(0xe59a, fontFamily: 'MaterialIcons');
+  static const IconData create_sharp =
+    IconData(0xe89b, fontFamily: 'MaterialIcons');
 
   // colors
   static const navigation_bar = Color(0xFFFFEAD1); //beige
@@ -94,10 +96,18 @@ class CategoryPage extends StatelessWidget {
                           ]),
                           Spacer(),
                           Column(children: [
-                            IconButton(
-                              icon: Icon(Icons.delete, color: Colors.black),
-                              onPressed: () {},
-                            ),
+                            Row(
+                              children: [
+                                IconButton(
+                                  icon: Icon(Icons.create_sharp, color: Colors.black),
+                                  onPressed: () {},
+                                ),
+                                IconButton(
+                                  icon: Icon(Icons.delete, color: Colors.black),
+                                  onPressed: () {},
+                                ),
+                              ],
+                            )
                           ]),
                         ]),
                     color: Colors.grey[50],

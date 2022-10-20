@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:icon_picker/icon_picker.dart';
 
 class AddCategory extends StatelessWidget {
   // colors
@@ -26,73 +27,100 @@ class addCategoryPage extends StatefulWidget {
 
 class _addCategoryPage extends State<addCategoryPage>{
 
-  static List<IconData> icons = [
-    Icons.ac_unit,
-    Icons.access_alarm,
-    Icons.access_time,
-    Icons.umbrella_sharp,
-    Icons.favorite,
-    Icons.headphones,
-    Icons.home,
-    Icons.car_repair,
-    Icons.settings,
-    Icons.flight,
-    Icons.run_circle,
-    Icons.book,
-    Icons.sports_rugby_rounded,
-    Icons.alarm,
-    Icons.call,
-    Icons.snowing,
-    Icons.hearing,
-    Icons.music_note,
-    Icons.note,
-    Icons.edit,
-    Icons.sunny,
-    Icons.radar,
-    // Icons.wallet
-    // all the icons you want to include
-  ];
-  Icon _categoryController = null;
+  // colors
+  static const confirm_button = Color(0xFFB4ECB4); //green
+
+  final Map<String, IconData> myIconCollection = {
+    'favorite': Icons.favorite,
+    'home': Icons.home,
+    'android': Icons.android,
+    'album': Icons.album,
+    'ac_unit': Icons.ac_unit,
+    'access_alarm': Icons.access_alarm,
+    'access_time': Icons.access_time,
+    'umbrella_sharp': Icons.umbrella_sharp,
+    'headphones': Icons.headphones,
+    'car_repair': Icons.car_repair,
+    'settings': Icons.settings,
+    'flight': Icons.flight,
+    'run_circle': Icons.run_circle,
+    'book': Icons.book,
+    'sports_rugby_rounded': Icons.sports_rugby_rounded,
+    'alarm': Icons.alarm,
+    'call': Icons.call,
+    'snowing': Icons.snowing,
+    'hearing': Icons.hearing,
+    'music_note': Icons.music_note,
+    'note': Icons.note,
+    'edit': Icons.edit,
+    'sunny': Icons.sunny,
+    'radar': Icons.radar,
+    'wallet': Icons.wallet,
+    'food': Icons.fastfood,
+    'shopping': Icons.shopping_bag,
+    'car': Icons.directions_car,
+  };
+
+  final _formKey = GlobalKey<FormState>();
+  final _categoryNameController = TextEditingController();
 
   @override
   Widget build(BuildContext context) => Scaffold(
-    body: Column(
-      children: [
-        Text("Add Category"),
-        IconButton(
-            icon: (_categoryController != null) ? _categoryController : Icon(Icons.bubble_chart, color: Colors.black),
-            onPressed: (){
-              // _categoryController = IconPicker();
-              showDialog(
-                  context: context,
-                  builder: (context) {
-                    return AlertDialog(
-                      title: Text(
-                        'Pick an icon',
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      content: IconPicker(),
-                    );
-                  }
-              );
-            },
-        ),
-      ],
-    )
+      body: Form(
+        key: _formKey,
+        child: Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: Column(
+            children: [
+              IconPicker(
+                // initialValue: 'favorite',
+                icon: Icon(Icons.apps),
+                labelText: "Select an icon",
+                title: "Select an icon",
+                cancelBtn: "CANCEL",
+                enableSearch: true,
+                searchHint: 'Search icon',
+                iconCollection: myIconCollection,
+                onChanged: (val) => print(val),
+                onSaved: (val) => print(val),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(
+                  left: 40.0,
+                ),
+                child: TextFormField(
+                  decoration: new InputDecoration(labelText: 'Category Name'),
+                  controller: _categoryNameController,
+                  validator: (val) =>
+                    val.isNotEmpty ? null : 'Name should not be empty',
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(
+                  top: 15.0
+                ),
+                child: TextButton(
+                  onPressed: () => _submitBudget(context),
+                  child: Text("Done"),
+                  style: TextButton.styleFrom(
+                    backgroundColor: confirm_button,
+                    primary: Colors.black,
+                    padding: EdgeInsets.only(left: 30, right: 30),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12)),
+                  ),
+                ),
+              )
+            ],
+          ),
+        )
+      )
   );
 
-  IconPicker(){
-    for (var icon in icons)
-      IconButton(
-        icon: Icon(icon, color: Colors.black),
-        onPressed: (){
-          setState((){
-            _categoryController = Icon(icon);
-          });
-          Navigator.pop(context, _categoryController);
-          print(_categoryController);
-          return _categoryController;
-        },
-      );
+  void _submitBudget(BuildContext context) {
+    if (_formKey.currentState.validate()) {
+      Navigator.pop(context);
+    }
   }
+
 }
