@@ -1,8 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'add_category.dart';
+import 'edit_category.dart';
 
 class CategoryPage extends StatelessWidget {
+
   static const IconData category =
       IconData(0xe148, fontFamily: 'MaterialIcons');
   static const IconData grid_view_sharp =
@@ -15,6 +17,13 @@ class CategoryPage extends StatelessWidget {
   static const IconData create_sharp =
     IconData(0xe89b, fontFamily: 'MaterialIcons');
 
+  final Map<String, IconData> myIconCollection = {
+    'food': Icons.fastfood,
+    'shopping': Icons.shopping_bag,
+    'car': Icons.directions_car,
+    'create_sharp': Icons.create_sharp
+  };
+
   // colors
   static const navigation_bar = Color(0xFFFFEAD1); //beige
   static const main_section = Color(0xFFC9C5F9); //purple
@@ -25,9 +34,9 @@ class CategoryPage extends StatelessWidget {
   static const cancel_button = Color(0xFFFA7979);
 
   List<Categories> categoryList = [
-    Categories(title: 'Food', icon: fastfood),
-    Categories(title: 'Transport', icon: car),
-    Categories(title: 'Shopping', icon: shopping_bag),
+    Categories(title: 'Food', icon: "food"),
+    Categories(title: 'Transport', icon: "car"),
+    Categories(title: 'Shopping', icon: "shopping"),
   ];
 
   @override
@@ -54,7 +63,8 @@ class CategoryPage extends StatelessWidget {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const AddCategory()));
+                            builder: (context) => const AddCategory())
+                        );
                   },
                   child: Text("+ Add Category", style: TextStyle(fontSize: 12)),
                   style: TextButton.styleFrom(
@@ -88,7 +98,7 @@ class CategoryPage extends StatelessWidget {
                         children: [
                           Column(children: [
                             IconButton(
-                              icon: Icon(item.icon, color: Colors.black),
+                              icon: Icon(myIconCollection[item.icon], color: Colors.black),
                             ),
                           ]),
                           Column(children: [
@@ -100,7 +110,19 @@ class CategoryPage extends StatelessWidget {
                               children: [
                                 IconButton(
                                   icon: Icon(Icons.create_sharp, color: Colors.black),
-                                  onPressed: () {},
+                                  onPressed: () async {
+                                    final edittedresult =
+                                    await Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => EditCategory(item)
+                                      )
+                                    );
+                                    // .then(
+                                    //   (value) => (context as Element).reassemble()
+                                    // );
+                                    // print(edittedresult);
+                                    },
                                 ),
                                 IconButton(
                                   icon: Icon(Icons.delete, color: Colors.black),
@@ -121,7 +143,7 @@ class CategoryPage extends StatelessWidget {
 
 class Categories {
   final String title;
-  final IconData icon;
+  final String icon;
 
   const Categories({this.title, this.icon});
 }

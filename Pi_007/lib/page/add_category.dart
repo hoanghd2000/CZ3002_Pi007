@@ -102,7 +102,7 @@ class _addCategoryPage extends State<addCategoryPage>{
                   top: 15.0
                 ),
                 child: TextButton(
-                  onPressed: () => _submitBudget(context),
+                  onPressed: () => _submitCategory(context),
                   child: Text("Done"),
                   style: TextButton.styleFrom(
                     backgroundColor: confirm_button,
@@ -119,7 +119,7 @@ class _addCategoryPage extends State<addCategoryPage>{
       )
   );
 
-  void _submitBudget(BuildContext context) {
+  void _submitCategory(BuildContext context) {
     if (_formKey.currentState.validate()) {
       Navigator.pop(context);
       print(_categoryIconController.text);
