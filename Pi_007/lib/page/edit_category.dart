@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:icon_picker/icon_picker.dart';
 import 'package:pi_007/page/category_page.dart';
 
+import '../databases/db_categories.dart';
+
 class EditCategory extends StatefulWidget {
-  final Categories category;
+  final Category category;
   EditCategory(this.category);
 
   @override
@@ -12,7 +14,7 @@ class EditCategory extends StatefulWidget {
 }
 
 class _editCategoryPage extends State<EditCategory> {
-  Categories category = null;
+  Category category = null;
 
   // colors
   static const navigation_bar =  Color(0xFFFFEAD1);  //beige
@@ -67,7 +69,7 @@ class _editCategoryPage extends State<EditCategory> {
     super.initState();
     category = widget.category; //here var is call and set to
     _categoryIconController = TextEditingController(text: category.icon.toString());
-    _categoryNameController = TextEditingController(text: category.title);
+    _categoryNameController = TextEditingController(text: category.name);
     _categoryTypeController = category.isSpending == 1 ? "Spending" : "Earning";
   }
 
