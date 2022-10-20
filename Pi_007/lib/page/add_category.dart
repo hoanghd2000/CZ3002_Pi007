@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:icon_picker/icon_picker.dart';
+import 'package:pi_007/databases/db_categories.dart';
 
 class AddCategory extends StatelessWidget {
   // colors
@@ -26,6 +27,8 @@ class addCategoryPage extends StatefulWidget {
 
 
 class _addCategoryPage extends State<addCategoryPage>{
+  // DB
+  final DbCats_Manager dbCats_manager = new DbCats_Manager();
 
   // colors
   static const confirm_button = Color(0xFFB4ECB4); //green
@@ -158,10 +161,31 @@ class _addCategoryPage extends State<addCategoryPage>{
 
   void _submitCategory(BuildContext context) {
     if (_formKey.currentState.validate()) {
-      Navigator.pop(context);
+
       print(_categoryIconController.text);
       print(_categoryNameController.text);
       print(_categoryTypeController);
+
+      int isSpending = _categoryTypeController == 'Spending' ? 1 : 0;
+
+      Category cat = new Category(
+        name: _categoryNameController.text,
+        isSpending: isSpending,
+        icon: _categoryIconController.text
+      );
+
+      //after transaction is added, clear the textfields
+      dbCats_manager.insertCategory(cat).then(
+            (id) => {
+              _categoryTypeController = '',
+              _categoryIconController.clear(),
+              _categoryNameController.clear(),
+              print('Category added to Cats_database ${id}'),
+              Navigator.pop(context),
+              // Navigator.of(context)
+              //     .push(MaterialPageRoute(builder: (context) => MyApp()))
+        },
+      );
     }
   }
 

@@ -8,7 +8,7 @@ class DbCats_Manager {
   final catFields = [
     'id',
     'name',
-    'type',
+    'isSpending',
     'icon'
   ];
 
@@ -17,7 +17,7 @@ class DbCats_Manager {
         join(await getDatabasesPath(), "categories.db"),
         version: 1, onCreate: (Database db, int version) async {
       await db.execute(
-          'CREATE TABLE categories(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, type TEXT, icon TEXT)');
+          'CREATE TABLE categories(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, isSpending INTEGER, icon TEXT)');
     });
   }
 
@@ -33,7 +33,7 @@ class DbCats_Manager {
       return Category(
           id: maps[i]['id'],
           name: maps[i]['name'],
-          type: maps[i]['type'],
+          isSpending: maps[i]['isSpending'],
           icon: maps[i]['icon']);
     });
   }
@@ -61,7 +61,7 @@ class DbCats_Manager {
       return Category(
           id: maps[i]['id'],
           name: maps[i]['name'],
-          type: maps[i]['type'],
+          isSpending: maps[i]['isSpending'],
           icon: maps[i]['icon']);
     });
   }
@@ -70,20 +70,20 @@ class DbCats_Manager {
 class Category {
   int id;
   String name;
-  String type;
+  int isSpending;
   String icon;
 
   Category(
       {this.id,
         @required this.name,
-        @required this.type,
+        @required this.isSpending,
         @required this.icon});
 
   // write to db
   Map<String, dynamic> toJson() => {
     'id': id,
     'name': name,
-    'type': type,
+    'isSpending': isSpending,
     'icon': icon
   };
 }
