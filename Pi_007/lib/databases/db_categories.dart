@@ -23,7 +23,7 @@ class DbCats_Manager {
 
   Future<int> insertCategory(Category category) async {
     await openDb();
-    return await _database.insert('categories', category.toJson());
+    return _database.insert('categories', category.toJson());
   }
 
   Future<List<Category>> getAllCategory() async {
@@ -36,6 +36,12 @@ class DbCats_Manager {
           type: maps[i]['type'],
           icon: maps[i]['icon']);
     });
+  }
+
+  Future<int> updateCategory(Category category) async {
+    await openDb();
+    return _database.update('categories', category.toJson(),
+        where: "id = ?", whereArgs: [category.id]);
   }
 
   Future<void> deleteCategory(int id) async {
