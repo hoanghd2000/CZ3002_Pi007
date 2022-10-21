@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:pi_007/databases/db_transactions.dart';
 
-class yearlySpendingsChart extends StatelessWidget {
+class barYearlySpendings extends StatelessWidget {
   final DbTrans_Manager dbmanager = new DbTrans_Manager();
   Future<List<Transaction>> txnData;
 
@@ -42,23 +42,24 @@ class yearlySpendingsChart extends StatelessWidget {
                           style: Theme.of(context).textTheme.bodyText1,
                         ), //to change
                         Expanded(
-                          child: charts.BarChart([
-                            charts.Series<TotalSpending, String>(
-                                id: "Spendings",
-                                data: yearlySpendingList,
-                                 fillColorFn: (TotalSpending ts,_)=> charts.ColorUtil.fromDartColor(Color.fromARGB(255, 203, 114, 219)),
-                                domainFn: (TotalSpending ts, _) => ts.year,
-                                measureFn: (TotalSpending ts, _) =>
-                                    ts.totalAmount),
-                                
-                          ], animate: true,
+                          child: charts.BarChart(
+                            [
+                              charts.Series<TotalSpending, String>(
+                                  id: "Spendings",
+                                  data: yearlySpendingList,
+                                  fillColorFn: (TotalSpending ts, _) =>
+                                      charts.ColorUtil.fromDartColor(
+                                          Color.fromARGB(255, 203, 114, 219)),
+                                  domainFn: (TotalSpending ts, _) => ts.year,
+                                  measureFn: (TotalSpending ts, _) =>
+                                      ts.totalAmount),
+                            ],
+                            animate: true,
                           ),
                         )
                       ]))));
         } else {
-          return const Center(
-            child: Text("No data found."),
-          );
+          return new CircularProgressIndicator();
         }
       },
     );

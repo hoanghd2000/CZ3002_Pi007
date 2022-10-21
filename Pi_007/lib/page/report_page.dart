@@ -1,14 +1,16 @@
 import 'dart:ffi';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:path/path.dart';
 import 'package:pi_007/databases/db_transactions.dart';
 import 'package:pi_007/databases/db_budget.dart';
-import 'package:pi_007/page/monthly_spendings.dart';
-import 'package:pi_007/page/yearly_spendings.dart';
+import 'package:pi_007/page/bar_monthly_spendings.dart';
+import 'package:pi_007/page/bar_yearly_spendings.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:percent_indicator/percent_indicator.dart';
+import 'package:pi_007/page/pie_monthly_spendings.dart';
+import 'package:pi_007/page/pie_yearly_spendings.dart';
+
 
 class ReportPage extends StatefulWidget {
   const ReportPage({Key key}) : super(key: key);
@@ -38,32 +40,6 @@ class _ReportPageState extends State<ReportPage> {
         padding: const EdgeInsets.all(8.0),
         child: Row(
           children: <Widget>[
-            // SizedBox(width: 4),
-            // ElevatedButton(
-            //   onPressed: () {
-            //     showDialog(
-            //         context: context,
-            //         builder: (context) => AlertDialog(
-            //               title: Text('Display Weekly Report.'),
-            //               actions: [
-            //                 TextButton(
-            //                   child: Text('OK'),
-            //                   onPressed: () => Navigator.pop(context),
-            //                 ),
-            //               ],
-            //             ));
-            //   },
-            //   child: Text('View Weekly'),
-            //   style: ElevatedButton.styleFrom(
-            //     onPrimary: Colors.black,
-            //     side: BorderSide(
-            //       color: Colors.black,
-            //     ),
-            //     shape: RoundedRectangleBorder(
-            //         borderRadius: BorderRadius.circular(12)),
-            //     primary: action_button, //foreground
-            //   ),
-            // ),
             SizedBox(width: 80),
             ElevatedButton(
               // ignore: sdk_version_set_literal
@@ -72,10 +48,6 @@ class _ReportPageState extends State<ReportPage> {
                   viewType = false;
                 });
               },
-              //   Builder(
-              //       builder: (BuildContext context) =>
-              //           monthlySpendingsChart());
-              // },
               child: Text('View Monthly'),
               style: ElevatedButton.styleFrom(
                 side: BorderSide(
@@ -112,7 +84,8 @@ class _ReportPageState extends State<ReportPage> {
       //SizedBox(height: 240),
 
       //add chart here
-      viewType ? yearlySpendingsChart() : monthlySpendingsChart(),
+      viewType ? barYearlySpendings() : barMonthlySpendings(),
+      viewType ? pieYearlySpendings() : pieMonthlySpendings(),
 
       Text('   Budget for current month:',
           style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
@@ -177,39 +150,6 @@ class _ReportPageState extends State<ReportPage> {
               }
             }
           }),
-
-      // Text('   Budget by category:',
-      //     style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-      // SizedBox(height: 10),
-      // Text('    Food:', style: TextStyle(fontSize: 18)),
-      // SizedBox(height: 5),
-      // Padding(
-      //   padding: const EdgeInsets.all(12.0),
-      //   child: new LinearProgressIndicator(
-      //     minHeight: 14.0,
-      //     value: 0.8,
-      //     backgroundColor: Colors.teal[50],
-      //     valueColor: AlwaysStoppedAnimation<Color>(
-      //       Colors.teal[200],
-      //     ),
-      //   ),
-      // ),
-      // Text('    200 dollars of 250 dollars used',
-      //     style: TextStyle(fontSize: 15, color: Colors.grey)),
-      // SizedBox(height: 5),
-      // Text('    Transport:', style: TextStyle(fontSize: 18)),
-      // SizedBox(height: 5),
-      // Padding(
-      //   padding: const EdgeInsets.all(12.0),
-      //   child: new LinearPercentIndicator(
-      //     width: 380.0,
-      //     lineHeight: 15.0,
-      //     percent: 0.7,
-      //     progressColor: Colors.amber,
-      //   ),
-      // ),
-      // Text('    170 dollars of 200 dollars used',
-      //     style: TextStyle(fontSize: 15, color: Colors.grey)),
       SizedBox(height: 20),
 
       Row(children: <Widget>[
