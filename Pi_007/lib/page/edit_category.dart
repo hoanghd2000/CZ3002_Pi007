@@ -107,19 +107,6 @@ class _editCategoryPage extends State<EditCategory> {
             padding: const EdgeInsets.all(15.0),
             child: Column(
               children: [
-                // IconPicker(
-                //   // initialValue: category.icon.toString(),
-                //   icon: Icon(Icons.apps),
-                //   labelText: "Select an icon",
-                //   title: "Select an icon",
-                //   cancelBtn: "CANCEL",
-                //   enableSearch: true,
-                //   searchHint: 'Search icon',
-                //   iconCollection: myIconCollection,
-                //   onChanged: (val) => print(val),
-                //   onSaved: (val) => print(val),
-                //   controller: _categoryIconController
-                // ),
                 Padding(
                   padding: const EdgeInsets.only(
                     left: 15.0,
@@ -199,7 +186,7 @@ class _editCategoryPage extends State<EditCategory> {
                   ),
                   child: TextButton(
                     onPressed: () => _submitEdittedCategory(context),
-                    child: Text("Done"),
+                    child: Text("Save"),
                     style: TextButton.styleFrom(
                       backgroundColor: confirm_button,
                       primary: Colors.black,

@@ -89,7 +89,7 @@ class _editBudgetPage extends State<EditBudget> {
                       firstDate: DateTime(2022, 1, 1),
                       lastDate: DateTime(2030, 12, 31),
                       currentDate: DateTime.now(),
-                      saveText: 'Done',
+                      saveText: 'Save',
                     );
                     if (pickeddate != null) {
                       (context as Element).markNeedsBuild();
@@ -148,7 +148,7 @@ class _editBudgetPage extends State<EditBudget> {
                   ),
                   TextButton(
                     onPressed: () => _editBudget(context),
-                    child: Text("Done"),
+                    child: Text("Save"),
                     style: TextButton.styleFrom(
                       backgroundColor: confirm_button,
                       primary: Colors.black,

@@ -61,7 +61,7 @@ class _addBudgetPage extends State<addBudgetPage> {
                           firstDate: DateTime(2022, 1, 1),
                           lastDate: DateTime(2030, 12, 31),
                           currentDate: DateTime.now(),
-                          saveText: 'Done',
+                          saveText: 'Save',
                         );
                         if (pickeddate != null) {
                           setState(() {
@@ -96,7 +96,7 @@ class _addBudgetPage extends State<addBudgetPage> {
                   // TextButton(onPressed: (){Navigator.pop(context, [_startTime, _endTime, _amountController.text, _nameController.text]);}, child: Text("Done"), style: TextButton.styleFrom(
                   TextButton(
                     onPressed: () => _submitBudget(context),
-                    child: Text("Done"),
+                    child: Text("Save"),
                     style: TextButton.styleFrom(
                       backgroundColor: confirm_button,
                       primary: Colors.black,

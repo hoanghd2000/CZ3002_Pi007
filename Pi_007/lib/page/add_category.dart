@@ -181,7 +181,7 @@ class _addCategoryPage extends State<addCategoryPage>{
                 ),
                 child: TextButton(
                   onPressed: () => _submitCategory(context),
-                  child: Text("Done"),
+                  child: Text("Save"),
                   style: TextButton.styleFrom(
                     backgroundColor: confirm_button,
                     primary: Colors.black,
