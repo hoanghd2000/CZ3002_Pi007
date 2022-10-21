@@ -313,7 +313,13 @@ class CategoryPage extends StatelessWidget {
                                                     ),
                                                     IconButton(
                                                       icon: Icon(Icons.delete, color: Colors.black),
-                                                      onPressed: () {},
+                                                      onPressed: () async {
+                                                        await categoriesDBM.deleteCategory(spendingCategoryList[index].id).then((param) => {
+                                                          Navigator.pop(context),
+                                                          Navigator.of(context)
+                                                              .push(MaterialPageRoute(builder: (context) => CategoryPage()))
+                                                        });
+                                                      },
                                                     ),
                                                   ],
                                                 )
