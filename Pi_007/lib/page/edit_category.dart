@@ -164,7 +164,7 @@ class _editCategoryPage extends State<EditCategory> {
       )
   );
 
-  void _submitEdittedCategory(BuildContext context) {
+  void _submitEdittedCategory(BuildContext context) async {
     if (_formKey.currentState.validate()) {
       print(_categoryIconController.text);
       print(_categoryNameController.text);
@@ -173,7 +173,7 @@ class _editCategoryPage extends State<EditCategory> {
       widget.category.name = _categoryNameController.text;
       widget.category.isSpending = isSpending;
       widget.category.icon = _categoryIconController.text;
-      dbCats_manager.updateCategory(widget.category).then((id) =>
+      await dbCats_manager.updateCategory(widget.category).then((id) =>
       {
         setState(() {
           print("Category index ${category.id} updated");

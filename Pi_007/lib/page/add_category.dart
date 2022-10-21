@@ -159,7 +159,7 @@ class _addCategoryPage extends State<addCategoryPage>{
       )
   );
 
-  void _submitCategory(BuildContext context) {
+  void _submitCategory(BuildContext context) async {
     if (_formKey.currentState.validate()) {
 
       print(_categoryIconController.text);
@@ -175,7 +175,7 @@ class _addCategoryPage extends State<addCategoryPage>{
       );
 
       //after transaction is added, clear the textfields
-      dbCats_manager.insertCategory(cat).then(
+      await dbCats_manager.insertCategory(cat).then(
             (id) => {
               _categoryTypeController = '',
               _categoryIconController.clear(),
