@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:icon_picker/icon_picker.dart';
+// import 'package:icon_picker/icon_picker.dart';
+import 'package:flutter_iconpicker/flutter_iconpicker.dart';
 import 'package:pi_007/databases/db_categories.dart';
 import 'package:pi_007/page/category_page.dart';
 
@@ -74,10 +75,24 @@ class _addCategoryPage extends State<addCategoryPage>{
 
   final _formKey = GlobalKey<FormState>();
   final _categoryNameController = TextEditingController();
-  final _categoryIconController = TextEditingController();
+  var _categoryIconController = TextEditingController();
   String _categoryTypeController;
 
   static const List<String> list_type = <String>['Spending', 'Earning'];
+
+  Icon _icon;
+
+  _pickIcon() async {
+    IconData icon = await FlutterIconPicker.showIconPicker(context, customIconPack: myIconCollection);
+
+    _icon = Icon(icon);
+    setState((){
+      var key = myIconCollection.keys.firstWhere((k) => myIconCollection[k] == icon, orElse: () => null);
+      _categoryIconController = TextEditingController(text: key.toString());
+    });
+
+    debugPrint('Picked Icon:  $icon');
+  }
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -87,55 +102,77 @@ class _addCategoryPage extends State<addCategoryPage>{
           padding: const EdgeInsets.all(15.0),
           child: Column(
             children: [
-              IconPicker(
-                // initialValue: 'favorite',
-                icon: Icon(Icons.apps),
-                labelText: "Select an icon",
-                title: "Select an icon",
-                cancelBtn: "CANCEL",
-                enableSearch: true,
-                searchHint: 'Search icon',
-                iconCollection: myIconCollection,
-                onChanged: (val) => print(val),
-                onSaved: (val) => print(val),
-                controller: _categoryIconController
+              Padding(
+                  padding: const EdgeInsets.only(
+                    left: 15.0,
+                  ),
+                  child: Column(
+                    children: [
+                      Row(
+                        children: [
+                          SizedBox(
+                            width: 30,
+                            child: AnimatedSwitcher(
+                                duration: Duration(milliseconds: 300),
+                                child: _icon != null ? _icon : Icon(Icons.category)
+                            ),
+                          ),
+                          SizedBox(width: 15),
+                          SizedBox(
+                            width: 300,
+                            child: TextFormField(
+                              decoration: new InputDecoration(labelText: 'Category Icon'),
+                              controller: _categoryIconController,
+                              onTap: _pickIcon,
+                            ),
+                          ),
+                        ],
+                      )
+                    ],
+                  )
               ),
               Padding(
                 padding: const EdgeInsets.only(
-                  left: 40.0,
+                  left: 35.0,
                 ),
-                child: TextFormField(
-                  decoration: new InputDecoration(labelText: 'Category Name'),
-                  controller: _categoryNameController,
-                  validator: (val) =>
+                child: SizedBox(
+                  width: 300,
+                  child: TextFormField(
+                    decoration: new InputDecoration(labelText: 'Category Name'),
+                    controller: _categoryNameController,
+                    validator: (val) =>
                     val.isNotEmpty ? null : 'Name should not be empty',
+                  ),
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.only(
-                  left: 40.0,
+                  left: 35.0,
                 ),
-                child: DropdownButtonFormField(
-                  decoration: new InputDecoration(labelText: 'Category Type'),
-                  // value: _type,
-                  onChanged: (val) {
-                    setState(() {
-                      _categoryTypeController = val;
-                    });
-                  },
-                  validator: (val) {
-                    if (val?.isEmpty ?? true) {
-                      return 'Type should not be empty';
-                    }
-                  },
-                  items: list_type.map<DropdownMenuItem<String>>((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(
-                        value,
-                      ),
-                    );
-                  }).toList(),
+                child: SizedBox(
+                  width: 300,
+                  child: DropdownButtonFormField(
+                    decoration: new InputDecoration(labelText: 'Category Type'),
+                    value: _categoryTypeController,
+                    onChanged: (val) {
+                      setState(() {
+                        _categoryTypeController = val;
+                      });
+                    },
+                    validator: (val) {
+                      if (val?.isEmpty ?? true) {
+                        return 'Type should not be empty';
+                      }
+                    },
+                    items: list_type.map<DropdownMenuItem<String>>((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(
+                          value,
+                        ),
+                      );
+                    }).toList(),
+                  ),
                 ),
               ),
               Padding(
