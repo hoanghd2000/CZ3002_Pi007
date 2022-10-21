@@ -75,7 +75,7 @@ class _editCategoryPage extends State<EditCategory> {
     _categoryNameController = TextEditingController(text: category.name);
     print("edit cat:");
     print(category.isSpending);
-    _categoryTypeController = category.isSpending == 1 ? "Spending" : "Earning";
+    _categoryTypeController = category.isSpending == 1 ? list_type[0] : list_type[1];
   }
 
   @override
@@ -180,7 +180,6 @@ class _editCategoryPage extends State<EditCategory> {
         }),
         _categoryIconController.clear(),
         _categoryNameController.clear(),
-        _categoryTypeController = '',
         Navigator.pop(context)
       });
     }

@@ -18,12 +18,12 @@ class DbCats_Manager {
         version: 1, onCreate: (Database db, int version) async {
       await db.execute(
           'CREATE TABLE categories(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, isSpending INTEGER, icon TEXT)');
-      await insertCategory(Category(name: 'Salary', icon: "work", isSpending: 0));
-      await insertCategory(Category(name: 'Allowance', icon: "savings", isSpending: 0));
-      await insertCategory(Category(name: 'Investment', icon: "bitcoin", isSpending: 0));
-      await insertCategory(Category(name: 'Food', icon: "food", isSpending: 1));
-      await insertCategory(Category(name: 'Transport', icon: "car", isSpending: 1));
-      await insertCategory(Category(name: 'Shopping', icon: "shopping", isSpending: 1));
+      await db.insert('categories', Category(name: 'Salary', icon: "work", isSpending: 0).toJson());
+      await db.insert('categories', Category(name: 'Allowance', icon: "savings", isSpending: 0).toJson());
+      await db.insert('categories', Category(name: 'Investment', icon: "bitcoin", isSpending: 0).toJson());
+      await db.insert('categories', Category(name: 'Food', icon: "food", isSpending: 1).toJson());
+      await db.insert('categories', Category(name: 'Transport', icon: "car", isSpending: 1).toJson());
+      await db.insert('categories', Category(name: 'Shopping', icon: "shopping", isSpending: 1).toJson());
     });
   }
 
