@@ -77,7 +77,7 @@ class CategoryPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text('Category'),
+          title: const Text('Category Manager'),
           backgroundColor: navigation_bar,
           foregroundColor: Colors.black,
         ),

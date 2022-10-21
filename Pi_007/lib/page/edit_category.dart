@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:icon_picker/icon_picker.dart';
 import 'package:pi_007/page/category_page.dart';
+import 'package:pi_007/databases/db_categories.dart';
 
 import '../databases/db_categories.dart';
 
@@ -15,6 +16,8 @@ class EditCategory extends StatefulWidget {
 
 class _editCategoryPage extends State<EditCategory> {
   Category category = null;
+
+  final DbCats_Manager dbCats_manager = new DbCats_Manager();
 
   // colors
   static const navigation_bar =  Color(0xFFFFEAD1);  //beige
@@ -163,9 +166,23 @@ class _editCategoryPage extends State<EditCategory> {
 
   void _submitEdittedCategory(BuildContext context) {
     if (_formKey.currentState.validate()) {
-      Navigator.pop(context);
       print(_categoryIconController.text);
       print(_categoryNameController.text);
+
+      int isSpending = _categoryTypeController == 'Spending' ? 1 : 0;
+      widget.category.name = _categoryNameController.text;
+      widget.category.isSpending = isSpending;
+      widget.category.icon = _categoryIconController.text;
+      dbCats_manager.updateCategory(widget.category).then((id) =>
+      {
+        setState(() {
+          print("Category index ${category.id} updated");
+        }),
+        _categoryIconController.clear(),
+        _categoryNameController.clear(),
+        _categoryTypeController = '',
+        Navigator.pop(context)
+      });
     }
   }
 
