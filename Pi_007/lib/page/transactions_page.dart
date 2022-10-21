@@ -21,7 +21,7 @@ class TransactionsPage extends StatefulWidget {
 }
 
 class _TransactionsPageState extends State<TransactionsPage> {
-  final DbTrans_Manager dbmanager = new DbTrans_Manager();
+  final DbTrans_Manager dbmanager = DbTrans_Manager();
 
   Transaction txn;
   List<Transaction> txnList;

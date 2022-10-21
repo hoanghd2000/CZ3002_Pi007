@@ -5,6 +5,8 @@ import 'package:pi_007/main.dart';
 import 'package:pi_007/page/transactions_page.dart';
 import 'package:intl/intl.dart';
 
+import '../databases/db_categories.dart';
+
 class addTransaction extends StatelessWidget {
   const addTransaction({Key key}) : super(key: key);
 
@@ -26,6 +28,7 @@ class addTransactionPage extends StatefulWidget {
 
 class _addTransactionPage extends State<addTransactionPage> {
   final DbTrans_Manager dbTrans_manager = new DbTrans_Manager();
+  static final DbCats_Manager dbCats_manager = new DbCats_Manager();
 
   final _nameController = TextEditingController();
   final _amountController = TextEditingController();

@@ -44,6 +44,32 @@ class DbCats_Manager {
     });
   }
 
+  Future<List<Category>> getAllSpendingCategories() async {
+    await openDb();
+    List<Map<String, dynamic>> maps = await _database.query('categories');
+    maps = maps.where((map) => map['isSpending'] == 1);
+    return List.generate(maps.length, (i) {
+      return Category(
+          id: maps[i]['id'],
+          name: maps[i]['name'],
+          isSpending: maps[i]['isSpending'],
+          icon: maps[i]['icon']);
+    });
+  }
+
+  Future<List<Category>> getAllEarningCategories() async {
+    await openDb();
+    List<Map<String, dynamic>> maps = await _database.query('categories');
+    maps = maps.where((map) => map['isSpending'] == 0);
+    return List.generate(maps.length, (i) {
+      return Category(
+          id: maps[i]['id'],
+          name: maps[i]['name'],
+          isSpending: maps[i]['isSpending'],
+          icon: maps[i]['icon']);
+    });
+  }
+
   Future<int> updateCategory(Category category) async {
     await openDb();
     return _database.update('categories', category.toJson(),

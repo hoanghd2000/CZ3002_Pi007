@@ -121,12 +121,12 @@ class CategoryPage extends StatelessWidget {
               ),
             ),
             FutureBuilder(
-              future: categoriesDBM.getAllCategory(),
+              future: categoriesDBM.getAllEarningCategories(),
               builder:
                   (BuildContext context, AsyncSnapshot<List<Category>> snapshot) {
                 if (snapshot.hasData) {
                   int numEarningCategory = 0;
-                  earningCategoryList = snapshot.data.where((element) => element.isSpending == 0).toList();
+                  earningCategoryList = snapshot.data.toList();
                   // for (var i = 0; i < categoryList.length; i++) {
                   //   if (categoryList[i].isSpending == 0){
                   //     numEarningCategory++;
@@ -233,11 +233,11 @@ class CategoryPage extends StatelessWidget {
               ),
             ),
             FutureBuilder(
-              future: categoriesDBM.getAllCategory(),
+              future: categoriesDBM.getAllSpendingCategories(),
               builder:
                   (BuildContext context, AsyncSnapshot<List<Category>> snapshot) {
                 if (snapshot.hasData) {
-                  spendingCategoryList = snapshot.data.where((element) => element.isSpending == 1).toList();
+                  spendingCategoryList = snapshot.data.toList();
                   return ListView.builder(
                     primary: false,
                     shrinkWrap: true,
