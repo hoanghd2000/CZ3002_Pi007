@@ -47,7 +47,7 @@ class DbCats_Manager {
   Future<List<Category>> getAllSpendingCategories() async {
     await openDb();
     List<Map<String, dynamic>> maps = await _database.query('categories');
-    maps = maps.where((map) => map['isSpending'] == 1);
+    maps = maps.where((map) => map['isSpending'] == 1).toList();
     return List.generate(maps.length, (i) {
       return Category(
           id: maps[i]['id'],
@@ -60,7 +60,7 @@ class DbCats_Manager {
   Future<List<Category>> getAllEarningCategories() async {
     await openDb();
     List<Map<String, dynamic>> maps = await _database.query('categories');
-    maps = maps.where((map) => map['isSpending'] == 0);
+    maps = maps.where((map) => map['isSpending'] == 0).toList();
     return List.generate(maps.length, (i) {
       return Category(
           id: maps[i]['id'],
