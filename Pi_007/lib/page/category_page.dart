@@ -162,20 +162,26 @@ class CategoryPage extends StatelessWidget {
                                             children: [
                                               SizedBox(
                                                 width: 50,
-                                                child: Column(children: [
-                                                  IconButton(
-                                                    icon: Icon(myIconCollection[earningCategoryList[index].icon], color: Colors.black),
-                                                  ),
-                                                ]),
+                                                child: Align(
+                                                  alignment: Alignment.centerLeft,
+                                                  child: Column(children: [
+                                                    IconButton(
+                                                      icon: Icon(myIconCollection[earningCategoryList[index].icon], color: Colors.black),
+                                                    ),
+                                                  ]),
+                                                ),
                                               ),
                                               SizedBox(
-                                                width: 100,
-                                                child: Column(children: [
-                                                  Text(earningCategoryList[index].name, style: TextStyle(fontSize: 20)),
-                                                ]),
+                                                width: 220,
+                                                child: Align(
+                                                  alignment: Alignment.centerLeft,
+                                                  child: Column(children: [
+                                                    Text(earningCategoryList[index].name, style: TextStyle(fontSize: 20)),
+                                                  ]),
+                                                ),
                                               ),
                                               // Spacer(),
-                                              SizedBox(width: 120),
+                                              // SizedBox(width: 120),
                                               Column(children: [
                                                 Row(
                                                   children: [
@@ -266,20 +272,26 @@ class CategoryPage extends StatelessWidget {
                                             children: [
                                               SizedBox(
                                                 width: 50,
-                                                child: Column(children: [
-                                                  IconButton(
-                                                    icon: Icon(myIconCollection[spendingCategoryList[index].icon], color: Colors.black),
-                                                  ),
-                                                ]),
+                                                child: Align(
+                                                  alignment: Alignment.centerLeft,
+                                                  child: Column(children: [
+                                                    IconButton(
+                                                      icon: Icon(myIconCollection[spendingCategoryList[index].icon], color: Colors.black),
+                                                    ),
+                                                  ]),
+                                                ),
                                               ),
                                               SizedBox(
-                                                width: 100,
-                                                child: Column(children: [
-                                                  Text(spendingCategoryList[index].name, style: TextStyle(fontSize: 20)),
-                                                ]),
+                                                width: 220,
+                                                child: Align(
+                                                  alignment: Alignment.centerLeft,
+                                                  child: Column(children: [
+                                                    Text(spendingCategoryList[index].name, style: TextStyle(fontSize: 20)),
+                                                  ]),
+                                                ),
                                               ),
                                               // Spacer(),
-                                              SizedBox(width: 120),
+                                              // SizedBox(width: 120),
                                               Column(children: [
                                                 Row(
                                                   children: [
