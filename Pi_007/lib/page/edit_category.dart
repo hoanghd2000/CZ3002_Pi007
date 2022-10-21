@@ -178,9 +178,10 @@ class _editCategoryPage extends State<EditCategory> {
         setState(() {
           print("Category index ${category.id} updated");
         }),
-        _categoryIconController.clear(),
-        _categoryNameController.clear(),
-        Navigator.pop(context)
+        Navigator.pop(context),
+        Navigator.pop(context),
+        Navigator.of(context)
+            .push(MaterialPageRoute(builder: (context) => CategoryPage()))
       });
     }
   }

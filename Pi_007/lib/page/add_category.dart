@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:icon_picker/icon_picker.dart';
 import 'package:pi_007/databases/db_categories.dart';
+import 'package:pi_007/page/category_page.dart';
 
 class AddCategory extends StatelessWidget {
   // colors
@@ -177,13 +178,14 @@ class _addCategoryPage extends State<addCategoryPage>{
       //after transaction is added, clear the textfields
       await dbCats_manager.insertCategory(cat).then(
             (id) => {
-              _categoryTypeController = '',
-              _categoryIconController.clear(),
-              _categoryNameController.clear(),
+              //_categoryTypeController = '',
+              // _categoryIconController.clear(),
+              // _categoryNameController.clear(),
               print('Category added to Cats_database ${id}'),
               Navigator.pop(context),
-              // Navigator.of(context)
-              //     .push(MaterialPageRoute(builder: (context) => MyApp()))
+              Navigator.pop(context),
+              Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (context) => CategoryPage()))
         },
       );
     }
