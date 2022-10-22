@@ -221,11 +221,15 @@ class _editBudgetPage extends State<EditBudget> {
           budgetDBM.deleteBudget(budgetId);
           print("Budget ${budgetId} deleted");
           // setState(() {});
-          // Navigator.of(context)..pop()..pop();
-          Navigator.of(context).pop(context);
+
           Navigator.pop(context);
-            // Navigator.of(context)
-            //   ..push(MaterialPageRoute(builder: (context) => MyApp()))..push(MaterialPageRoute(builder: (context) => BudgetPage()));
+          Navigator.pop(context);
+          // Navigator.of(context)
+          //     .push(MaterialPageRoute(builder: (context) => MyApp()));
+          // Navigator.pop(context);
+          // Navigator.pop(context);
+          // Navigator.pop(context);
+
           ScaffoldMessenger.of(context)
               .showSnackBar(SnackBar(content: Text("Budget Deleted")));
         });

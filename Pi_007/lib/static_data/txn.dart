@@ -53,6 +53,12 @@ List<Transaction> _getDataOfYear(String year) {
   // year = '2022'
   List<String> monthList = List.generate(
       12, (index) => '${year}-${(index + 1).toString().padLeft(2, '0')}-01');
+
+  List<String> evenMonthList = List.generate(
+      6, (index) => '${year}-${(2*index + 1).toString().padLeft(2, '0')}-01');
+
+  var timestampList = year == '2022' ? monthList : evenMonthList;
+
   List<Transaction> data = [];
   var rng = Random();
 
@@ -62,11 +68,11 @@ List<Transaction> _getDataOfYear(String year) {
         : _earningList[rng.nextInt(3)];
   }
 
-  for (var i = 0; i < 6; i++) {
+  for (var i = 0; i < timestampList.length; i++) {
     // 1st txn is always spending
     data.add(Transaction(
       spendings: 1,
-      timestamp: monthList[i],
+      timestamp: timestampList[i],
       name: "Entry" + (rng.nextInt(10)).toString(),
       amount: num.parse((rng.nextDouble() * 100).toStringAsFixed(2)),
       category: _currentType(true),
@@ -77,7 +83,7 @@ List<Transaction> _getDataOfYear(String year) {
     bool isSpending = rng.nextBool();
     data.add(Transaction(
       spendings: isSpending ? 1 : 0,
-      timestamp: monthList[i],
+      timestamp: timestampList[i],
       name: "Entry" + (rng.nextInt(10)).toString(),
       amount: num.parse((rng.nextDouble() * 100).toStringAsFixed(2)),
       category: _currentType(isSpending),
@@ -91,41 +97,41 @@ List<Transaction> getRandomTxn() {
   List<Transaction> data = [];
   var rng = Random();
   data.addAll(_getDataOfYear('2022'));
-  // data.addAll(_getDataOfYear('2021'));
-  // data.addAll(_getDataOfYear('2020'));
-  data.addAll([
-    Transaction(
-      spendings: 1,
-      timestamp: '2022-10-01',
-      name: "Entry" + (rng.nextInt(10)).toString(),
-      amount: num.parse((rng.nextDouble() * 100).toStringAsFixed(2)),
-      category: '',
-      note: "",
-    ),
-    Transaction(
-      spendings: 1,
-      timestamp: '2022-10-01',
-      name: "Entry" + (rng.nextInt(10)).toString(),
-      amount: num.parse((rng.nextDouble() * 100).toStringAsFixed(2)),
-      category: '',
-      note: "",
-    ),
-    Transaction(
-      spendings: 1,
-      timestamp: '2022-10-02',
-      name: "Entry" + (rng.nextInt(10)).toString(),
-      amount: num.parse((rng.nextDouble() * 100).toStringAsFixed(2)),
-      category: '',
-      note: "",
-    ),
-    Transaction(
-      spendings: 1,
-      timestamp: '2022-09-01',
-      name: "Entry" + (rng.nextInt(10)).toString(),
-      amount: num.parse((rng.nextDouble() * 100).toStringAsFixed(2)),
-      category: '',
-      note: "",
-    ),
-  ]);
+  data.addAll(_getDataOfYear('2021'));
+  data.addAll(_getDataOfYear('2020'));
+  // data.addAll([
+  //   Transaction(
+  //     spendings: 1,
+  //     timestamp: '2022-10-01',
+  //     name: "Entry" + (rng.nextInt(10)).toString(),
+  //     amount: num.parse((rng.nextDouble() * 100).toStringAsFixed(2)),
+  //     category: '',
+  //     note: "",
+  //   ),
+  //   Transaction(
+  //     spendings: 1,
+  //     timestamp: '2022-10-01',
+  //     name: "Entry" + (rng.nextInt(10)).toString(),
+  //     amount: num.parse((rng.nextDouble() * 100).toStringAsFixed(2)),
+  //     category: '',
+  //     note: "",
+  //   ),
+  //   Transaction(
+  //     spendings: 1,
+  //     timestamp: '2022-10-02',
+  //     name: "Entry" + (rng.nextInt(10)).toString(),
+  //     amount: num.parse((rng.nextDouble() * 100).toStringAsFixed(2)),
+  //     category: '',
+  //     note: "",
+  //   ),
+  //   Transaction(
+  //     spendings: 1,
+  //     timestamp: '2022-09-01',
+  //     name: "Entry" + (rng.nextInt(10)).toString(),
+  //     amount: num.parse((rng.nextDouble() * 100).toStringAsFixed(2)),
+  //     category: '',
+  //     note: "",
+  //   ),
+  // ]);
   return data;
 }

@@ -69,6 +69,21 @@ class _TransactionsPageState extends State<TransactionsPage> {
     'currency_exchange': Icons.currency_exchange,
   };
 
+  final Map<String, String> monthMap = {
+    '01': 'January',
+    '02': 'February',
+    '03': 'March',
+    '04': 'April',
+    '05': 'May',
+    '06': 'June',
+    '07': 'July',
+    '08': 'August',
+    '09': 'September',
+    '10': 'October',
+    '11': 'November',
+    '12': 'December',
+  };
+
   Transaction txn;
   List<Transaction> txnList;
   Map<String, String> catMap;
@@ -150,7 +165,7 @@ class _TransactionsPageState extends State<TransactionsPage> {
                 return ListView.builder(
                   primary: false,
                   shrinkWrap: true,
-                  itemCount: monthCountMap.length,
+                  itemCount: distinctMonthList.length,
                   itemBuilder: (context, index) {
                     // sort here, or in SQL
                     return _displayMonthCard(distinctMonthList[index]);
@@ -329,6 +344,10 @@ class _TransactionsPageState extends State<TransactionsPage> {
       }
     });
 
+    String yyyyMM = timestamp.substring(0, 7);
+    String yyyy = yyyyMM.substring(0, 4);
+    String mmmm = monthMap[yyyyMM.substring(5, 7)];
+
     // print(monthTimestamp);
     // print(monthlyTxnList);
 
@@ -353,10 +372,11 @@ class _TransactionsPageState extends State<TransactionsPage> {
                   // header
                   children: [
                     Expanded(
-                        child: Text(timestamp,
+                        child: Text(mmmm + ' ' + yyyy,
                             // child: Text((DateFormat.yMMMM(DateTime.parse(distinctDayInAMonthList[0]))).toString(),
-                            style: TextStyle(
-                                fontSize: 18, fontWeight: FontWeight.bold))),
+                            style: const TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.bold),
+                            textAlign: TextAlign.center)),
                   ],
                 ),
               ),
@@ -382,10 +402,7 @@ class _TransactionsPageState extends State<TransactionsPage> {
   }
 
   Widget _displayDayCard(String timestamp) {
-    // yyyy-MM
-    // filter out txn of that date
-
-    int numTxn = dayCountMap[timestamp];
+    // yyyy-MM-dd
     List<Transaction> dailyTxnList =
         txnList.where((txn) => txn.timestamp == timestamp).toList();
     // print(txnListOfDate);
@@ -396,6 +413,8 @@ class _TransactionsPageState extends State<TransactionsPage> {
         overallAmount += txn.spendings == 1 ? -1 * txn.amount : txn.amount);
 
     double absAmount = overallAmount >= 0 ? overallAmount : -1 * overallAmount;
+
+    String dd = timestamp.substring(8, 10);
 
     return Card(
       margin: const EdgeInsets.fromLTRB(5, 8, 5, 8),
@@ -416,10 +435,21 @@ class _TransactionsPageState extends State<TransactionsPage> {
                   // header
                   children: [
                     Expanded(
-                        flex: 4,
-                        child: Text(timestamp,
+                      flex: 1,
+                      child: Container(
+                          decoration: BoxDecoration(
+                            color: secondary_section,
+                            // border: Border.all(color: Colors.black, width: 2),
+                            // borderRadius: const BorderRadius.all(Radius.circular(12))),
+                          ),
+                          child: Text(
+                            dd,
                             style: TextStyle(
-                                fontSize: 18, fontWeight: FontWeight.bold))),
+                                fontSize: 22, fontWeight: FontWeight.bold),
+                            textAlign: TextAlign.left,
+                          )),
+                    ),
+                    Expanded(flex: 3, child: SizedBox.shrink()),
                     Expanded(
                         flex: 3,
                         child: Text(
@@ -436,7 +466,7 @@ class _TransactionsPageState extends State<TransactionsPage> {
                 // primary: false,
                 physics: NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
-                itemCount: numTxn,
+                itemCount: dailyTxnList.length,
                 itemBuilder: (context, index) {
                   // sort here, or in SQL
                   return _displayTxnItem(dailyTxnList[index]);
