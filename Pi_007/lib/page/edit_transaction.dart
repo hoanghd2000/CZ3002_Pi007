@@ -140,8 +140,14 @@ class _editTransactionPage extends State<editTransactionPage>{
           builder: (BuildContext context, AsyncSnapshot<List<Object>> snapshot) {
             if (snapshot.hasData) {
             list_all = snapshot.data[0];
+            // list_all.add(null);
             list_earn = snapshot.data[1];
+            // list_earn.add(null);
             list_spend = snapshot.data[2];
+            list_spend.add(null);
+            // if (_model == null){
+            //   _model = "Allowance";
+            // }
             return Form(
                 key:_formKey,
                 child: Padding(
@@ -212,7 +218,7 @@ class _editTransactionPage extends State<editTransactionPage>{
                             padding: EdgeInsets.only(right:15.0)),
 
                           DropdownButton<String>(
-                            value:_model,
+                            value: _model,
                             // value: _model =_selectType(_type).first,
                             dropdownColor: list_color,
                             icon: const Icon(Icons.expand_more),
@@ -229,12 +235,18 @@ class _editTransactionPage extends State<editTransactionPage>{
                             },
                             items: _selectType(_type).map<DropdownMenuItem<String>>((Category value) {
                               return DropdownMenuItem<String>(
-                                value: value.name,
-                                child: Row(
+                                value: value != null ? value.name : "",
+                                child: value != null ? Row(
                                   children: [
                                     Icon(myIconCollection[value.icon]),
                                     SizedBox(width: 20),
                                     Text(value.name),
+                                  ],
+                                ) : Row(
+                                  children: [
+                                    // Icon(myIconCollection[value.icon]),
+                                    // SizedBox(width: 20),
+                                    // Text(value.name),
                                   ],
                                 )
                               );
