@@ -99,7 +99,7 @@ class _ReportPageState extends State<ReportPage> {
           builder:
               (BuildContext context, AsyncSnapshot<List<dynamic>> snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return LinearProgressIndicator();
+              return CircularProgressIndicator();
             } else if (snapshot.connectionState == ConnectionState.done) {
               if (snapshot.hasData) {
                 List<Widget> children;
@@ -140,8 +140,8 @@ class _ReportPageState extends State<ReportPage> {
                           fontSize: 16.0, fontWeight: FontWeight.bold),
                     ),
                     linearStrokeCap: LinearStrokeCap.roundAll,
-                    backgroundColor: Colors.grey,
-                    progressColor: Color.fromARGB(255, 155, 205, 225),
+                    backgroundColor: Color.fromARGB(255, 220, 218, 218),
+                    progressColor: Color.fromARGB(255, 130, 197, 223),
                   );
                 }
               } else {

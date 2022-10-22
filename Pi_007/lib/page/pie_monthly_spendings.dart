@@ -43,8 +43,8 @@ class pieMonthlySpendings extends StatelessWidget {
           // final TotalSpendingValue = snapshot.data[1];
 
           final colorList = <Color>[
-            Color.fromARGB(255, 203, 114, 219),
-            Color.fromARGB(255, 155, 205, 225),
+            Color.fromARGB(255, 192, 132, 246),
+            Color.fromARGB(255, 130, 197, 223),
             Color.fromARGB(255, 248, 200, 220),
             Color.fromARGB(255, 180, 236, 180),
             Color.fromARGB(255, 255, 234, 209),
