@@ -48,6 +48,7 @@ class _addTransactionPage extends State<addTransactionPage> {
   static const List<String> list_type = <String>['Spending', 'Earning'];
   List<Category> list_spend;
   List<Category> list_earn;
+  List<Category> list_all;
   String type_list = list_type.first;
   Category spend_list;
   Category earn_list;
@@ -76,6 +77,7 @@ class _addTransactionPage extends State<addTransactionPage> {
               future: dbCats_manager.getAllCategory(),
               builder: (BuildContext context, AsyncSnapshot<List<Category>> snapshot) {
                 if (snapshot.hasData) {
+                  list_all = snapshot.data.toList();
                   list_earn = snapshot.data.where((element) => element.isSpending == 0).toList();
                   earn_list = list_earn.first;
                   list_spend = snapshot.data.where((element) => element.isSpending == 1).toList();
@@ -237,6 +239,7 @@ class _addTransactionPage extends State<addTransactionPage> {
           category: _model,
           note: _noteController.text,
         );
+        print("cat:" + tr.category);
         //after transaction is added, clear the textfields
         dbTrans_manager.insertTransaction(tr).then(
               (id) => {
