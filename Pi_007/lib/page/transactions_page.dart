@@ -340,13 +340,13 @@ class _TransactionsPageState extends State<TransactionsPage> {
   Widget _displayCardItem(Transaction txn) {
     return Row(children: [
       Expanded(
-          flex: 2,
+          flex: 1,
           child: Icon(
               myIconCollection[catMap[txn.category]]
           )),
-      Expanded(flex: 2, child: Text(txn.name, style: TextStyle(fontSize: 16))),
+      Expanded(flex: 4, child: Text(txn.name, style: TextStyle(fontSize: 16))),
       Expanded(
-          flex: 3,
+          flex: 2,
           child: (txn.spendings == 1)
               ? Text("- \$ ${txn.amount.toStringAsFixed(2)}",
                   textAlign: TextAlign.right,
