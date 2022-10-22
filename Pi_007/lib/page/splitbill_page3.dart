@@ -21,12 +21,8 @@ class _SplitBillPage3 extends State<SplitBillPage3>
   static const navigation_bar = Color(0xFFFFEAD1); //beige
   static const list_color = Color(0xFFECECEC); //grey
 
-  static const List<String> payer_list = <String>[
-    'Me',
-    'John',
-    'Jimmy',
-    'Jackson'
-  ];
+  static const List<String> payer_list = <String>['Me', 'Hoang', 'Mei Qi', 'Jimmy'];
+
 
   Map<String, dynamic> modelOutput = {
     'price_list': {
@@ -118,7 +114,7 @@ class _SplitBillPage3 extends State<SplitBillPage3>
         body: ListView(children: <Widget>[
           Padding(
             padding: const EdgeInsets.fromLTRB(160, 20, 0, 0),
-            child: Text("Untitled",
+            child: Text("Receipt1",
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
           ),
           // Text(widget.itemPayerMap.toString()),

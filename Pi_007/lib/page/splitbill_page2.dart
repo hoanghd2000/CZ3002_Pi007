@@ -18,7 +18,7 @@ class _SplitBillPage2 extends State<SplitBillPage2> {
   static const navigation_bar = Color(0xFFFFEAD1); //beige
   static const list_color = Color(0xFFECECEC); //grey
 
-  static const List<String> payer_list = <String>['Me', 'John','Jimmy','Jackson'];
+  static const List<String> payer_list = <String>['Me', 'Hoang', 'Mei Qi', 'Jimmy'];
   static const List<String> item_list = <String>['Prawns', 'Chicken','Mushroom','Potato','Tofu'];
   static const List<String> amt_list = <String>['20.00', '15.50','12.00','8.50','4.00'];
 
