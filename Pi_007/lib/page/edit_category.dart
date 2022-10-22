@@ -72,7 +72,7 @@ class _editCategoryPage extends State<EditCategory> {
   Icon _icon;
 
   _pickIcon() async {
-    IconData icon = await FlutterIconPicker.showIconPicker(context, customIconPack: myIconCollection);
+    IconData icon = await FlutterIconPicker.showIconPicker(context, customIconPack: myIconCollection, iconPackModes: const <IconPack>[IconPack.custom]);
 
     _icon = Icon(icon);
     setState((){
