@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:pi_007/databases/db_categories.dart';
 import 'package:pi_007/page/add_transaction.dart';
 import 'package:pi_007/databases/db_transactions.dart';
-import 'package:pi_007/page/camera.dart';
 import 'package:pi_007/static_data/txn.dart';
 import 'package:intl/intl.dart';
 import 'dart:convert';
@@ -22,9 +22,48 @@ class TransactionsPage extends StatefulWidget {
 
 class _TransactionsPageState extends State<TransactionsPage> {
   final DbTrans_Manager dbmanager = DbTrans_Manager();
+  final DbCats_Manager dbCats_Manager = DbCats_Manager();
+
+  final Map<String, IconData> myIconCollection = {
+    'favorite': Icons.favorite,
+    'home': Icons.home,
+    'android': Icons.android,
+    'album': Icons.album,
+    'ac_unit': Icons.ac_unit,
+    'access_alarm': Icons.access_alarm,
+    'access_time': Icons.access_time,
+    'umbrella_sharp': Icons.umbrella_sharp,
+    'headphones': Icons.headphones,
+    'car_repair': Icons.car_repair,
+    'settings': Icons.settings,
+    'flight': Icons.flight,
+    'run_circle': Icons.run_circle,
+    'book': Icons.book,
+    'sports_rugby_rounded': Icons.sports_rugby_rounded,
+    'alarm': Icons.alarm,
+    'call': Icons.call,
+    'snowing': Icons.snowing,
+    'hearing': Icons.hearing,
+    'music_note': Icons.music_note,
+    'note': Icons.note,
+    'edit': Icons.edit,
+    'sunny': Icons.sunny,
+    'radar': Icons.radar,
+    'wallet': Icons.wallet,
+    'food': Icons.fastfood,
+    'shopping': Icons.shopping_bag,
+    'car': Icons.directions_car,
+    'work': Icons.work,
+    'dollar_sign': Icons.attach_money,
+    'dollar_bill': Icons.money_sharp,
+    'savings': Icons.savings,
+    'bitcoin': Icons.currency_bitcoin,
+    'currency_exchange': Icons.currency_exchange,
+  };
 
   Transaction txn;
   List<Transaction> txnList;
+  Map<String, String> catMap;
   // Iterable<String> txnTimestampList;
   List<String> distinctTimestampList;
   Map<String, int> timestampMap;
@@ -66,12 +105,13 @@ class _TransactionsPageState extends State<TransactionsPage> {
           /************* debug code END ************/
 
           FutureBuilder(
-            future: dbmanager.getAllTransactionOrderBy('timestamp DESC'),
+            future: Future.wait([dbmanager.getAllTransactionOrderBy('timestamp DESC'), dbCats_Manager.getCategoriesMap()]),
             // future: dbmanager.getAllSpendingOrderBy('timestamp ASC'),
             builder: (BuildContext context,
-                AsyncSnapshot<List<Transaction>> snapshot) {
+                AsyncSnapshot<List<Object>> snapshot) {
               if (snapshot.hasData) {
-                txnList = snapshot.data;
+                txnList = snapshot.data[0];
+                catMap = snapshot.data[1];
 
                 // find distinct dates
                 distinctTimestampList =
@@ -301,7 +341,9 @@ class _TransactionsPageState extends State<TransactionsPage> {
     return Row(children: [
       Expanded(
           flex: 2,
-          child: Text((txn.category ?? ""), style: TextStyle(fontSize: 16))),
+          child: Icon(
+              myIconCollection[catMap[txn.category]]
+          )),
       Expanded(flex: 2, child: Text(txn.name, style: TextStyle(fontSize: 16))),
       Expanded(
           flex: 3,
