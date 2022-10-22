@@ -51,6 +51,44 @@ class _editTransactionPage extends State<editTransactionPage>{
   static const list_color =  Color(0xFFECECEC);  //grey
   static const action_button =  Color(0xFFF8C8DC);  //pink
 
+  // Icon List
+  final Map<String, IconData> myIconCollection = {
+    'favorite': Icons.favorite,
+    'home': Icons.home,
+    'android': Icons.android,
+    'album': Icons.album,
+    'ac_unit': Icons.ac_unit,
+    'access_alarm': Icons.access_alarm,
+    'access_time': Icons.access_time,
+    'umbrella_sharp': Icons.umbrella_sharp,
+    'headphones': Icons.headphones,
+    'car_repair': Icons.car_repair,
+    'settings': Icons.settings,
+    'flight': Icons.flight,
+    'run_circle': Icons.run_circle,
+    'book': Icons.book,
+    'sports_rugby_rounded': Icons.sports_rugby_rounded,
+    'alarm': Icons.alarm,
+    'call': Icons.call,
+    'snowing': Icons.snowing,
+    'hearing': Icons.hearing,
+    'music_note': Icons.music_note,
+    'note': Icons.note,
+    'edit': Icons.edit,
+    'sunny': Icons.sunny,
+    'radar': Icons.radar,
+    'wallet': Icons.wallet,
+    'food': Icons.fastfood,
+    'shopping': Icons.shopping_bag,
+    'car': Icons.directions_car,
+    'work': Icons.work,
+    'dollar_sign': Icons.attach_money,
+    'dollar_bill': Icons.money_sharp,
+    'savings': Icons.savings,
+    'bitcoin': Icons.currency_bitcoin,
+    'currency_exchange': Icons.currency_exchange,
+  };
+
   static const List<String> list_type = <String>['Spending', 'Earning'];
   List<Category> list_spend;
   List<Category> list_earn;
@@ -192,7 +230,13 @@ class _editTransactionPage extends State<editTransactionPage>{
                             items: _selectType(_type).map<DropdownMenuItem<String>>((Category value) {
                               return DropdownMenuItem<String>(
                                 value: value.name,
-                                child: Text(value.name),
+                                child: Row(
+                                  children: [
+                                    Icon(myIconCollection[value.icon]),
+                                    SizedBox(width: 20),
+                                    Text(value.name),
+                                  ],
+                                )
                               );
                             }).toList(),
                           ),
