@@ -17,13 +17,13 @@ class MorePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Scaffold(
       body: Column(children: <Widget>[
-        Align(
-          alignment: Alignment.centerLeft,
-          child: Padding(
-            padding: const EdgeInsets.all(15.0),
-            child: Text('XYZ123', style: TextStyle(fontSize: 40)),
-          ),
-        ),
+        // Align(
+        //   alignment: Alignment.centerLeft,
+        //   child: Padding(
+        //     padding: const EdgeInsets.all(15.0),
+        //     child: Text('XYZ123', style: TextStyle(fontSize: 40)),
+        //   ),
+        // ),
         Card(
           elevation: 0,
           child:

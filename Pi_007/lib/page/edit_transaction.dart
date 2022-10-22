@@ -284,6 +284,13 @@ class _editTransactionPage extends State<editTransactionPage>{
                                           content: Text("Are you sure you want to delete this Transaction?"),
                                           actions: [
                                             TextButton(
+                                              child: Text("Cancel"),
+                                              onPressed: () {
+                                                Navigator.pop(context);
+                                                _navigateBack(context);
+                                              },
+                                            ),
+                                            TextButton(
                                                 child: Text('OK'),
                                                 onPressed: () {
                                                   dbTrans_manager.deleteTransaction(widget.txn2.id);
@@ -292,12 +299,6 @@ class _editTransactionPage extends State<editTransactionPage>{
                                                   _navigateBack(context);
                                                 }
                                             ),
-                                          TextButton(
-                                          child: Text("Cancel"),
-                                          onPressed: () {
-                                          Navigator.pop(context);
-                                          _navigateBack(context);
-                                          },),
                                           ]
                                       ));
                                 },

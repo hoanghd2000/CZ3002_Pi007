@@ -21,12 +21,8 @@ class _SplitBillPage3 extends State<SplitBillPage3>
   static const navigation_bar = Color(0xFFFFEAD1); //beige
   static const list_color = Color(0xFFECECEC); //grey
 
-  static const List<String> payer_list = <String>[
-    'Me',
-    'John',
-    'Jimmy',
-    'Jackson'
-  ];
+  static const List<String> payer_list = <String>['Me', 'Hoang', 'Mei Qi', 'Jimmy'];
+
 
   Map<String, dynamic> modelOutput = {
     'price_list': {
@@ -36,7 +32,7 @@ class _SplitBillPage3 extends State<SplitBillPage3>
       'Potato': '8.50',
       'Tofu': '4.00',
     },
-    'total': '50.00'
+    'total': '60.00'
   };
 
   // Map<String, List<String>> itemPayerMap = {
@@ -118,7 +114,7 @@ class _SplitBillPage3 extends State<SplitBillPage3>
         body: ListView(children: <Widget>[
           Padding(
             padding: const EdgeInsets.fromLTRB(160, 20, 0, 0),
-            child: Text("Untitled",
+            child: Text("Receipt1",
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
           ),
           // Text(widget.itemPayerMap.toString()),
@@ -205,7 +201,7 @@ class _SplitBillPage3 extends State<SplitBillPage3>
                           "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
                           style: TextStyle(
                             color: Colors.transparent,
-                            decorationColor: Colors.blue,
+                            decorationColor: Color.fromARGB(255, 0, 105, 192),
                             decorationStyle: TextDecorationStyle.solid,
                             decoration: isStrike[0]
                                 ? TextDecoration.lineThrough
@@ -271,7 +267,7 @@ class _SplitBillPage3 extends State<SplitBillPage3>
                           "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
                           style: TextStyle(
                             color: Colors.transparent,
-                            decorationColor: Colors.blue,
+                            decorationColor: Color.fromARGB(255, 0, 105, 192),
                             decorationStyle: TextDecorationStyle.solid,
                             decoration: isStrike[1]
                                 ? TextDecoration.lineThrough
@@ -337,7 +333,7 @@ class _SplitBillPage3 extends State<SplitBillPage3>
                           "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
                           style: TextStyle(
                             color: Colors.transparent,
-                            decorationColor: Colors.blue,
+                            decorationColor: Color.fromARGB(255, 0, 105, 192),
                             decorationStyle: TextDecorationStyle.solid,
                             decoration: isStrike[2]
                                 ? TextDecoration.lineThrough
@@ -403,12 +399,13 @@ class _SplitBillPage3 extends State<SplitBillPage3>
                           "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
                           style: TextStyle(
                             color: Colors.transparent,
-                            decorationColor: Colors.blue,
+                            decorationColor: Color.fromARGB(255, 0, 105, 192),
                             decorationStyle: TextDecorationStyle.solid,
                             decoration: isStrike[3]
                                 ? TextDecoration.lineThrough
                                 : TextDecoration.none,
                             fontSize: 16,
+                            // fontWeight: FontWeight.bold
                           ),
                         ),
                       )

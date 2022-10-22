@@ -21,6 +21,14 @@ class TransactionsPage extends StatefulWidget {
 }
 
 class _TransactionsPageState extends State<TransactionsPage> {
+  static const navigation_bar = Color(0xFFFFEAD1); //beige
+  static const main_section = Color(0xFFC9C5F9); //purple
+  static const action_button = Color(0xFFF8C8DC); //pink
+  static const confirm_button = Color(0xFFB4ECB4); //green
+  static const secondary_section = Color(0xFFC5E0F9); //blue
+  static const list_color = Color(0xFFECECEC); //grey
+  static const cancel_button = Color(0xFFFA7979);
+
   final DbTrans_Manager dbmanager = DbTrans_Manager();
   final DbCats_Manager dbCats_Manager = DbCats_Manager();
 
@@ -61,15 +69,30 @@ class _TransactionsPageState extends State<TransactionsPage> {
     'currency_exchange': Icons.currency_exchange,
   };
 
+  final Map<String, String> monthMap = {
+    '01': 'January',
+    '02': 'February',
+    '03': 'March',
+    '04': 'April',
+    '05': 'May',
+    '06': 'June',
+    '07': 'July',
+    '08': 'August',
+    '09': 'September',
+    '10': 'October',
+    '11': 'November',
+    '12': 'December',
+  };
+
   Transaction txn;
   List<Transaction> txnList;
   Map<String, String> catMap;
   // Iterable<String> txnTimestampList;
-  List<String> distinctTimestampList;
-  Map<String, int> timestampMap;
+  List<String> distinctDayList;
+  List<String> distinctMonthList;
+  Map<String, int> dayCountMap = {};
+  Map<String, int> monthCountMap = {};
   int updateIndex;
-
-  static const action_button = Color(0xFFF8C8DC); //pink
 
   @override
   Widget build(BuildContext context) {
@@ -105,36 +128,47 @@ class _TransactionsPageState extends State<TransactionsPage> {
           /************* debug code END ************/
 
           FutureBuilder(
-            future: Future.wait([dbmanager.getAllTransactionOrderBy('timestamp DESC'), dbCats_Manager.getCategoriesMap()]),
+            future: Future.wait([
+              dbmanager.getAllTransactionOrderBy('timestamp DESC'),
+              dbCats_Manager.getCategoriesMap()
+            ]),
             // future: dbmanager.getAllSpendingOrderBy('timestamp ASC'),
-            builder: (BuildContext context,
-                AsyncSnapshot<List<Object>> snapshot) {
+            builder:
+                (BuildContext context, AsyncSnapshot<List<Object>> snapshot) {
               if (snapshot.hasData) {
                 txnList = snapshot.data[0];
                 catMap = snapshot.data[1];
 
+                // find distinct months
+                distinctMonthList = txnList
+                    .map((txn) => txn.timestamp.substring(0, 7))
+                    .toSet()
+                    .toList();
+
+                // find number of duplicate months: {yyyy-MM : number of duplicates}
+                txnList.forEach((txn) => monthCountMap[
+                        txn.timestamp.substring(0, 7)] =
+                    !monthCountMap.containsKey(txn.timestamp.substring(0, 7))
+                        ? (1)
+                        : (monthCountMap[txn.timestamp.substring(0, 7)] + 1));
+
                 // find distinct dates
-                distinctTimestampList =
+                distinctDayList =
                     txnList.map((txn) => txn.timestamp).toSet().toList();
 
-                // finding number of duplicate dates: {timestamp : number of duplicates}
-                timestampMap = <String, int>{};
-                txnList.forEach((txn) => timestampMap[txn.timestamp] =
-                    !timestampMap.containsKey(txn.timestamp)
+                // finding number of duplicate dates: {yyyy-MM-dd : number of duplicates}
+                txnList.forEach((txn) => dayCountMap[txn.timestamp] =
+                    !dayCountMap.containsKey(txn.timestamp)
                         ? (1)
-                        : (timestampMap[txn.timestamp] + 1));
-
-                // print(txnList.toString());
-                // print(distinctTxnTimestampList);
-                // print(timestampMap);
+                        : (dayCountMap[txn.timestamp] + 1));
 
                 return ListView.builder(
                   primary: false,
                   shrinkWrap: true,
-                  itemCount: timestampMap.length,
+                  itemCount: distinctMonthList.length,
                   itemBuilder: (context, index) {
                     // sort here, or in SQL
-                    return _displayCard(distinctTimestampList[index]);
+                    return _displayMonthCard(distinctMonthList[index]);
                   },
                 );
               } else {
@@ -159,6 +193,7 @@ class _TransactionsPageState extends State<TransactionsPage> {
                       actions: <Widget>[
                         Column(
                           children: <Widget>[
+                            // spinner here?
                             ElevatedButton(
                               onPressed: () {
                                 _navigateToAddPage(context);
@@ -270,10 +305,105 @@ class _TransactionsPageState extends State<TransactionsPage> {
     }
   }
 
-  Widget _displayCard(String timestamp) {
-    // filter out txn of that date
-    int numTxn = timestampMap[timestamp];
-    var dailyTxnList =
+  Widget _displayMonthCard(String timestamp) {
+    // yyyy-MM
+    // filter out txn of that month
+    // String monthTimestamp = timestamp.substring(0, 7);
+    // int numTxn = monthCountMap[monthTimestamp];
+    // List<Transaction> monthlyTxnList = txnList
+    //     .where((txn) => txn.timestamp.substring(0, 7) == monthTimestamp)
+    //     .toSet()
+    //     .toList();
+
+    // int numDistinctDayInAMonth = 0;
+
+    // txnList.forEach((txn) {
+    //   if (txn.timestamp.substring(0, 7) == monthTimestamp) {
+    //     numMonthlyTxn++;
+    //   }
+    // });
+
+    // distinctDayList.forEach((date) {
+    //   if (date.substring(0, 7) == monthTimestamp) {
+    //     numDistinctDayInAMonth++;
+    //   }
+    // });
+
+    // Map<String, int> distinctDayInAMonthCountMap = {};
+    // distinctDayList.forEach((date) {
+    //   if (date.substring(0, 7) == monthTimestamp) {
+    //     numDistinctDayInAMonth++;
+    //   }
+    // });
+
+    List<String> distinctDayInAMonthList = [];
+    distinctDayList.forEach((date) {
+      // next time use .where
+      if (date.substring(0, 7) == timestamp) {
+        distinctDayInAMonthList.add(date);
+      }
+    });
+
+    String yyyyMM = timestamp.substring(0, 7);
+    String yyyy = yyyyMM.substring(0, 4);
+    String mmmm = monthMap[yyyyMM.substring(5, 7)];
+
+    // print(monthTimestamp);
+    // print(monthlyTxnList);
+
+    // print(distinctDayInAMonthList[0]);
+    // print(DateTime.parse(distinctDayInAMonthList[0]));
+    // print(DateFormat.yMMMM(DateTime.parse(distinctDayInAMonthList[0])));
+
+    return Card(
+      margin: const EdgeInsets.fromLTRB(5, 8, 5, 8),
+      child: Padding(
+          padding: const EdgeInsets.all(4.0),
+          child: Column(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(8.0),
+                decoration: const BoxDecoration(
+                    color: main_section,
+                    borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(12),
+                        topRight: Radius.circular(12))),
+                child: Row(
+                  // header
+                  children: [
+                    Expanded(
+                        child: Text(mmmm + ' ' + yyyy,
+                            // child: Text((DateFormat.yMMMM(DateTime.parse(distinctDayInAMonthList[0]))).toString(),
+                            style: const TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.bold),
+                            textAlign: TextAlign.center)),
+                  ],
+                ),
+              ),
+              // Center(
+              //   child: Text(timestamp, style: TextStyle(fontSize: 16)),
+              // ),
+              ListView.builder(
+                // primary: false,
+                physics: NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                itemCount: distinctDayInAMonthList.length,
+                itemBuilder: (context, index) {
+                  // sort here, or in SQL
+                  return _displayDayCard(distinctDayInAMonthList[index]);
+                },
+              )
+            ],
+          )),
+      elevation: 5,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
+      color: Color(0xFFF7F7F7),
+    );
+  }
+
+  Widget _displayDayCard(String timestamp) {
+    // yyyy-MM-dd
+    List<Transaction> dailyTxnList =
         txnList.where((txn) => txn.timestamp == timestamp).toList();
     // print(txnListOfDate);
 
@@ -284,25 +414,42 @@ class _TransactionsPageState extends State<TransactionsPage> {
 
     double absAmount = overallAmount >= 0 ? overallAmount : -1 * overallAmount;
 
+    String dd = timestamp.substring(8, 10);
+
     return Card(
-        child: Padding(
-            padding: const EdgeInsets.all(12.0),
-            child: Column(
-              children: [
-                Row(
+      margin: const EdgeInsets.fromLTRB(5, 8, 5, 8),
+      child: Padding(
+          padding: const EdgeInsets.all(4.0),
+          child: Column(
+            children: [
+              Container(
+                // padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.fromLTRB(8, 2, 8, 2),
+                decoration: const BoxDecoration(
+                    color: secondary_section,
+                    // border: Border(bottom: BorderSide(color: Colors.black)),
+                    borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(10),
+                        topRight: Radius.circular(10))),
+                child: Row(
                   // header
                   children: [
                     Expanded(
-                        flex: 4,
-                        child: Text(timestamp, style: TextStyle(fontSize: 16))),
-                    // Expanded(
-                    //     flex: 1,
-                    //     child: Text("\$ total", // TODO
-                    //         style: TextStyle(fontSize: 16, color: Colors.red))),
-                    // Expanded(
-                    //     flex: 1,
-                    //     child: Text("\$ total", // TODO
-                    //         style: TextStyle(fontSize: 16, color: Colors.blue))),
+                      flex: 1,
+                      child: Container(
+                          decoration: BoxDecoration(
+                            color: secondary_section,
+                            // border: Border.all(color: Colors.black, width: 2),
+                            // borderRadius: const BorderRadius.all(Radius.circular(12))),
+                          ),
+                          child: Text(
+                            dd,
+                            style: TextStyle(
+                                fontSize: 22, fontWeight: FontWeight.bold),
+                            textAlign: TextAlign.left,
+                          )),
+                    ),
+                    Expanded(flex: 3, child: SizedBox.shrink()),
                     Expanded(
                         flex: 3,
                         child: Text(
@@ -310,40 +457,32 @@ class _TransactionsPageState extends State<TransactionsPage> {
                                 " \$ ${absAmount.toStringAsFixed(2)}",
                             textAlign: TextAlign.right,
                             style: TextStyle(
-                                fontSize: 17, fontWeight: FontWeight.bold))),
+                                fontSize: 18, fontWeight: FontWeight.bold))),
                     Expanded(flex: 2, child: SizedBox.shrink()),
                   ],
                 ),
-                // Center(
-                //   child: Text(timestamp, style: TextStyle(fontSize: 16)),
-                // ),
-                ListView.builder(
-                  // primary: false,
-                  physics: NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  itemCount: numTxn,
-                  itemBuilder: (context, index) {
-                    // sort here, or in SQL
-                    return _displayCardItem(dailyTxnList[index]);
-                  },
-                )
-              ],
-            )),
-        elevation: 5,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
-        color: Color(0xFFF7F7F7),
-        margin: const EdgeInsets.only(
-          bottom: 8,
-        ));
+              ),
+              ListView.builder(
+                // primary: false,
+                physics: NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                itemCount: dailyTxnList.length,
+                itemBuilder: (context, index) {
+                  // sort here, or in SQL
+                  return _displayTxnItem(dailyTxnList[index]);
+                },
+              )
+            ],
+          )),
+      elevation: 5,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
+      color: Color(0xFFF7F7F7),
+    );
   }
 
-  Widget _displayCardItem(Transaction txn) {
+  Widget _displayTxnItem(Transaction txn) {
     return Row(children: [
-      Expanded(
-          flex: 1,
-          child: Icon(
-              myIconCollection[catMap[txn.category]]
-          )),
+      Expanded(flex: 1, child: Icon(myIconCollection[catMap[txn.category]])),
       Expanded(flex: 4, child: Text(txn.name, style: TextStyle(fontSize: 16))),
       Expanded(
           flex: 2,
