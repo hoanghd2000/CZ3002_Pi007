@@ -95,7 +95,7 @@ class _editTransactionPage extends State<editTransactionPage>{
       body: ListView(children: <Widget>[
         Form(key:_formKey,
             child: Padding(
-              padding: const EdgeInsets.fromLTRB(50,0,50,0),
+              padding: const EdgeInsets.fromLTRB(50,50,50,0),
               child: Column(
                 children: <Widget>[
                   DropdownButton<String>(
@@ -194,7 +194,7 @@ class _editTransactionPage extends State<editTransactionPage>{
                   Row(
                     children: [
                       Padding(
-                        padding: const EdgeInsets.fromLTRB(50, 20, 0, 0),
+                        padding: const EdgeInsets.fromLTRB(35, 20, 0, 0),
                         child: ElevatedButton(
                             onPressed: (){
                               showDialog(

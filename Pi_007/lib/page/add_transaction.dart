@@ -79,7 +79,7 @@ class _addTransactionPage extends State<addTransactionPage> {
           Form(
               key: _formKey,
               child: Padding(
-                padding: const EdgeInsets.fromLTRB(10.0, 0, 80, 0),
+                padding: const EdgeInsets.fromLTRB(50,50,50,0),
                 child: Column(
                   children: <Widget>[
                     DropdownButton<String>(
@@ -180,15 +180,23 @@ class _addTransactionPage extends State<addTransactionPage> {
                       decoration: new InputDecoration(labelText: 'Note'),
                       controller: _noteController,
                     ),
-                    ElevatedButton(
-                        onPressed: () => _submitTransaction(context),
-                        child: Text('Save'),
-                        style: ElevatedButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12)),
-                          primary: confirm_button, //background
-                          onPrimary: Colors.black, //foreground
-                        )),
+                    Row(
+                      children: [
+                        Padding(
+                            padding: const EdgeInsets.fromLTRB(120, 20, 120, 0),
+                            child: ElevatedButton(
+                                onPressed: () => _submitTransaction(context),
+                                child: Text('Save'),
+                                style: ElevatedButton.styleFrom(
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(12)),
+                                  primary: confirm_button, //background
+                                  onPrimary: Colors.black, //foreground
+                                )
+                            )
+                        )
+                      ],
+                    )
                   ],
                 ),
               )),
