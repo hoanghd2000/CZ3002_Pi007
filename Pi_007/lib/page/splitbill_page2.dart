@@ -30,7 +30,7 @@ class _SplitBillPage2 extends State<SplitBillPage2> {
       'Potato': '8.50',
       'Tofu': '4.00',
     },
-    'total': '50.00'
+    'total': '60.00'
   };
 
   Rx<List<String>> selectedOptionList = Rx<List<String>>([]);

@@ -34,13 +34,9 @@ class _SplitBillPage extends State<SplitBillPage> {
   @override
   Widget build(BuildContext context) {
     print("isAdded is ${isAdded}");
-    print("isAdded is ${isAdded}");
-    print("isAdded is ${isAdded}");
-    print("isAdded is ${isAdded}");
-    print("isAdded is ${isAdded}");
-    print("isAdded is ${isAdded}");
+
     if (isAdded) {
-      billList.add(Bill('Untitled', 50.0, DateTime.parse("2022-10-27")));
+      billList.add(Bill('Receipt1', 60.0, DateTime.parse("2022-10-27")));
       setState(() {
         isAdded = false;
       });

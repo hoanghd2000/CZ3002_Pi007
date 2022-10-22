@@ -1,8 +1,10 @@
 import 'package:pi_007/databases/db_transactions.dart';
 import 'dart:math';
 
-final _earningList = ["Allowance", "Stock", "Work", ""];
-final _categoryList = ["Food", "Transport", "Shopping", ""];
+final _earningList = ["Allowance", "Salary", "Investment"];
+// final _earningList = [""];
+final _spendingList = ["Food", "Transport", "Shopping"];
+// final _spendingList = [""];
 
 // final _timestamp2022List = [
 //   "2022-01-01",
@@ -56,11 +58,11 @@ List<Transaction> _getDataOfYear(String year) {
 
   String _currentType(bool isSpending) {
     return isSpending
-        ? _categoryList[rng.nextInt(3)]
+        ? _spendingList[rng.nextInt(3)]
         : _earningList[rng.nextInt(3)];
   }
 
-  for (var i = 0; i < monthList.length; i++) {
+  for (var i = 0; i < 6; i++) {
     // 1st txn is always spending
     data.add(Transaction(
       spendings: 1,
@@ -87,8 +89,43 @@ List<Transaction> _getDataOfYear(String year) {
 
 List<Transaction> getRandomTxn() {
   List<Transaction> data = [];
+  var rng = Random();
   data.addAll(_getDataOfYear('2022'));
-  data.addAll(_getDataOfYear('2021'));
-  data.addAll(_getDataOfYear('2020'));
+  // data.addAll(_getDataOfYear('2021'));
+  // data.addAll(_getDataOfYear('2020'));
+  data.addAll([
+    Transaction(
+      spendings: 1,
+      timestamp: '2022-10-01',
+      name: "Entry" + (rng.nextInt(10)).toString(),
+      amount: num.parse((rng.nextDouble() * 100).toStringAsFixed(2)),
+      category: '',
+      note: "",
+    ),
+    Transaction(
+      spendings: 1,
+      timestamp: '2022-10-01',
+      name: "Entry" + (rng.nextInt(10)).toString(),
+      amount: num.parse((rng.nextDouble() * 100).toStringAsFixed(2)),
+      category: '',
+      note: "",
+    ),
+    Transaction(
+      spendings: 1,
+      timestamp: '2022-10-02',
+      name: "Entry" + (rng.nextInt(10)).toString(),
+      amount: num.parse((rng.nextDouble() * 100).toStringAsFixed(2)),
+      category: '',
+      note: "",
+    ),
+    Transaction(
+      spendings: 1,
+      timestamp: '2022-09-01',
+      name: "Entry" + (rng.nextInt(10)).toString(),
+      amount: num.parse((rng.nextDouble() * 100).toStringAsFixed(2)),
+      category: '',
+      note: "",
+    ),
+  ]);
   return data;
 }
