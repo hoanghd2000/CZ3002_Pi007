@@ -208,7 +208,12 @@ class _addTransactionPage extends State<addTransactionPage> {
                             )
                           ],
                         ),
-                      ));}}
+                      ));
+                }
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
           ),
         ],
       ));

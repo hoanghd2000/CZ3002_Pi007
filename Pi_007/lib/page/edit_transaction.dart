@@ -100,194 +100,200 @@ class _editTransactionPage extends State<editTransactionPage>{
         FutureBuilder(
           future:Future.wait([dbCats_manager.getAllCategory(), dbCats_manager.getAllEarningCategories(), dbCats_manager.getAllSpendingCategories()]),
           builder: (BuildContext context, AsyncSnapshot<List<Object>> snapshot) {
-          if (snapshot.hasData) {
-          list_all = snapshot.data[0];
-          list_earn = snapshot.data[1];
-          list_spend = snapshot.data[2];
-          return Form(key:_formKey,
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(50,50,50,0),
-                child: Column(
-                  children: <Widget>[
-                    DropdownButton<String>(
-                      value: _type,
-                      dropdownColor: list_color,
-                      icon: const Icon(Icons.expand_more),
-                      elevation: 16,
-                      underline: Container(
-                        height: 2,
-                        color: Colors.deepPurpleAccent,
-                      ),
-                      onChanged: (String value) {
-                        // This is called when the user selects an item.
-                        setState(() {
-                          _type = value;
-                          print(value);
-                          _model = _selectType(_type).first.name;
-                        });
-                      },
-                      items: list_type.map<DropdownMenuItem<String>>((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
-                        );
-                      }).toList(),
-                    ),
-                    TextFormField(
-                      decoration: new InputDecoration(
-                          // icon: Icon(Icons.calendar_today_rounded),
-                          labelText: 'Date'),
-                      // initialValue: txn2.timestamp,
-                      controller: _timeController,
-                      validator: (val) => val.isNotEmpty? null:'Date should not be empty',
-                      onTap: ()async {
-                        DateTime pickeddate = await showDatePicker(
-                            context: context,
-                            initialDate: DateTime.now(),
-                            firstDate: DateTime(2021),
-                            lastDate: DateTime(2023),
-                        );
-                        if(pickeddate!=null){
-                          setState(() {
-                            _timeController.text = DateFormat('yyyy-MM-dd').format(pickeddate);
-                          });
-                        }
-                      },
-                    ),
-                    TextFormField(
-                      decoration: new InputDecoration(labelText: 'Name'),
-                      // initialValue: txn2.name,
-                      controller: _nameController,
-                      validator: (val) => val.isNotEmpty? null:'Name should not be empty',
-                    ),
-                    TextFormField(
-                      decoration: new InputDecoration(labelText: 'Amount'),
-                      // initialValue: txn2.amount as String,
-                      controller: _amountController,
-                      validator: (val) => val.isNotEmpty? null:'Amount should not be empty',
-                    ),
-                    Row(
-                      children: [
-                        Container(
-                          child: Text('Category',style: TextStyle(fontSize: 15,color: Colors.grey[700]),),
-                          padding: EdgeInsets.only(right:15.0)),
-
-                        DropdownButton<String>(
-                          value:_model,
-                          // value: _model =_selectType(_type).first,
-                          dropdownColor: list_color,
-                          icon: const Icon(Icons.expand_more),
-                          elevation: 16,
-                          underline: Container(
-                            height: 2,
-                            color: Colors.deepPurpleAccent,
-                          ),
-                          onChanged: (String value) {
-                            setState(() {
-                              _model = value;
-                              print(value);
-                            });
-                          },
-                          items: _selectType(_type).map<DropdownMenuItem<String>>((Category value) {
-                            return DropdownMenuItem<String>(
-                              value: value.name,
-                              child: Text(value.name),
-                            );
-                          }).toList(),
+            if (snapshot.hasData) {
+            list_all = snapshot.data[0];
+            list_earn = snapshot.data[1];
+            list_spend = snapshot.data[2];
+            return Form(
+                key:_formKey,
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(50,50,50,0),
+                  child: Column(
+                    children: <Widget>[
+                      DropdownButton<String>(
+                        value: _type,
+                        dropdownColor: list_color,
+                        icon: const Icon(Icons.expand_more),
+                        elevation: 16,
+                        underline: Container(
+                          height: 2,
+                          color: Colors.deepPurpleAccent,
                         ),
-                      ],
-                    ),
-                    TextFormField(
-                      decoration: new InputDecoration(labelText: 'Note'),
-                      // initialValue: txn2.note,
-                      controller: _noteController,
-                    ),
+                        onChanged: (String value) {
+                          // This is called when the user selects an item.
+                          setState(() {
+                            _type = value;
+                            print(value);
+                            _model = _selectType(_type).first.name;
+                          });
+                        },
+                        items: list_type.map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                      ),
+                      TextFormField(
+                        decoration: new InputDecoration(
+                            // icon: Icon(Icons.calendar_today_rounded),
+                            labelText: 'Date'),
+                        // initialValue: txn2.timestamp,
+                        controller: _timeController,
+                        validator: (val) => val.isNotEmpty? null:'Date should not be empty',
+                        onTap: ()async {
+                          DateTime pickeddate = await showDatePicker(
+                              context: context,
+                              initialDate: DateTime.now(),
+                              firstDate: DateTime(2021),
+                              lastDate: DateTime(2023),
+                          );
+                          if(pickeddate!=null){
+                            setState(() {
+                              _timeController.text = DateFormat('yyyy-MM-dd').format(pickeddate);
+                            });
+                          }
+                        },
+                      ),
+                      TextFormField(
+                        decoration: new InputDecoration(labelText: 'Name'),
+                        // initialValue: txn2.name,
+                        controller: _nameController,
+                        validator: (val) => val.isNotEmpty? null:'Name should not be empty',
+                      ),
+                      TextFormField(
+                        decoration: new InputDecoration(labelText: 'Amount'),
+                        // initialValue: txn2.amount as String,
+                        controller: _amountController,
+                        validator: (val) => val.isNotEmpty? null:'Amount should not be empty',
+                      ),
+                      Row(
+                        children: [
+                          Container(
+                            child: Text('Category',style: TextStyle(fontSize: 15,color: Colors.grey[700]),),
+                            padding: EdgeInsets.only(right:15.0)),
 
-                    Row(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(35, 20, 0, 0),
-                          child: ElevatedButton(
-                              onPressed: (){
-                                showDialog(
-                                    context: context,
-                                    builder: (context) => AlertDialog(
-                                        title: Row(
-                                          children: [
-                                            Padding(
-                                              padding: const EdgeInsets.only(right: 10.0, top: 5.0, bottom: 5.0),
-                                              child: Icon(Icons.delete),
+                          DropdownButton<String>(
+                            value:_model,
+                            // value: _model =_selectType(_type).first,
+                            dropdownColor: list_color,
+                            icon: const Icon(Icons.expand_more),
+                            elevation: 16,
+                            underline: Container(
+                              height: 2,
+                              color: Colors.deepPurpleAccent,
+                            ),
+                            onChanged: (String value) {
+                              setState(() {
+                                _model = value;
+                                print(value);
+                              });
+                            },
+                            items: _selectType(_type).map<DropdownMenuItem<String>>((Category value) {
+                              return DropdownMenuItem<String>(
+                                value: value.name,
+                                child: Text(value.name),
+                              );
+                            }).toList(),
+                          ),
+                        ],
+                      ),
+                      TextFormField(
+                        decoration: new InputDecoration(labelText: 'Note'),
+                        // initialValue: txn2.note,
+                        controller: _noteController,
+                      ),
+
+                      Row(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(35, 20, 0, 0),
+                            child: ElevatedButton(
+                                onPressed: (){
+                                  showDialog(
+                                      context: context,
+                                      builder: (context) => AlertDialog(
+                                          title: Row(
+                                            children: [
+                                              Padding(
+                                                padding: const EdgeInsets.only(right: 10.0, top: 5.0, bottom: 5.0),
+                                                child: Icon(Icons.delete),
+                                              ),
+                                              Text("Delete Transaction"),
+                                            ],
+                                          ),
+                                          content: Text("Are you sure you want to delete this Transaction?"),
+                                          actions: [
+                                            TextButton(
+                                                child: Text('OK'),
+                                                onPressed: () {
+                                                  dbTrans_manager.deleteTransaction(widget.txn2.id);
+                                                  print("deleted index is ${widget.txn2.id}");
+                                                  Navigator.pop(context);
+                                                  _navigateBack(context);
+                                                }
                                             ),
-                                            Text("Delete Transaction"),
-                                          ],
-                                        ),
-                                        content: Text("Are you sure you want to delete this Transaction?"),
+                                          TextButton(
+                                          child: Text("Cancel"),
+                                          onPressed: () {
+                                          Navigator.pop(context);
+                                          _navigateBack(context);
+                                          },),
+                                          ]
+                                      ));
+                                },
+                                child: Text('Delete'),
+                                style: ElevatedButton.styleFrom(
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(12)
+                                  ),
+                                  primary: action_button,  //background
+                                  onPrimary: Colors.black, //foreground
+                                )
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(100, 20, 0, 0),
+                            child: ElevatedButton(
+                                onPressed: (){
+                                  showDialog(
+                                      context: context,
+                                      builder: (context) => AlertDialog(
+                                        title: Text('Saved successfully.'),
                                         actions: [
                                           TextButton(
-                                              child: Text('OK'),
-                                              onPressed: () {
-                                                dbTrans_manager.deleteTransaction(widget.txn2.id);
-                                                print("deleted index is ${widget.txn2.id}");
-                                                Navigator.pop(context);
-                                                _navigateBack(context);
-                                              }
-                                          ),
-                                        TextButton(
-                                        child: Text("Cancel"),
-                                        onPressed: () {
-                                        Navigator.pop(context);
-                                        _navigateBack(context);
-                                        },),
-                                        ]
-                                    ));
-                              },
-                              child: Text('Delete'),
-                              style: ElevatedButton.styleFrom(
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(12)
-                                ),
-                                primary: action_button,  //background
-                                onPrimary: Colors.black, //foreground
-                              )
+                                            child: Text('OK'),
+                                            onPressed: () {
+                                              _editTransaction(context);
+                                              Navigator.pop(context);
+                                            }
+                                              ),
+                                              ]
+                                      ));
+                                },
+                                child: Text('Save'),
+                                style: ElevatedButton.styleFrom(
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(12)
+                                  ),
+                                  primary: confirm_button,  //background
+                                  onPrimary: Colors.black, //foreground
+                                )
+                            ),
                           ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(100, 20, 0, 0),
-                          child: ElevatedButton(
-                              onPressed: (){
-                                showDialog(
-                                    context: context,
-                                    builder: (context) => AlertDialog(
-                                      title: Text('Saved successfully.'),
-                                      actions: [
-                                        TextButton(
-                                          child: Text('OK'),
-                                          onPressed: () {
-                                            _editTransaction(context);
-                                            Navigator.pop(context);
-                                          }
-                                            ),
-                                            ]
-                                    ));
-                              },
-                              child: Text('Save'),
-                              style: ElevatedButton.styleFrom(
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(12)
-                                ),
-                                primary: confirm_button,  //background
-                                onPrimary: Colors.black, //foreground
-                              )
-                          ),
-                        ),
 
-                      ],
-                    ),
+                        ],
+                      ),
 
-                  ],
-                ),
-              )
-          );}}
+                    ],
+                  ),
+                )
+            );
+          }
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
         ),
       ],
       )
