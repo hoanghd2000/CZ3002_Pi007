@@ -95,7 +95,7 @@ class _editTransactionPage extends State<editTransactionPage>{
       body: ListView(children: <Widget>[
         Form(key:_formKey,
             child: Padding(
-              padding: const EdgeInsets.fromLTRB(10.0,0,80,0),
+              padding: const EdgeInsets.fromLTRB(50,0,50,0),
               child: Column(
                 children: <Widget>[
                   DropdownButton<String>(
@@ -197,13 +197,37 @@ class _editTransactionPage extends State<editTransactionPage>{
                         padding: const EdgeInsets.fromLTRB(50, 20, 0, 0),
                         child: ElevatedButton(
                             onPressed: (){
-                              dbTrans_manager.deleteTransaction(widget.txn2.id);
-                              print("Transaction ${txn2.id} deleted");
-                              setState(() {
-                                // translist.removeAt(txn2.id);
-                              });
-                              _navigateBack(context);
-
+                              showDialog(
+                                  context: context,
+                                  builder: (context) => AlertDialog(
+                                      title: Row(
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets.only(right: 10.0, top: 5.0, bottom: 5.0),
+                                            child: Icon(Icons.delete),
+                                          ),
+                                          Text("Delete Transaction"),
+                                        ],
+                                      ),
+                                      content: Text("Are you sure you want to delete this Transaction?"),
+                                      actions: [
+                                        TextButton(
+                                            child: Text('OK'),
+                                            onPressed: () {
+                                              dbTrans_manager.deleteTransaction(widget.txn2.id);
+                                              print("deleted index is ${widget.txn2.id}");
+                                              Navigator.pop(context);
+                                              _navigateBack(context);
+                                            }
+                                        ),
+                                      TextButton(
+                                      child: Text("Cancel"),
+                                      onPressed: () {
+                                      Navigator.pop(context);
+                                      _navigateBack(context);
+                                      },),
+                                      ]
+                                  ));
                             },
                             child: Text('Delete'),
                             style: ElevatedButton.styleFrom(
@@ -219,9 +243,20 @@ class _editTransactionPage extends State<editTransactionPage>{
                         padding: const EdgeInsets.fromLTRB(100, 20, 0, 0),
                         child: ElevatedButton(
                             onPressed: (){
-                              // how to get index of clicked transaction?
-                              // some async problem and method doesn't exist
-                              _editTransaction(context);
+                              showDialog(
+                                  context: context,
+                                  builder: (context) => AlertDialog(
+                                    title: Text('Saved successfully.'),
+                                    actions: [
+                                      TextButton(
+                                        child: Text('OK'),
+                                        onPressed: () {
+                                          _editTransaction(context);
+                                          Navigator.pop(context);
+                                        }
+                                          ),
+                                          ]
+                                  ));
                             },
                             child: Text('Save'),
                             style: ElevatedButton.styleFrom(
@@ -260,7 +295,7 @@ class _editTransactionPage extends State<editTransactionPage>{
         spendings = 0;
       }
       widget.txn2.spendings = spendings;
-      print('before updating transaction with id ${updateIndex}');
+      // print('before updating transaction with id ${updateIndex}');
 
       dbTrans_manager.updateTransaction(widget.txn2).then((id) =>
       {
@@ -274,6 +309,7 @@ class _editTransactionPage extends State<editTransactionPage>{
         _navigateBack(context)
       });
     }
+
   }
 }
 
