@@ -55,14 +55,13 @@ class _addTransactionPage extends State<addTransactionPage> {
 
   String _model;
   String _type = list_type.first;
-  // List<String> _selectType(String typeName) {
-  //   return typeName == list_type[0] ? list_spend : list_earn;
-  // }
-  //
-  // String _currentType(String type) {
-  //   _model = _selectType(type).first;
-  //   return _model;
-  // }
+  List<Category> _selectType(String typeName) {
+    return typeName == list_type[0] ? list_spend : list_earn;
+  }
+  String _currentType(String type) {
+    _model = _selectType(type).first.name;
+    return _model;
+  }
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -82,13 +81,6 @@ class _addTransactionPage extends State<addTransactionPage> {
                   earn_list = list_earn.first;
                   list_spend = snapshot.data.where((element) => element.isSpending == 1).toList();
                   spend_list = list_spend.first;
-                  List<Category> _selectType(String typeName) {
-                    return typeName == list_type[0] ? list_spend : list_earn;
-                  }
-                  String _currentType(String type) {
-                    _model = _selectType(type).first.name;
-                    return _model;
-                  }
 
                   return Form(
                       key: _formKey,
@@ -113,7 +105,7 @@ class _addTransactionPage extends State<addTransactionPage> {
                                   _type = value;
                                   print("Test");
                                   _model = _selectType(_type).first.name;
-                                  print(value); // error
+                                  print(value);
                                   print(_model);
                                 });
                               },
@@ -159,7 +151,6 @@ class _addTransactionPage extends State<addTransactionPage> {
                               validator: (val) =>
                               val.isNotEmpty ? null : 'Amount should not be empty',
                             ),
-                            // PROBLEM IS HERE
                             Row(
                               children: [
                                 Container(
