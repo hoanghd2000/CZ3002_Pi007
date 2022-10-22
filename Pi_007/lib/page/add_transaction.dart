@@ -46,26 +46,22 @@ class _addTransactionPage extends State<addTransactionPage> {
   static const list_color = Color(0xFFECECEC); //grey
 
   static const List<String> list_type = <String>['Spending', 'Earning'];
-  static const List<String> list_spend = <String>[
-    'Food',
-    'Transport',
-    'Shopping'
-  ];
-  static const List<String> list_earn = <String>['Allowance', 'Stock', 'Work'];
+  List<Category> list_spend;
+  List<Category> list_earn;
   String type_list = list_type.first;
-  String spend_list = list_spend.first;
-  String earn_list = list_earn.first;
+  Category spend_list;
+  Category earn_list;
 
   String _model;
   String _type = list_type.first;
-  List<String> _selectType(String typeName) {
-    return typeName == list_type[0] ? list_spend : list_earn;
-  }
-
-  String _currentType(String type) {
-    _model = _selectType(type).first;
-    return _model;
-  }
+  // List<String> _selectType(String typeName) {
+  //   return typeName == list_type[0] ? list_spend : list_earn;
+  // }
+  //
+  // String _currentType(String type) {
+  //   _model = _selectType(type).first;
+  //   return _model;
+  // }
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -76,130 +72,151 @@ class _addTransactionPage extends State<addTransactionPage> {
       ),
       body: ListView(
         children: <Widget>[
-          Form(
-              key: _formKey,
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(50,50,50,0),
-                child: Column(
-                  children: <Widget>[
-                    DropdownButton<String>(
-                      value: _type,
-                      dropdownColor: list_color,
-                      icon: const Icon(Icons.expand_more),
-                      elevation: 16,
-                      underline: Container(
-                        height: 2,
-                        color: Colors.deepPurpleAccent,
-                      ),
-                      onChanged: (String value) {
-                        // This is called when the user selects an item.
-                        setState(() {
-                          _type = value;
-                          _model = _selectType(_type).first;
-                          print(value);
-                          print(_model);
-                        });
-                      },
-                      items: list_type
-                          .map<DropdownMenuItem<String>>((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
-                        );
-                      }).toList(),
-                    ),
-                    TextFormField(
-                      decoration: new InputDecoration(
-                          // icon: Icon(Icons.calendar_today_rounded),
-                          labelText: 'Date'),
-                      controller: _timeController,
-                      validator: (val) =>
-                          val.isNotEmpty ? null : 'Date should not be empty',
-                      onTap: () async {
-                        DateTime pickeddate = await showDatePicker(
-                          context: context,
-                          initialDate: DateTime.now(),
-                          firstDate: DateTime(2021),
-                          lastDate: DateTime(2031),
-                        );
-                        if (pickeddate != null) {
-                          setState(() {
-                            _timeController.text =
-                                DateFormat('yyyy-MM-dd').format(pickeddate);
-                          });
-                        }
-                      },
-                    ),
-                    TextFormField(
-                      decoration: new InputDecoration(labelText: 'Name'),
-                      controller: _nameController,
-                      validator: (val) =>
-                          val.isNotEmpty ? null : 'Name should not be empty',
-                    ),
-                    TextFormField(
-                      decoration: new InputDecoration(labelText: 'Amount'),
-                      controller: _amountController,
-                      validator: (val) =>
-                          val.isNotEmpty ? null : 'Amount should not be empty',
-                    ),
-                    Row(
-                      children: [
-                        Container(
-                            child: Text(
-                              'Category',
-                              style: TextStyle(
-                                  fontSize: 15, color: Colors.grey[700]),
+          FutureBuilder(
+              future: dbCats_manager.getAllCategory(),
+              builder: (BuildContext context, AsyncSnapshot<List<Category>> snapshot) {
+                if (snapshot.hasData) {
+                  list_earn = snapshot.data.where((element) => element.isSpending == 0).toList();
+                  earn_list = list_earn.first;
+                  list_spend = snapshot.data.where((element) => element.isSpending == 1).toList();
+                  spend_list = list_spend.first;
+                  List<Category> _selectType(String typeName) {
+                    return typeName == list_type[0] ? list_spend : list_earn;
+                  }
+                  String _currentType(String type) {
+                    _model = _selectType(type).first.name;
+                    return _model;
+                  }
+
+                  return Form(
+                      key: _formKey,
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(50,50,50,0),
+                        child: Column(
+                          children: <Widget>[
+                            DropdownButton<String>(
+                              value: _type,
+                              dropdownColor: list_color,
+                              icon: const Icon(Icons.expand_more),
+                              elevation: 16,
+                              underline: Container(
+                                height: 2,
+                                color: Colors.deepPurpleAccent,
+                              ),
+                              onChanged: (String value) {
+                                // This is called when the user selects an item.
+                                print("Test");
+                                setState(() {
+                                  print("Test");
+                                  _type = value;
+                                  print("Test");
+                                  _model = _selectType(_type).first.name;
+                                  print(value); // error
+                                  print(_model);
+                                });
+                              },
+                              items: list_type
+                                  .map<DropdownMenuItem<String>>((String value) {
+                                return DropdownMenuItem<String>(
+                                  value: value,
+                                  child: Text(value),
+                                );
+                              }).toList(),
                             ),
-                            padding: EdgeInsets.only(right: 15.0)),
-                        DropdownButton<String>(
-                          value: _model,
-                          dropdownColor: list_color,
-                          icon: const Icon(Icons.expand_more),
-                          elevation: 16,
-                          underline: Container(
-                            height: 2,
-                            color: Colors.deepPurpleAccent,
-                          ),
-                          onChanged: (String value) {
-                            setState(() {
-                              _model = value;
-                              print(value);
-                            });
-                          },
-                          items: _selectType(_type)
-                              .map<DropdownMenuItem<String>>((String value) {
-                            return DropdownMenuItem<String>(
-                              value: value,
-                              child: Text(value),
-                            );
-                          }).toList(),
-                        ),
-                      ],
-                    ),
-                    TextFormField(
-                      decoration: new InputDecoration(labelText: 'Note'),
-                      controller: _noteController,
-                    ),
-                    Row(
-                      children: [
-                        Padding(
-                            padding: const EdgeInsets.fromLTRB(120, 20, 120, 0),
-                            child: ElevatedButton(
-                                onPressed: () => _submitTransaction(context),
-                                child: Text('Save'),
-                                style: ElevatedButton.styleFrom(
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(12)),
-                                  primary: confirm_button, //background
-                                  onPrimary: Colors.black, //foreground
+                            TextFormField(
+                              decoration: new InputDecoration(
+                                // icon: Icon(Icons.calendar_today_rounded),
+                                  labelText: 'Date'),
+                              controller: _timeController,
+                              validator: (val) =>
+                              val.isNotEmpty ? null : 'Date should not be empty',
+                              onTap: () async {
+                                DateTime pickeddate = await showDatePicker(
+                                  context: context,
+                                  initialDate: DateTime.now(),
+                                  firstDate: DateTime(2021),
+                                  lastDate: DateTime(2031),
+                                );
+                                if (pickeddate != null) {
+                                  setState(() {
+                                    _timeController.text =
+                                        DateFormat('yyyy-MM-dd').format(pickeddate);
+                                  });
+                                }
+                              },
+                            ),
+                            TextFormField(
+                              decoration: new InputDecoration(labelText: 'Name'),
+                              controller: _nameController,
+                              validator: (val) =>
+                              val.isNotEmpty ? null : 'Name should not be empty',
+                            ),
+                            TextFormField(
+                              decoration: new InputDecoration(labelText: 'Amount'),
+                              controller: _amountController,
+                              validator: (val) =>
+                              val.isNotEmpty ? null : 'Amount should not be empty',
+                            ),
+                            // PROBLEM IS HERE
+                            Row(
+                              children: [
+                                Container(
+                                    child: Text(
+                                      'Category',
+                                      style: TextStyle(
+                                          fontSize: 15, color: Colors.grey[700]),
+                                    ),
+                                    padding: EdgeInsets.only(right: 15.0)),
+                                DropdownButton<String>(
+                                  value: _model,
+                                  dropdownColor: list_color,
+                                  icon: const Icon(Icons.expand_more),
+                                  elevation: 16,
+                                  underline: Container(
+                                    height: 2,
+                                    color: Colors.deepPurpleAccent,
+                                  ),
+                                  onChanged: (String value) {
+                                    setState(() {
+                                      _model = value;
+                                      print(value);
+                                    });
+                                  },
+                                  items: _selectType(_type)
+                                      .map<DropdownMenuItem<String>>((Category value) {
+                                    return DropdownMenuItem<String>(
+                                      value: value.name,
+                                      child: Text(value.name),
+                                    );
+                                  }).toList(),
+                                ),
+                              ],
+                            ),
+                            TextFormField(
+                              decoration: new InputDecoration(labelText: 'Note'),
+                              controller: _noteController,
+                            ),
+                            Row(
+                              children: [
+                                Padding(
+                                    padding: const EdgeInsets.fromLTRB(120, 20, 120, 0),
+                                    child: ElevatedButton(
+                                        onPressed: () => _submitTransaction(context),
+                                        child: Text('Save'),
+                                        style: ElevatedButton.styleFrom(
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.circular(12)),
+                                          primary: confirm_button, //background
+                                          onPrimary: Colors.black, //foreground
+                                        )
+                                    )
                                 )
+                              ],
                             )
-                        )
-                      ],
-                    )
-                  ],
-                ),
-              )),
+                          ],
+                        ),
+                      ));}}
+          ),
         ],
       ));
 
@@ -223,15 +240,15 @@ class _addTransactionPage extends State<addTransactionPage> {
         //after transaction is added, clear the textfields
         dbTrans_manager.insertTransaction(tr).then(
               (id) => {
-                _timeController.clear(),
-                _nameController.clear(),
-                _amountController.clear(),
-                _noteController.clear(),
-                print('Transaction added to Trans_database ${id}'),
-                Navigator.of(context)
-                    .push(MaterialPageRoute(builder: (context) => MyApp()))
-              },
-            );
+            _timeController.clear(),
+            _nameController.clear(),
+            _amountController.clear(),
+            _noteController.clear(),
+            print('Transaction added to Trans_database ${id}'),
+            Navigator.of(context)
+                .push(MaterialPageRoute(builder: (context) => MyApp()))
+          },
+        );
       }
     }
   }
