@@ -234,9 +234,12 @@ class _addTransactionPage extends State<addTransactionPage> {
                               controller: _noteController,
                             ),
                             Row(
+                              mainAxisSize: MainAxisSize.max,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 Padding(
-                                    padding: const EdgeInsets.fromLTRB(120, 20, 120, 0),
+                                    padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
                                     child: ElevatedButton(
                                         onPressed: () => _submitTransaction(context),
                                         child: Text('Save'),
@@ -276,7 +279,7 @@ class _addTransactionPage extends State<addTransactionPage> {
           timestamp: _timeController.text,
           name: _nameController.text,
           amount: double.parse(_amountController.text),
-          category: _model,
+          category: _model != null ? _model : "",
           note: _noteController.text,
         );
         print("cat:" + tr.category);

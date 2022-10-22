@@ -261,9 +261,12 @@ class _editTransactionPage extends State<editTransactionPage>{
                       ),
 
                       Row(
+                        mainAxisSize: MainAxisSize.max,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Padding(
-                            padding: const EdgeInsets.fromLTRB(35, 20, 0, 0),
+                            padding: const EdgeInsets.fromLTRB(0, 20, 50, 0),
                             child: ElevatedButton(
                                 onPressed: (){
                                   showDialog(
@@ -309,7 +312,7 @@ class _editTransactionPage extends State<editTransactionPage>{
                             ),
                           ),
                           Padding(
-                            padding: const EdgeInsets.fromLTRB(100, 20, 0, 0),
+                            padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
                             child: ElevatedButton(
                                 onPressed: (){
                                   showDialog(
