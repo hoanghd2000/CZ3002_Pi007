@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_iconpicker/IconPicker/iconPicker.dart';
 // import 'package:icon_picker/icon_picker.dart';
 import 'package:flutter_iconpicker/flutter_iconpicker.dart';
 import 'package:pi_007/databases/db_categories.dart';
@@ -83,7 +84,8 @@ class _addCategoryPage extends State<addCategoryPage>{
   Icon _icon;
 
   _pickIcon() async {
-    IconData icon = await FlutterIconPicker.showIconPicker(context, customIconPack: myIconCollection);
+    IconData icon = await FlutterIconPicker.showIconPicker(context, customIconPack: myIconCollection, iconPackModes: const <IconPack>[IconPack.custom]);
+
 
     _icon = Icon(icon);
     setState((){
