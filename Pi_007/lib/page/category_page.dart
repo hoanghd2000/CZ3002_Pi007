@@ -319,12 +319,8 @@ class CategoryPage extends StatelessWidget {
                                                 ),
                                                 IconButton(
                                                   icon: Icon(Icons.delete, color: Colors.black),
-                                                  onPressed: () async {
-                                                    await categoriesDBM.deleteCategory(spendingCategoryList[index].id).then((param) => {
-                                                      Navigator.pop(context),
-                                                      Navigator.of(context)
-                                                          .push(MaterialPageRoute(builder: (context) => CategoryPage()))
-                                                    });
+                                                  onPressed: () {
+                                                    _showAlertDialog(context, index);
                                                   },
                                                 ),
                                               ],
@@ -353,6 +349,53 @@ class CategoryPage extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+
+  void _showAlertDialog(BuildContext context, int categoryId) {
+    final DbCats_Manager categoriesDBM = DbCats_Manager();
+    // Create button
+    Widget okButton = TextButton(
+        child: Text("OK"),
+        onPressed: () async {
+          await categoriesDBM.deleteCategory(spendingCategoryList[categoryId].id).then((param) => {
+            Navigator.pop(context),
+            Navigator.of(context)
+                .push(MaterialPageRoute(builder: (context) => CategoryPage()))
+          });
+
+          ScaffoldMessenger.of(context)
+              .showSnackBar(SnackBar(content: Text("Category Deleted")));
+        });
+    // );
+
+    Widget cancelButton = TextButton(
+      child: Text("Cancel"),
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
+    );
+
+    AlertDialog alert = AlertDialog(
+      title: Row(
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(right: 10.0, top: 5.0, bottom: 5.0),
+            child: Icon(Icons.delete),
+          ),
+          Text("Delete Category"),
+        ],
+      ),
+      content: Text("Are you sure you want to delete this Category?"),
+      actions: [cancelButton, okButton],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
     );
   }
 }
