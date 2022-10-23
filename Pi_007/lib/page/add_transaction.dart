@@ -213,7 +213,7 @@ class _addTransactionPage extends State<addTransactionPage> {
                                       print(value);
                                     });
                                   },
-                                  items: _selectType(_type)
+                                  items: _selectType(_type).where((e) => e.name != 'Uncategorised')
                                       .map<DropdownMenuItem<String>>((Category value) {
                                     return DropdownMenuItem<String>(
                                       value: value.name,
@@ -279,7 +279,7 @@ class _addTransactionPage extends State<addTransactionPage> {
           timestamp: _timeController.text,
           name: _nameController.text,
           amount: double.parse(_amountController.text),
-          category: _model != null ? _model : "",
+          category: _model != null ? _model : "Uncategorised",
           note: _noteController.text,
         );
         print("cat:" + tr.category);

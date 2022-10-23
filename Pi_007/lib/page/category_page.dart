@@ -248,7 +248,7 @@ class CategoryPage extends StatelessWidget {
             builder:
                 (BuildContext context, AsyncSnapshot<List<Category>> snapshot) {
               if (snapshot.hasData) {
-                spendingCategoryList = snapshot.data.toList();
+                spendingCategoryList = snapshot.data.where((e) => e.name != 'Uncategorised').toList();
                 return ListView.builder(
                   primary: false,
                   shrinkWrap: true,
@@ -357,16 +357,16 @@ class CategoryPage extends StatelessWidget {
           if (isSpending == 0){
             await categoriesDBM.deleteCategory(earningCategoryList[categoryId].id).then((param) => {
               Navigator.pop(context),
-              Navigator.pop(context),
+              Navigator.of(context, rootNavigator: true).pop(),
               Navigator.of(context)
-                  .push(MaterialPageRoute(builder: (context) => CategoryPage()))
+                  .push(MaterialPageRoute(builder: (context) => CategoryPage())),
             });
           } else if (isSpending == 1){
             await categoriesDBM.deleteCategory(spendingCategoryList[categoryId].id).then((param) => {
               Navigator.pop(context),
-              Navigator.pop(context),
-              Navigator.of(context)
-                  .push(MaterialPageRoute(builder: (context) => CategoryPage()))
+              Navigator.of(context, rootNavigator: true).pop(),
+                Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (context) => CategoryPage())),
             });
           }
           ScaffoldMessenger.of(context)
