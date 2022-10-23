@@ -13,7 +13,7 @@ class pieYearlySpendings extends StatelessWidget {
       future: dbmanager.getAllSpendingOrderBy('timestamp ASC'),
       builder:
           (BuildContext context, AsyncSnapshot<List<Transaction>> snapshot) {
-        if (snapshot.hasData) {
+        if (snapshot.hasData && snapshot.data.isNotEmpty) {
           final txnData = snapshot.data;
            //uncategorised 
           txnData.forEach((txn) {
@@ -49,10 +49,10 @@ class pieYearlySpendings extends StatelessWidget {
 
           return Container(
               height: 400,
-              padding: EdgeInsets.all(20),
+              padding: EdgeInsets.all(10),
               child: Card(
                   child: Padding(
-                      padding: const EdgeInsets.all(10.0),
+                      padding: const EdgeInsets.all(5.0),
                       child: Column(children: <Widget>[
                         Text(
                           "Yearly Spending Composition",
@@ -101,7 +101,20 @@ class pieYearlySpendings extends StatelessWidget {
           //   },
           // );
         } else {
-         return new CircularProgressIndicator();
+         return Container(
+              height: 400,
+              padding: EdgeInsets.all(10),
+              child: Card(
+                  child: Padding(
+                      padding: const EdgeInsets.all(5.0),
+                      child: Column(children: <Widget>[
+                        Text(
+                          "Monthly Spending Composition",
+                          style: Theme.of(context).textTheme.bodyText1,
+                        ),
+                        const SizedBox(height: 150),
+                        const Center(child: Text("There are no spendings found.", style: TextStyle(fontStyle: FontStyle.italic, color: Colors.red),),) //to change
+                        ]))));
         }
       },
     );

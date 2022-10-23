@@ -216,7 +216,7 @@ class _editBudgetPage extends State<EditBudget> {
     final dbBudget_manager budgetDBM = dbBudget_manager();
     // Create button
     Widget okButton = TextButton(
-        child: Text("Ok"),
+        child: Text("OK"),
         onPressed: () {
           budgetDBM.deleteBudget(budgetId);
           print("Budget ${budgetId} deleted");
