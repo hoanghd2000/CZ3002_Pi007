@@ -78,7 +78,8 @@ class barYearlySpendings extends StatelessWidget {
                               enable: true,
                               // shouldAlwaysShow: true,
                               duration: 7000,
-                              ),
+                                canShowMarker: false,
+                            ),
                               onTooltipRender: (TooltipArgs args){
                                 args.header = '';
                               },

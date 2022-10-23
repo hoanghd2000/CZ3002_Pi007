@@ -146,11 +146,14 @@ class barMonthlySpendings extends StatelessWidget {
                               enable: true,
                               // shouldAlwaysShow: true,
                               duration: 7000,
+                              canShowMarker: false,
+                              format: 'point.y'
                               ),
                               onTooltipRender: (TooltipArgs args){
                                 if(args.pointIndex == 0) {
                                   //Tooltip with customized header
                                   args.header = 'Jan';
+
                                 }
                                 if(args.pointIndex == 1) {
                                   //Tooltip with customized header
