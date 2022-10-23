@@ -131,28 +131,43 @@ class _editBudgetPage extends State<EditBudget> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Padding(
-                    padding: const EdgeInsets.only(right: 5.0),
-                    child: TextButton(
+                    padding: const EdgeInsets.only(right: 20.0),
+                    child: ElevatedButton(
                       onPressed: () {
                         _showAlertDialog(context, budget.id);
                       },
                       child: Text("Delete"),
                       style: TextButton.styleFrom(
-                        backgroundColor: cancel_button,
+                        backgroundColor: action_button,
                         primary: Colors.black,
-                        padding: EdgeInsets.only(left: 30, right: 30),
+                        padding: EdgeInsets.only(left: 10.0, right: 10.0, top: 5.0, bottom: 5.0),
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12)),
                       ),
                     ),
                   ),
-                  TextButton(
-                    onPressed: () => _editBudget(context),
+                  ElevatedButton(
+                    onPressed: (){
+                      showDialog(
+                          context: context,
+                          builder: (context) => AlertDialog(
+                              title: Text('Saved successfully.'),
+                              actions: [
+                                TextButton(
+                                    child: Text('OK'),
+                                    onPressed: () {
+                                      _editBudget(context);
+                                      Navigator.pop(context);
+                                    }
+                                ),
+                              ]
+                          ));
+                    },
                     child: Text("Save"),
                     style: TextButton.styleFrom(
                       backgroundColor: confirm_button,
                       primary: Colors.black,
-                      padding: EdgeInsets.only(left: 30, right: 30),
+                      padding: EdgeInsets.only(left: 10.0, right: 10.0, top: 5.0, bottom: 5.0),
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12)),
                     ),

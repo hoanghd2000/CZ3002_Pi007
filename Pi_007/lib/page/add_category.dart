@@ -121,7 +121,7 @@ class _addCategoryPage extends State<addCategoryPage>{
                           ),
                           SizedBox(width: 15),
                           SizedBox(
-                            width: 300,
+                            width: 260,
                             child: TextFormField(
                               decoration: new InputDecoration(labelText: 'Category Icon'),
                               controller: _categoryIconController,
@@ -135,7 +135,7 @@ class _addCategoryPage extends State<addCategoryPage>{
               ),
               Padding(
                 padding: const EdgeInsets.only(
-                  left: 35.0,
+                  left: 15.0,
                 ),
                 child: SizedBox(
                   width: 300,
@@ -149,7 +149,7 @@ class _addCategoryPage extends State<addCategoryPage>{
               ),
               Padding(
                 padding: const EdgeInsets.only(
-                  left: 35.0,
+                  left: 15.0,
                 ),
                 child: SizedBox(
                   width: 300,
