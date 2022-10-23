@@ -112,12 +112,9 @@ class _BudgetPageState extends State<BudgetPage> {
                                   Padding(
                                       padding: EdgeInsets.only(left: 15),
                                       child: Column(children: [
-                                        Text(budgetList[index].startTime +
-                                            " to " +
-                                            budgetList[index].endTime +
-                                            " (" +
-                                            budgetList[index].name +
-                                            ")"),
+                                        Text(budgetList[index].name,
+                                            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 22)
+                                        )
                                       ])),
                                   Padding(
                                     padding: EdgeInsets.only(right: 5),
@@ -153,6 +150,16 @@ class _BudgetPageState extends State<BudgetPage> {
                                     ]),
                                   ),
                                 ]),
+                            Row(children: [
+                              Padding(
+                                  padding: EdgeInsets.only(
+                                      left: 15, right: 15, bottom: 15),
+                                  child: Column(children: [
+                                    Text(budgetList[index].startTime +
+                                        " to " +
+                                        budgetList[index].endTime),
+                                  ])),
+                            ]),
                             Row(children: [
                               Padding(
                                   padding: EdgeInsets.only(
