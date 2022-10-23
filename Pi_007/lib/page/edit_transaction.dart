@@ -124,8 +124,7 @@ class _editTransactionPage extends State<editTransactionPage>{
      _noteController = TextEditingController(text:widget.txn2.note);
      _timeController = TextEditingController(text:widget.txn2.timestamp);
      _type = _currentType(widget.txn2.spendings);
-     _model = widget.txn2.category != null ? widget.txn2.category : null ;
-    // dbCats_manager.insertCategory(Category(name: "Uncategorised", isSpending: 1));
+     _model = widget.txn2.category;
   }
 
   @override
@@ -145,7 +144,7 @@ class _editTransactionPage extends State<editTransactionPage>{
             list_earn = snapshot.data[1];
             // list_earn.add(null);
             list_spend = snapshot.data[2];
-            // list_spend.add(Category(id: 4, name: "Uncategorised", isSpending: 1));
+            list_spend.add(null);
             // if (_model == null){
             //   _model = "Allowance";
             // }
@@ -236,12 +235,18 @@ class _editTransactionPage extends State<editTransactionPage>{
                             },
                             items: _selectType(_type).map<DropdownMenuItem<String>>((Category value) {
                               return DropdownMenuItem<String>(
-                                value: value.name,
-                                child: Row(
+                                value: value != null ? value.name : "",
+                                child: value != null ? Row(
                                   children: [
                                     Icon(myIconCollection[value.icon]),
                                     SizedBox(width: 20),
                                     Text(value.name),
+                                  ],
+                                ) : Row(
+                                  children: [
+                                    // Icon(myIconCollection[value.icon]),
+                                    // SizedBox(width: 20),
+                                    // Text(value.name),
                                   ],
                                 )
                               );
