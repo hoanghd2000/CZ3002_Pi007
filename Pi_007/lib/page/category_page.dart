@@ -147,7 +147,10 @@ class CategoryPage extends StatelessWidget {
                       child: Row(
                         children: [
                           Padding(
-                            padding: const EdgeInsets.all(15.0),
+                            padding: const EdgeInsets.only(
+                              left: 15.0,
+                              right: 15.0
+                            ),
                             child: Row(
                               // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               mainAxisSize: MainAxisSize.max,
@@ -157,7 +160,7 @@ class CategoryPage extends StatelessWidget {
                                   padding: const EdgeInsets.all(0.0),
                                   child: Card(
                                     elevation: 0,
-                                    shape: Border(bottom: BorderSide(color: Colors.black)),
+                                    shape: index != 0 ? Border(bottom: BorderSide(color: Colors.black)) : Border(bottom: BorderSide(color: Colors.black), top: BorderSide(color: Colors.black)),
                                     child: Row(
                                         children: [
                                           SizedBox(
@@ -172,7 +175,7 @@ class CategoryPage extends StatelessWidget {
                                             ),
                                           ),
                                           SizedBox(
-                                            width: 220,
+                                            width: 170,
                                             child: Align(
                                               alignment: Alignment.centerLeft,
                                               child: Column(children: [
@@ -259,7 +262,10 @@ class CategoryPage extends StatelessWidget {
                       child: Row(
                         children: [
                           Padding(
-                            padding: const EdgeInsets.all(15.0),
+                            padding: const EdgeInsets.only(
+                              left: 15.0,
+                              right: 15.0
+                            ),
                             child: Row(
                               children: [
                                 // Text("Earning Categories: ", style: TextStyle(fontSize: 20)),
@@ -267,7 +273,7 @@ class CategoryPage extends StatelessWidget {
                                   padding: const EdgeInsets.all(0.0),
                                   child: Card(
                                     elevation: 0,
-                                    shape: Border(bottom: BorderSide(color: Colors.black)),
+                                    shape: index != 0 ? Border(bottom: BorderSide(color: Colors.black)) : Border(bottom: BorderSide(color: Colors.black), top: BorderSide(color: Colors.black)),
                                     child: Row(
                                         children: [
                                           SizedBox(
@@ -282,7 +288,7 @@ class CategoryPage extends StatelessWidget {
                                             ),
                                           ),
                                           SizedBox(
-                                            width: 220,
+                                            width: 170,
                                             child: Align(
                                               alignment: Alignment.centerLeft,
                                               child: Column(children: [
