@@ -206,12 +206,8 @@ class CategoryPage extends StatelessWidget {
                                                 ),
                                                 IconButton(
                                                   icon: Icon(Icons.delete, color: Colors.black),
-                                                  onPressed: () async {
-                                                    await categoriesDBM.deleteCategory(earningCategoryList[index].id).then((param) => {
-                                                      Navigator.pop(context),
-                                                      Navigator.of(context)
-                                                          .push(MaterialPageRoute(builder: (context) => CategoryPage()))
-                                                    });
+                                                  onPressed: () {
+                                                  _showAlertDialog(context, index, earningCategoryList[index].isSpending);
                                                   },
                                                 ),
                                               ],
@@ -320,7 +316,7 @@ class CategoryPage extends StatelessWidget {
                                                 IconButton(
                                                   icon: Icon(Icons.delete, color: Colors.black),
                                                   onPressed: () {
-                                                    _showAlertDialog(context, index);
+                                                    _showAlertDialog(context, index, spendingCategoryList[index].isSpending);
                                                   },
                                                 ),
                                               ],
@@ -352,18 +348,27 @@ class CategoryPage extends StatelessWidget {
     );
   }
 
-  void _showAlertDialog(BuildContext context, int categoryId) {
+  void _showAlertDialog(BuildContext context, int categoryId, int isSpending) {
     final DbCats_Manager categoriesDBM = DbCats_Manager();
     // Create button
     Widget okButton = TextButton(
         child: Text("OK"),
         onPressed: () async {
-          await categoriesDBM.deleteCategory(spendingCategoryList[categoryId].id).then((param) => {
-            Navigator.pop(context),
-            Navigator.of(context)
-                .push(MaterialPageRoute(builder: (context) => CategoryPage()))
-          });
-
+          if (isSpending == 0){
+            await categoriesDBM.deleteCategory(earningCategoryList[categoryId].id).then((param) => {
+              Navigator.pop(context),
+              Navigator.pop(context),
+              Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (context) => CategoryPage()))
+            });
+          } else if (isSpending == 1){
+            await categoriesDBM.deleteCategory(spendingCategoryList[categoryId].id).then((param) => {
+              Navigator.pop(context),
+              Navigator.pop(context),
+              Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (context) => CategoryPage()))
+            });
+          }
           ScaffoldMessenger.of(context)
               .showSnackBar(SnackBar(content: Text("Category Deleted")));
         });
