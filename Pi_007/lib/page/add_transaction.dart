@@ -306,11 +306,11 @@ class _addTransactionPage extends State<addTransactionPage> {
                 _amountController.clear(),
                 _noteController.clear(),
                 print('Transaction added to Trans_database ${id}'),
-                Navigator.of(context).pop(),
-                Navigator.of(context).pop(),
+                // Navigator.of(context).pop(),
+                // Navigator.of(context).pop(),
                 // setState(() {}),
-                // Navigator.of(context)
-                //     .push(MaterialPageRoute(builder: (context) => MyApp()))
+                Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (context) => MyApp()))
               },
             );
       }
