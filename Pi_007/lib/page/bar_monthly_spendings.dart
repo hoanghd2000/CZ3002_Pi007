@@ -202,7 +202,7 @@ class barMonthlySpendings extends StatelessWidget {
                               },
                             primaryXAxis: CategoryAxis(interval: 1, majorGridLines: MajorGridLines(
                                 width: 0), title: AxisTitle(text: "Month")),
-                            primaryYAxis: NumericAxis(labelFormat:'\${value}'),
+                            primaryYAxis: NumericAxis(labelFormat:'\${value}', decimalPlaces: 2),
                             // tooltipBehavior: _tooltip,
                             series: <ChartSeries<TotalSpending, String>>[
                               ColumnSeries<TotalSpending, String>(

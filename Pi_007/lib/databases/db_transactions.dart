@@ -33,6 +33,14 @@ class DbTrans_Manager {
       for (var i = 0; i < data.length; i++) {
         await db.insert('transactions', data[i].toJson());
       }
+      await db.insert('transactions', Transaction(
+      spendings: 1,
+      timestamp: '2022-12-02',
+      name: "Entry007",
+      amount: 30.0,
+      category: 'Food',
+      note: "",
+    ).toJson());
     });
   }
 

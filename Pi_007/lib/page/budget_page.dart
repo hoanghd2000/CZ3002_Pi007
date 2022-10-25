@@ -73,22 +73,21 @@ class _BudgetPageState extends State<BudgetPage> {
             //       endTime: '2022-12-31')),
             //   child: Text("add budget"),
             // ),
-            TextButton(
-              onPressed: () => budgetDBM.deleteAllBudget(),
-              child: Text("delete all budget"),
-            ),
-            TextButton(
-              onPressed: () => _generate2022data(),
-              child: Text("generate data"),
-            ),
+            // TextButton(
+            //   onPressed: () => budgetDBM.deleteAllBudget(),
+            //   child: Text("delete all budget"),
+            // ),
+            // TextButton(
+            //   onPressed: () => _generate2022data(),
+            //   child: Text("generate data"),
+            // ),
             /************* debug code END ************/
-
             FutureBuilder(
               future: budgetDBM.getBudgetList(),
               // future: dbmanager.getTransactionByYear(),
               builder:
                   (BuildContext context, AsyncSnapshot<List<Budget>> snapshot) {
-                if (snapshot.hasData) {
+                if (snapshot.data != null && snapshot.data.isNotEmpty) {
                   budgetList = snapshot.data;
                   // budgetList.forEach((e) {
                   //   print("budget page");
@@ -113,8 +112,9 @@ class _BudgetPageState extends State<BudgetPage> {
                                       padding: EdgeInsets.only(left: 15),
                                       child: Column(children: [
                                         Text(budgetList[index].name,
-                                            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 22)
-                                        )
+                                            style: const TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 22))
                                       ])),
                                   Padding(
                                     padding: EdgeInsets.only(right: 5),
@@ -181,9 +181,11 @@ class _BudgetPageState extends State<BudgetPage> {
                     },
                   );
                 } else {
-                  return const Center(
-                    child: Text("No data found"),
-                  );
+                  return SizedBox(
+                      height: 500,
+                      child: Center(
+                        child: Text("Create a new budget."),
+                      ));
                 }
               },
             )
@@ -203,12 +205,12 @@ class _BudgetPageState extends State<BudgetPage> {
             }),
       );
 
-  void _generate2022data() {
-    var data = get2022data();
-    for (var i = 0; i < data.length; i++) {
-      budgetDBM.insertBudget(data[i]);
-    }
-  }
+  // void _generate2022data() {
+  //   var data = get2022data();
+  //   for (var i = 0; i < data.length; i++) {
+  //     budgetDBM.insertBudget(data[i]);
+  //   }
+  // }
 }
 
 // class EditScreen extends StatelessWidget {

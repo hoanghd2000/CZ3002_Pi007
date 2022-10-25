@@ -102,17 +102,17 @@ class _TransactionsPageState extends State<TransactionsPage> {
           // Text("Transactions list here", style: TextStyle(fontSize: 40)),
 
           /************* debug code BEGIN ************/
-          TextButton(
-            onPressed: () {
-              dbmanager.deleteAllTransaction();
-              _navigateBack(context);
-            },
-            child: Text("delete all txn"),
-          ),
-          TextButton(
-            onPressed: () => _generateData(),
-            child: Text("generate data"),
-          ),
+          // TextButton(
+          //   onPressed: () {
+          //     dbmanager.deleteAllTransaction();
+          //     _navigateBack(context);
+          //   },
+          //   child: Text("delete all txn"),
+          // ),
+          // TextButton(
+          //   onPressed: () => _generateData(),
+          //   child: Text("generate data"),
+          // ),
           // TextButton(
           //   onPressed: () => _addTransaction(true),
           //   child: Text("add dummy spending"),
@@ -197,10 +197,10 @@ class _TransactionsPageState extends State<TransactionsPage> {
                             ElevatedButton(
                               onPressed: () {
                                 _navigateToAddPage(context);
-                                dbmanager
-                                    .getAllTransactionOrderBy('timestamp DESC')
-                                    .then((value) =>
-                                        {txnList = value, _setApp()});
+                                // dbmanager
+                                //     .getAllTransactionOrderBy('timestamp DESC')
+                                //     .then((value) =>
+                                //         {txnList = value, _setApp()});
                                 //(context as Element).reassemble();
                               },
                               child: Text('Add Manually'),
@@ -261,13 +261,13 @@ class _TransactionsPageState extends State<TransactionsPage> {
     setState(() {});
   }
 
-  void _generateData() {
+  // void _generateData() {
     // var data = getRandomTxn();
     // for (var i = 0; i < data.length; i++) {
     //   dbmanager.insertTransaction(data[i]);
     // }
     // _navigateBack(context);
-  }
+  // }
 
   void _addImage(BuildContext context, ImageSource imgSrc) async {
     // Initialize an ImagePicker

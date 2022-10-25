@@ -83,10 +83,10 @@ class CategoryPage extends StatelessWidget {
       ),
       body: ListView(
         children: <Widget>[
-          TextButton(
-            onPressed: () => categoriesDBM.dropDb(),
-            child: Text("drop table"),
-          ),
+          // TextButton(
+          //   onPressed: () => categoriesDBM.dropDb(),
+          //   child: Text("drop table"),
+          // ),
           Padding(
             padding: const EdgeInsets.all(15.0),
             child: Row(children: [
@@ -128,7 +128,7 @@ class CategoryPage extends StatelessWidget {
             future: categoriesDBM.getAllEarningCategories(),
             builder:
                 (BuildContext context, AsyncSnapshot<List<Category>> snapshot) {
-              if (snapshot.hasData) {
+              if (snapshot.data.isNotEmpty) {
                 int numEarningCategory = 0;
                 earningCategoryList = snapshot.data.toList();
                 // for (var i = 0; i < categoryList.length; i++) {
@@ -250,7 +250,7 @@ class CategoryPage extends StatelessWidget {
                 );
               } else {
                 return const Center(
-                  child: Text("No data found"),
+                  child: Text("Create a new category."),
                 );
               }
             },
