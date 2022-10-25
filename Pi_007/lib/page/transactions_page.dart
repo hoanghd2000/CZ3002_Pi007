@@ -197,6 +197,11 @@ class _TransactionsPageState extends State<TransactionsPage> {
                             ElevatedButton(
                               onPressed: () {
                                 _navigateToAddPage(context);
+                                dbmanager
+                                    .getAllTransactionOrderBy('timestamp DESC')
+                                    .then((value) =>
+                                        {txnList = value, _setApp()});
+                                //(context as Element).reassemble();
                               },
                               child: Text('Add Manually'),
                               style: ElevatedButton.styleFrom(
@@ -252,12 +257,16 @@ class _TransactionsPageState extends State<TransactionsPage> {
         .push(MaterialPageRoute(builder: (context) => addTransactionPage()));
   }
 
+  void _setApp() {
+    setState(() {});
+  }
+
   void _generateData() {
-    var data = getRandomTxn();
-    for (var i = 0; i < data.length; i++) {
-      dbmanager.insertTransaction(data[i]);
-    }
-    _navigateBack(context);
+    // var data = getRandomTxn();
+    // for (var i = 0; i < data.length; i++) {
+    //   dbmanager.insertTransaction(data[i]);
+    // }
+    // _navigateBack(context);
   }
 
   void _addImage(BuildContext context, ImageSource imgSrc) async {

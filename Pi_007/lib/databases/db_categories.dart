@@ -5,12 +5,7 @@ import 'package:path/path.dart';
 class DbCats_Manager {
   Database _database;
 
-  final catFields = [
-    'id',
-    'name',
-    'isSpending',
-    'icon'
-  ];
+  final catFields = ['id', 'name', 'isSpending', 'icon'];
 
   Future openDb() async {
     _database ??= await openDatabase(
@@ -18,12 +13,27 @@ class DbCats_Manager {
         version: 1, onCreate: (Database db, int version) async {
       await db.execute(
           'CREATE TABLE categories(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, isSpending INTEGER, icon TEXT)');
-      await db.insert('categories', Category(name: 'Salary', icon: "work", isSpending: 0).toJson());
-      await db.insert('categories', Category(name: 'Allowance', icon: "savings", isSpending: 0).toJson());
-      await db.insert('categories', Category(name: 'Investment', icon: "bitcoin", isSpending: 0).toJson());
-      await db.insert('categories', Category(name: 'Food', icon: "food", isSpending: 1).toJson());
-      await db.insert('categories', Category(name: 'Transport', icon: "car", isSpending: 1).toJson());
-      await db.insert('categories', Category(name: 'Shopping', icon: "shopping", isSpending: 1).toJson());
+      await db.insert('categories',
+          Category(name: 'Salary', icon: "work", isSpending: 0).toJson());
+      await db.insert('categories',
+          Category(name: 'Allowance', icon: "savings", isSpending: 0).toJson());
+      await db.insert(
+          'categories',
+          Category(name: 'Investment', icon: "bitcoin", isSpending: 0)
+              .toJson());
+      await db.insert('categories',
+          Category(name: 'Food', icon: "food", isSpending: 1).toJson());
+      await db.insert('categories',
+          Category(name: 'Transport', icon: "car", isSpending: 1).toJson());
+      await db.insert('categories',
+          Category(name: 'Shopping', icon: "shopping", isSpending: 1).toJson());
+    });
+  }
+
+  Future dropDb() async {
+    _database = await openDatabase(join(await getDatabasesPath(), "categories.db"),
+        version: 1, onCreate: (Database db, int version) async {
+      await db.execute('DROP TABLE IF EXISTS categories');
     });
   }
 
@@ -75,9 +85,7 @@ class DbCats_Manager {
     List<Map<String, dynamic>> maps = await _database.query('categories');
 
     return Map.fromIterable(maps,
-        key: (map) => map['name'],
-        value: (map) => map['icon']
-    );
+        key: (map) => map['name'], value: (map) => map['icon']);
   }
 
   Future<Map<String, String>> getSpendingCategoriesMap() async {
@@ -86,9 +94,7 @@ class DbCats_Manager {
     maps = maps.where((map) => map['isSpending'] == 1).toList();
 
     return Map.fromIterable(maps,
-      key: (map) => map['name'],
-      value: (map) => map['icon']
-    );
+        key: (map) => map['name'], value: (map) => map['icon']);
   }
 
   Future<Map<String, String>> getEarningCategoriesMap() async {
@@ -97,9 +103,7 @@ class DbCats_Manager {
     maps = maps.where((map) => map['isSpending'] == 0).toList();
 
     return Map.fromIterable(maps,
-        key: (map) => map['name'],
-        value: (map) => map['icon']
-    );
+        key: (map) => map['name'], value: (map) => map['icon']);
   }
 
   Future<int> updateCategory(Category category) async {
@@ -139,15 +143,11 @@ class Category {
 
   Category(
       {this.id,
-        @required this.name,
-        @required this.isSpending,
-        @required this.icon});
+      @required this.name,
+      @required this.isSpending,
+      @required this.icon});
 
   // write to db
-  Map<String, dynamic> toJson() => {
-    'id': id,
-    'name': name,
-    'isSpending': isSpending,
-    'icon': icon
-  };
+  Map<String, dynamic> toJson() =>
+      {'id': id, 'name': name, 'isSpending': isSpending, 'icon': icon};
 }
