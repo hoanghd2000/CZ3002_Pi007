@@ -188,7 +188,7 @@ class CategoryPage extends StatelessWidget {
                                         ),
                                       ),
                                       SizedBox(
-                                        width: 170,
+                                        width: 200,
                                         child: Align(
                                           alignment: Alignment.centerLeft,
                                           child: Column(children: [
@@ -256,7 +256,8 @@ class CategoryPage extends StatelessWidget {
             },
           ),
           Padding(
-            padding: const EdgeInsets.all(15.0),
+            padding: const EdgeInsets.only(
+                bottom: 15.0, top: 50.0, left: 15.0, right: 15.0),
             child: Row(
               children: [
                 Text("Spending Categories: ", style: TextStyle(fontSize: 20))
@@ -317,7 +318,7 @@ class CategoryPage extends StatelessWidget {
                                         ),
                                       ),
                                       SizedBox(
-                                        width: 170,
+                                        width: 200,
                                         child: Align(
                                           alignment: Alignment.centerLeft,
                                           child: Column(children: [
