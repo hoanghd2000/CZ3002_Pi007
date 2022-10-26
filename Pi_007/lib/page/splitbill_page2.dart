@@ -53,7 +53,7 @@ class _SplitBillPage2 extends State<SplitBillPage2> {
     children: <Widget>[
       Padding(
         padding: const EdgeInsets.fromLTRB(160,20,0,0),
-        child: Text("Untitled",style:TextStyle(fontSize: 20,fontWeight: FontWeight.bold)),
+        child: Text("Receipt1",style:TextStyle(fontSize: 20,fontWeight: FontWeight.bold)),
       ),
       Column(
         crossAxisAlignment: CrossAxisAlignment.start,
