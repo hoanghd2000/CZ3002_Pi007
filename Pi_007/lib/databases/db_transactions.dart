@@ -36,7 +36,7 @@ class DbTrans_Manager {
       await db.insert('transactions', Transaction(
       spendings: 1,
       timestamp: '2022-12-02',
-      name: "Entry007",
+      name: "Pizza",
       amount: 30.0,
       category: 'Food',
       note: "",

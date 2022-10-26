@@ -188,7 +188,7 @@ class _TransactionsPageState extends State<TransactionsPage> {
             showDialog(
                 context: context,
                 builder: (context) => AlertDialog(
-                      title: Text("New Receipt", textAlign: TextAlign.center),
+                      title: Text("New Transaction", textAlign: TextAlign.center),
                       actionsAlignment: MainAxisAlignment.center,
                       actions: <Widget>[
                         Column(

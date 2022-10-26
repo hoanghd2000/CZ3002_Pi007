@@ -55,7 +55,7 @@ List<Transaction> _getDataOfYear(String year) {
       12, (index) => '${year}-${(index + 1).toString().padLeft(2, '0')}-01');
 
   List<String> evenMonthList = List.generate(
-      6, (index) => '${year}-${(2*index + 1).toString().padLeft(2, '0')}-01');
+      6, (index) => '${year}-${(2 * index + 1).toString().padLeft(2, '0')}-01');
 
   var timestampList = year == '2022' ? monthList : evenMonthList;
 
@@ -69,11 +69,23 @@ List<Transaction> _getDataOfYear(String year) {
   }
 
   for (var i = 0; i < timestampList.length; i++) {
+    // oct 2022 has only 1 txn - spending, and is fixed
+    if (timestampList[i] == "2022-10-01") {
+      data.add(Transaction(
+        spendings: 1,
+        timestamp: timestampList[i],
+        name: "Spending" + (rng.nextInt(10)).toString(),
+        amount: 100.0,
+        category: "Food",
+        note: "",
+      ));
+      continue;
+    }
     // 1st txn is always spending
     data.add(Transaction(
       spendings: 1,
       timestamp: timestampList[i],
-      name: "Entry" + (rng.nextInt(10)).toString(),
+      name: "Spending" + (rng.nextInt(9)+1).toString(),
       amount: num.parse((rng.nextDouble() * 100).toStringAsFixed(2)),
       category: _currentType(true),
       note: "",
@@ -84,7 +96,7 @@ List<Transaction> _getDataOfYear(String year) {
     data.add(Transaction(
       spendings: isSpending ? 1 : 0,
       timestamp: timestampList[i],
-      name: "Entry" + (rng.nextInt(10)).toString(),
+      name: (isSpending ? "Spending" : "Earning") + (rng.nextInt(10)).toString(),
       amount: num.parse((rng.nextDouble() * 100).toStringAsFixed(2)),
       category: _currentType(isSpending),
       note: "",
