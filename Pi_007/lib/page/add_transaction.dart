@@ -33,7 +33,8 @@ class _addTransactionPage extends State<addTransactionPage> {
   final _nameController = TextEditingController();
   final _amountController = TextEditingController();
   final _noteController = TextEditingController();
-  final _timeController = TextEditingController(text: DateFormat('yyyy-MM-dd').format(DateTime.now()));
+  final _timeController = TextEditingController(
+      text: DateFormat('yyyy-MM-dd').format(DateTime.now()));
 
   final _formKey = new GlobalKey<FormState>();
 
@@ -96,6 +97,7 @@ class _addTransactionPage extends State<addTransactionPage> {
   List<Category> _selectType(String typeName) {
     return typeName == list_type[0] ? list_spend : list_earn;
   }
+
   String _currentType(String type) {
     _model = _selectType(type).first.name;
     return _model;
@@ -112,18 +114,23 @@ class _addTransactionPage extends State<addTransactionPage> {
         children: <Widget>[
           FutureBuilder(
               future: dbCats_manager.getAllCategory(),
-              builder: (BuildContext context, AsyncSnapshot<List<Category>> snapshot) {
+              builder: (BuildContext context,
+                  AsyncSnapshot<List<Category>> snapshot) {
                 if (snapshot.hasData) {
                   list_all = snapshot.data.toList();
-                  list_earn = snapshot.data.where((element) => element.isSpending == 0).toList();
+                  list_earn = snapshot.data
+                      .where((element) => element.isSpending == 0)
+                      .toList();
                   earn_list = list_earn.first;
-                  list_spend = snapshot.data.where((element) => element.isSpending == 1).toList();
+                  list_spend = snapshot.data
+                      .where((element) => element.isSpending == 1)
+                      .toList();
                   spend_list = list_spend.first;
 
                   return Form(
                       key: _formKey,
                       child: Padding(
-                        padding: const EdgeInsets.fromLTRB(50,50,50,0),
+                        padding: const EdgeInsets.fromLTRB(50, 50, 50, 0),
                         child: Column(
                           children: <Widget>[
                             DropdownButton<String>(
@@ -147,8 +154,8 @@ class _addTransactionPage extends State<addTransactionPage> {
                                   print(_model);
                                 });
                               },
-                              items: list_type
-                                  .map<DropdownMenuItem<String>>((String value) {
+                              items: list_type.map<DropdownMenuItem<String>>(
+                                  (String value) {
                                 return DropdownMenuItem<String>(
                                   value: value,
                                   child: Text(value),
@@ -157,11 +164,12 @@ class _addTransactionPage extends State<addTransactionPage> {
                             ),
                             TextFormField(
                               decoration: new InputDecoration(
-                                // icon: Icon(Icons.calendar_today_rounded),
+                                  // icon: Icon(Icons.calendar_today_rounded),
                                   labelText: 'Date'),
                               controller: _timeController,
-                              validator: (val) =>
-                              val.isNotEmpty ? null : 'Date should not be empty',
+                              validator: (val) => val.isNotEmpty
+                                  ? null
+                                  : 'Date should not be empty',
                               onTap: () async {
                                 DateTime pickeddate = await showDatePicker(
                                   context: context,
@@ -172,22 +180,27 @@ class _addTransactionPage extends State<addTransactionPage> {
                                 if (pickeddate != null) {
                                   setState(() {
                                     _timeController.text =
-                                        DateFormat('yyyy-MM-dd').format(pickeddate);
+                                        DateFormat('yyyy-MM-dd')
+                                            .format(pickeddate);
                                   });
                                 }
                               },
                             ),
                             TextFormField(
-                              decoration: new InputDecoration(labelText: 'Name'),
+                              decoration:
+                                  new InputDecoration(labelText: 'Name'),
                               controller: _nameController,
-                              validator: (val) =>
-                              val.isNotEmpty ? null : 'Name should not be empty',
+                              validator: (val) => val.isNotEmpty
+                                  ? null
+                                  : 'Name should not be empty',
                             ),
                             TextFormField(
-                              decoration: new InputDecoration(labelText: 'Amount'),
+                              decoration:
+                                  new InputDecoration(labelText: 'Amount'),
                               controller: _amountController,
-                              validator: (val) =>
-                              val.isNotEmpty ? null : 'Amount should not be empty',
+                              validator: (val) => val.isNotEmpty
+                                  ? null
+                                  : 'Amount should not be empty',
                             ),
                             Row(
                               children: [
@@ -195,7 +208,8 @@ class _addTransactionPage extends State<addTransactionPage> {
                                     child: Text(
                                       'Category',
                                       style: TextStyle(
-                                          fontSize: 15, color: Colors.grey[700]),
+                                          fontSize: 15,
+                                          color: Colors.grey[700]),
                                     ),
                                     padding: EdgeInsets.only(right: 15.0)),
                                 DropdownButton<String>(
@@ -214,23 +228,24 @@ class _addTransactionPage extends State<addTransactionPage> {
                                     });
                                   },
                                   items: _selectType(_type)
-                                      .map<DropdownMenuItem<String>>((Category value) {
+                                      .map<DropdownMenuItem<String>>(
+                                          (Category value) {
                                     return DropdownMenuItem<String>(
-                                      value: value.name,
-                                      child: Row(
-                                        children: [
-                                          Icon(myIconCollection[value.icon]),
-                                          SizedBox(width: 20),
-                                          Text(value.name),
-                                        ],
-                                      )
-                                    );
+                                        value: value.name,
+                                        child: Row(
+                                          children: [
+                                            Icon(myIconCollection[value.icon]),
+                                            SizedBox(width: 20),
+                                            Text(value.name),
+                                          ],
+                                        ));
                                   }).toList(),
                                 ),
                               ],
                             ),
                             TextFormField(
-                              decoration: new InputDecoration(labelText: 'Note'),
+                              decoration:
+                                  new InputDecoration(labelText: 'Note'),
                               controller: _noteController,
                             ),
                             Row(
@@ -239,18 +254,19 @@ class _addTransactionPage extends State<addTransactionPage> {
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 Padding(
-                                    padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
+                                    padding:
+                                        const EdgeInsets.fromLTRB(0, 20, 0, 0),
                                     child: ElevatedButton(
-                                        onPressed: () => _submitTransaction(context),
+                                        onPressed: () =>
+                                            _submitTransaction(context),
                                         child: Text('Save'),
                                         style: ElevatedButton.styleFrom(
                                           shape: RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.circular(12)),
+                                              borderRadius:
+                                                  BorderRadius.circular(12)),
                                           primary: confirm_button, //background
                                           onPrimary: Colors.black, //foreground
-                                        )
-                                    )
-                                )
+                                        )))
                               ],
                             )
                           ],
@@ -260,8 +276,7 @@ class _addTransactionPage extends State<addTransactionPage> {
                 return const Center(
                   child: CircularProgressIndicator(),
                 );
-              }
-          ),
+              }),
         ],
       ));
 
@@ -286,15 +301,18 @@ class _addTransactionPage extends State<addTransactionPage> {
         //after transaction is added, clear the textfields
         dbTrans_manager.insertTransaction(tr).then(
               (id) => {
-            _timeController.clear(),
-            _nameController.clear(),
-            _amountController.clear(),
-            _noteController.clear(),
-            print('Transaction added to Trans_database ${id}'),
-            Navigator.of(context)
-                .push(MaterialPageRoute(builder: (context) => MyApp()))
-          },
-        );
+                _timeController.clear(),
+                _nameController.clear(),
+                _amountController.clear(),
+                _noteController.clear(),
+                print('Transaction added to Trans_database ${id}'),
+                // Navigator.of(context).pop(),
+                // Navigator.of(context).pop(),
+                // setState(() {}),
+                Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (context) => MyApp()))
+              },
+            );
       }
     }
   }

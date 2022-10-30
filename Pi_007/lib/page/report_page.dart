@@ -146,7 +146,7 @@ class _ReportPageState extends State<ReportPage> {
                 }
               } else {
                 // Text('no data');
-                return Text("   There are no transactions found.");
+                return Text("   There are no transactions or budgets found.");
               }
             }
           }),

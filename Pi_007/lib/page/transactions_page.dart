@@ -102,17 +102,17 @@ class _TransactionsPageState extends State<TransactionsPage> {
           // Text("Transactions list here", style: TextStyle(fontSize: 40)),
 
           /************* debug code BEGIN ************/
-          TextButton(
-            onPressed: () {
-              dbmanager.deleteAllTransaction();
-              _navigateBack(context);
-            },
-            child: Text("delete all txn"),
-          ),
-          TextButton(
-            onPressed: () => _generateData(),
-            child: Text("generate data"),
-          ),
+          // TextButton(
+          //   onPressed: () {
+          //     dbmanager.deleteAllTransaction();
+          //     _navigateBack(context);
+          //   },
+          //   child: Text("delete all txn"),
+          // ),
+          // TextButton(
+          //   onPressed: () => _generateData(),
+          //   child: Text("generate data"),
+          // ),
           // TextButton(
           //   onPressed: () => _addTransaction(true),
           //   child: Text("add dummy spending"),
@@ -188,7 +188,7 @@ class _TransactionsPageState extends State<TransactionsPage> {
             showDialog(
                 context: context,
                 builder: (context) => AlertDialog(
-                      title: Text("New Receipt", textAlign: TextAlign.center),
+                      title: Text("New Transaction", textAlign: TextAlign.center),
                       actionsAlignment: MainAxisAlignment.center,
                       actions: <Widget>[
                         Column(
@@ -197,6 +197,11 @@ class _TransactionsPageState extends State<TransactionsPage> {
                             ElevatedButton(
                               onPressed: () {
                                 _navigateToAddPage(context);
+                                // dbmanager
+                                //     .getAllTransactionOrderBy('timestamp DESC')
+                                //     .then((value) =>
+                                //         {txnList = value, _setApp()});
+                                //(context as Element).reassemble();
                               },
                               child: Text('Add Manually'),
                               style: ElevatedButton.styleFrom(
@@ -252,13 +257,17 @@ class _TransactionsPageState extends State<TransactionsPage> {
         .push(MaterialPageRoute(builder: (context) => addTransactionPage()));
   }
 
-  void _generateData() {
-    var data = getRandomTxn();
-    for (var i = 0; i < data.length; i++) {
-      dbmanager.insertTransaction(data[i]);
-    }
-    _navigateBack(context);
+  void _setApp() {
+    setState(() {});
   }
+
+  // void _generateData() {
+    // var data = getRandomTxn();
+    // for (var i = 0; i < data.length; i++) {
+    //   dbmanager.insertTransaction(data[i]);
+    // }
+    // _navigateBack(context);
+  // }
 
   void _addImage(BuildContext context, ImageSource imgSrc) async {
     // Initialize an ImagePicker

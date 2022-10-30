@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:pi_007/static_data/txn.dart';
 import 'dart:convert';
 
 class DbTrans_Manager {
@@ -28,6 +29,18 @@ class DbTrans_Manager {
         version: 1, onCreate: (Database db, int version) async {
       await db.execute(
           'CREATE TABLE transactions(id INTEGER PRIMARY KEY AUTOINCREMENT, spendings INTEGER, category TEXT, name TEXT, amount REAL, note TEXT, timestamp TEXT)');
+      var data = getRandomTxn();
+      for (var i = 0; i < data.length; i++) {
+        await db.insert('transactions', data[i].toJson());
+      }
+      await db.insert('transactions', Transaction(
+      spendings: 1,
+      timestamp: '2022-12-02',
+      name: "Pizza",
+      amount: 30.0,
+      category: 'Food',
+      note: "",
+    ).toJson());
     });
   }
 

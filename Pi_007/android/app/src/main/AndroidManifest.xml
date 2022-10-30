@@ -2,7 +2,7 @@
     package="com.example.pi_007">
    <application
 
-        android:label="pi_007"
+        android:label="ONEwallet"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

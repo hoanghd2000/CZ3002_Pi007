@@ -3,15 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:pi_007/databases/db_categories.dart';
 import 'add_category.dart';
 import 'edit_category.dart';
+import '../main.dart';
 
 class CategoryPage extends StatelessWidget {
-
   static const IconData categoryIcon =
-  IconData(0xe148, fontFamily: 'MaterialIcons');
+      IconData(0xe148, fontFamily: 'MaterialIcons');
   static const IconData grid_view_sharp =
-  IconData(0xe9e5, fontFamily: 'MaterialIcons');
+      IconData(0xe9e5, fontFamily: 'MaterialIcons');
   static const IconData create_sharp =
-  IconData(0xe89b, fontFamily: 'MaterialIcons');
+      IconData(0xe89b, fontFamily: 'MaterialIcons');
 
   final Map<String, IconData> myIconCollection = {
     'favorite': Icons.favorite,
@@ -83,6 +83,10 @@ class CategoryPage extends StatelessWidget {
       ),
       body: ListView(
         children: <Widget>[
+          // TextButton(
+          //   onPressed: () => categoriesDBM.dropDb(),
+          //   child: Text("drop table"),
+          // ),
           Padding(
             padding: const EdgeInsets.all(15.0),
             child: Row(children: [
@@ -124,7 +128,7 @@ class CategoryPage extends StatelessWidget {
             future: categoriesDBM.getAllEarningCategories(),
             builder:
                 (BuildContext context, AsyncSnapshot<List<Category>> snapshot) {
-              if (snapshot.hasData) {
+              if (snapshot.data.isNotEmpty) {
                 int numEarningCategory = 0;
                 earningCategoryList = snapshot.data.toList();
                 // for (var i = 0; i < categoryList.length; i++) {
@@ -139,18 +143,16 @@ class CategoryPage extends StatelessWidget {
                   shrinkWrap: true,
                   itemCount: earningCategoryList.length,
                   itemBuilder: (context, index) {
-                    print("id:");
-                    print(earningCategoryList[index].id);
-                    print(earningCategoryList[index].isSpending);
+                    print("id: " + earningCategoryList[index].id.toString());
+                    print("isSpending: " +
+                        earningCategoryList[index].isSpending.toString());
                     // if (categoryList[index].isSpending == 0){
                     return Container(
                       child: Row(
                         children: [
                           Padding(
-                            padding: const EdgeInsets.only(
-                              left: 15.0,
-                              right: 15.0
-                            ),
+                            padding:
+                                const EdgeInsets.only(left: 15.0, right: 15.0),
                             child: Row(
                               // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               mainAxisSize: MainAxisSize.max,
@@ -160,66 +162,85 @@ class CategoryPage extends StatelessWidget {
                                   padding: const EdgeInsets.all(0.0),
                                   child: Card(
                                     elevation: 0,
-                                    shape: index != 0 ? Border(bottom: BorderSide(color: Colors.black)) : Border(bottom: BorderSide(color: Colors.black), top: BorderSide(color: Colors.black)),
-                                    child: Row(
-                                        children: [
-                                          SizedBox(
-                                            width: 50,
-                                            child: Align(
-                                              alignment: Alignment.centerLeft,
-                                              child: Column(children: [
-                                                IconButton(
-                                                  icon: Icon(myIconCollection[earningCategoryList[index].icon], color: Colors.black),
-                                                ),
-                                              ]),
+                                    shape: index != 0
+                                        ? Border(
+                                            bottom:
+                                                BorderSide(color: Colors.black))
+                                        : Border(
+                                            bottom:
+                                                BorderSide(color: Colors.black),
+                                            top: BorderSide(
+                                                color: Colors.black)),
+                                    child: Row(children: [
+                                      SizedBox(
+                                        width: 50,
+                                        child: Align(
+                                          alignment: Alignment.centerLeft,
+                                          child: Column(children: [
+                                            IconButton(
+                                              icon: Icon(
+                                                  myIconCollection[
+                                                      earningCategoryList[index]
+                                                          .icon],
+                                                  color: Colors.black),
                                             ),
-                                          ),
-                                          SizedBox(
-                                            width: 170,
-                                            child: Align(
-                                              alignment: Alignment.centerLeft,
-                                              child: Column(children: [
-                                                Text(earningCategoryList[index].name, style: TextStyle(fontSize: 20)),
-                                              ]),
-                                            ),
-                                          ),
-                                          // Spacer(),
-                                          // SizedBox(width: 120),
-                                          Column(children: [
-                                            Row(
-                                              children: [
-                                                IconButton(
-                                                  icon: Icon(Icons.create_sharp, color: Colors.black),
-                                                  onPressed: () async {
-                                                    final edittedresult =
+                                          ]),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        width: 200,
+                                        child: Align(
+                                          alignment: Alignment.centerLeft,
+                                          child: Column(children: [
+                                            Text(
+                                                earningCategoryList[index].name,
+                                                style: TextStyle(fontSize: 20)),
+                                          ]),
+                                        ),
+                                      ),
+                                      // Spacer(),
+                                      // SizedBox(width: 120),
+                                      Column(children: [
+                                        Row(
+                                          children: [
+                                            IconButton(
+                                              icon: Icon(Icons.create_sharp,
+                                                  color: Colors.black),
+                                              onPressed: () async {
+                                                final edittedresult =
                                                     await Navigator.push(
                                                         context,
                                                         MaterialPageRoute(
-                                                            builder: (context) => EditCategory(earningCategoryList[index])
-                                                        )
-                                                    );
-                                                    // .then(
-                                                    //   (value) => (context as Element).reassemble()
-                                                    // );
-                                                    // print(edittedresult);
-                                                  },
-                                                ),
-                                                IconButton(
-                                                  icon: Icon(Icons.delete, color: Colors.black),
-                                                  onPressed: () {
-                                                  _showAlertDialog(context, index, earningCategoryList[index].isSpending);
-                                                  },
-                                                ),
-                                              ],
-                                            )
-                                          ]),
-                                        ]),
+                                                            builder: (context) =>
+                                                                EditCategory(
+                                                                    earningCategoryList[
+                                                                        index])));
+                                                // .then(
+                                                //   (value) => (context as Element).reassemble()
+                                                // );
+                                                // print(edittedresult);
+                                              },
+                                            ),
+                                            IconButton(
+                                              icon: Icon(Icons.delete,
+                                                  color: Colors.black),
+                                              onPressed: () {
+                                                _showAlertDialog(
+                                                    context,
+                                                    index,
+                                                    earningCategoryList[index]
+                                                        .isSpending);
+                                              },
+                                            ),
+                                          ],
+                                        )
+                                      ]),
+                                    ]),
                                     color: Colors.grey[50],
                                   ),
                                 ),
                               ],
                             ),
-
                           ),
                         ],
                       ),
@@ -227,16 +248,16 @@ class CategoryPage extends StatelessWidget {
                     // }
                   },
                 );
-
               } else {
                 return const Center(
-                  child: Text("No data found"),
+                  child: Text("Create a new category."),
                 );
               }
             },
           ),
           Padding(
-            padding: const EdgeInsets.all(15.0),
+            padding: const EdgeInsets.only(
+                bottom: 15.0, top: 50.0, left: 15.0, right: 15.0),
             child: Row(
               children: [
                 Text("Spending Categories: ", style: TextStyle(fontSize: 20))
@@ -254,14 +275,15 @@ class CategoryPage extends StatelessWidget {
                   shrinkWrap: true,
                   itemCount: spendingCategoryList.length,
                   itemBuilder: (context, index) {
+                    print("id: " + spendingCategoryList[index].id.toString());
+                    print("isSpending: " +
+                        spendingCategoryList[index].isSpending.toString());
                     return Container(
                       child: Row(
                         children: [
                           Padding(
-                            padding: const EdgeInsets.only(
-                              left: 15.0,
-                              right: 15.0
-                            ),
+                            padding:
+                                const EdgeInsets.only(left: 15.0, right: 15.0),
                             child: Row(
                               children: [
                                 // Text("Earning Categories: ", style: TextStyle(fontSize: 20)),
@@ -269,73 +291,93 @@ class CategoryPage extends StatelessWidget {
                                   padding: const EdgeInsets.all(0.0),
                                   child: Card(
                                     elevation: 0,
-                                    shape: index != 0 ? Border(bottom: BorderSide(color: Colors.black)) : Border(bottom: BorderSide(color: Colors.black), top: BorderSide(color: Colors.black)),
-                                    child: Row(
-                                        children: [
-                                          SizedBox(
-                                            width: 50,
-                                            child: Align(
-                                              alignment: Alignment.centerLeft,
-                                              child: Column(children: [
-                                                IconButton(
-                                                  icon: Icon(myIconCollection[spendingCategoryList[index].icon], color: Colors.black),
-                                                ),
-                                              ]),
+                                    shape: index != 0
+                                        ? Border(
+                                            bottom:
+                                                BorderSide(color: Colors.black))
+                                        : Border(
+                                            bottom:
+                                                BorderSide(color: Colors.black),
+                                            top: BorderSide(
+                                                color: Colors.black)),
+                                    child: Row(children: [
+                                      SizedBox(
+                                        width: 50,
+                                        child: Align(
+                                          alignment: Alignment.centerLeft,
+                                          child: Column(children: [
+                                            IconButton(
+                                              icon: Icon(
+                                                  myIconCollection[
+                                                      spendingCategoryList[
+                                                              index]
+                                                          .icon],
+                                                  color: Colors.black),
                                             ),
-                                          ),
-                                          SizedBox(
-                                            width: 170,
-                                            child: Align(
-                                              alignment: Alignment.centerLeft,
-                                              child: Column(children: [
-                                                Text(spendingCategoryList[index].name, style: TextStyle(fontSize: 20)),
-                                              ]),
-                                            ),
-                                          ),
-                                          // Spacer(),
-                                          // SizedBox(width: 120),
-                                          Column(children: [
-                                            Row(
-                                              children: [
-                                                IconButton(
-                                                  icon: Icon(Icons.create_sharp, color: Colors.black),
-                                                  onPressed: () async {
-                                                    final edittedresult =
+                                          ]),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        width: 200,
+                                        child: Align(
+                                          alignment: Alignment.centerLeft,
+                                          child: Column(children: [
+                                            Text(
+                                                spendingCategoryList[index]
+                                                    .name,
+                                                style: TextStyle(fontSize: 20)),
+                                          ]),
+                                        ),
+                                      ),
+                                      // Spacer(),
+                                      // SizedBox(width: 120),
+                                      Column(children: [
+                                        Row(
+                                          children: [
+                                            IconButton(
+                                              icon: Icon(Icons.create_sharp,
+                                                  color: Colors.black),
+                                              onPressed: () async {
+                                                final edittedresult =
                                                     await Navigator.push(
                                                         context,
                                                         MaterialPageRoute(
-                                                            builder: (context) => EditCategory(spendingCategoryList[index])
-                                                        )
-                                                    );
-                                                    // .then(
-                                                    //   (value) => (context as Element).reassemble()
-                                                    // );
-                                                    // print(edittedresult);
-                                                  },
-                                                ),
-                                                IconButton(
-                                                  icon: Icon(Icons.delete, color: Colors.black),
-                                                  onPressed: () {
-                                                    _showAlertDialog(context, index, spendingCategoryList[index].isSpending);
-                                                  },
-                                                ),
-                                              ],
-                                            )
-                                          ]),
-                                        ]),
+                                                            builder: (context) =>
+                                                                EditCategory(
+                                                                    spendingCategoryList[
+                                                                        index])));
+                                                // .then(
+                                                //   (value) => (context as Element).reassemble()
+                                                // );
+                                                // print(edittedresult);
+                                              },
+                                            ),
+                                            IconButton(
+                                              icon: Icon(Icons.delete,
+                                                  color: Colors.black),
+                                              onPressed: () {
+                                                _showAlertDialog(
+                                                    context,
+                                                    index,
+                                                    spendingCategoryList[index]
+                                                        .isSpending);
+                                              },
+                                            ),
+                                          ],
+                                        )
+                                      ]),
+                                    ]),
                                     color: Colors.grey[50],
                                   ),
                                 ),
                               ],
                             ),
-
                           ),
                         ],
                       ),
                     );
                   },
                 );
-
               } else {
                 return const Center(
                   child: Text("No data found"),
@@ -354,20 +396,29 @@ class CategoryPage extends StatelessWidget {
     Widget okButton = TextButton(
         child: Text("OK"),
         onPressed: () async {
-          if (isSpending == 0){
-            await categoriesDBM.deleteCategory(earningCategoryList[categoryId].id).then((param) => {
-              Navigator.pop(context),
-              Navigator.pop(context),
-              Navigator.of(context)
-                  .push(MaterialPageRoute(builder: (context) => CategoryPage()))
-            });
-          } else if (isSpending == 1){
-            await categoriesDBM.deleteCategory(spendingCategoryList[categoryId].id).then((param) => {
-              Navigator.pop(context),
-              Navigator.pop(context),
-              Navigator.of(context)
-                  .push(MaterialPageRoute(builder: (context) => CategoryPage()))
-            });
+          if (isSpending == 0) {
+            await categoriesDBM
+                .deleteCategory(earningCategoryList[categoryId].id)
+                .then((param) => {
+                      Navigator.pop(context),
+                      Navigator.pop(context),
+                      // Navigator.of(context).pop();
+                      // Navigator.of(context).push(MaterialPageRoute(
+                      //     builder: (context) => MyApp())),
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => CategoryPage()))
+                    });
+          } else if (isSpending == 1) {
+            await categoriesDBM
+                .deleteCategory(spendingCategoryList[categoryId].id)
+                .then((param) => {
+                      Navigator.pop(context),
+                      Navigator.pop(context),
+                      // Navigator.of(context).push(MaterialPageRoute(
+                      //     builder: (context) => MyApp())),
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => CategoryPage()))
+                    });
           }
           ScaffoldMessenger.of(context)
               .showSnackBar(SnackBar(content: Text("Category Deleted")));

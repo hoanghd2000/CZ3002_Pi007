@@ -56,7 +56,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) => Scaffold(
         appBar: AppBar(
           backgroundColor: navigation_bar,
-          title: Text("Pi_007", style: TextStyle(color: Colors.black)),
+          title: Text("ONEwallet", style: TextStyle(color: Colors.black)),
         ),
         body: screens[index],
         bottomNavigationBar: NavigationBarTheme(
